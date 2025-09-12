@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bié Okutuala</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../assets/css/login.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <!-- Promotional Side -->
+        <div class="auth-promo">
+            <div class="promo-content">
+                <h1>Explore o Bié Okutuala</h1>
+                <p>Compre e venda com confiança no maior mercado online de Angola!</p>
+                <div class="promo-stats">
+                    <div><span>10k+</span> Produtos</div>
+                    <div><span>5k+</span> Vendedores</div>
+                    <div><span>50k+</span> Clientes</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="auth-form-container">
+            <header class="auth-header">
+                <a href="index.html" class="logo">Bié Okutuala</a>
+                <button class="action-btn" id="themeToggle" aria-label="Alternar Tema">
+                    <i data-lucide="sun"></i>
+                    <i data-lucide="moon" style="display: none;"></i>
+                </button>
+            </header>
+
+            <!-- Login Form -->
+            <div class="auth-form login-form active">
+                <h2>Entrar</h2>
+                <p>Acesse sua conta e comece a negociar.</p>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <i data-lucide="mail"></i>
+                            <input type="email" id="loginEmail" name="email" placeholder="E-mail" required aria-label="E-mail">
+                        </div>
+                        <span class="error-message" id="loginEmailError"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <i data-lucide="lock"></i>
+                            <input type="password" id="loginPassword" name="password" placeholder="Senha" required aria-label="Senha">
+                            <button type="button" class="toggle-password" aria-label="Mostrar/Esconder Senha">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="loginPasswordError"></span>
+                    </div>
+                    <div class="form-options">
+                        <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                    <div class="social-login">
+                        <p>Ou entre com</p>
+                        <div class="social-buttons">
+                            <button type="button" class="btn btn-social" aria-label="Entrar com Google"><i data-lucide="chrome"></i> Google</button>
+                            <button type="button" class="btn btn-social" aria-label="Entrar com Facebook"><i data-lucide="facebook"></i> Facebook</button>
+                        </div>
+                    </div>
+                    <p class="auth-switch">Não tem conta? <a href="" id="showRegister">Cadastre-se</a></p>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form register-form">
+                <h2>Cadastre-se</h2>
+                <p>Crie sua conta e junte-se ao mercado!</p>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <i data-lucide="user"></i>
+                            <input type="text" id="registerName" name="name" placeholder="Nome" required aria-label="Nome">
+                        </div>
+                        <span class="error-message" id="registerNameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <i data-lucide="mail"></i>
+                            <input type="email" id="registerEmail" name="email" placeholder="E-mail" required aria-label="E-mail">
+                        </div>
+                        <span class="error-message" id="registerEmailError"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <i data-lucide="lock"></i>
+                            <input type="password" id="registerPassword" name="password" placeholder="Senha" required aria-label="Senha">
+                            <button type="button" class="toggle-password" aria-label="Mostrar/Esconder Senha">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="registerPasswordError"></span>
+                        <div class="password-strength" id="passwordStrength">
+                            <span class="strength-bar"></span>
+                            <span class="strength-bar"></span>
+                            <span class="strength-bar"></span>
+                            <span class="strength-text">Fraca</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <i data-lucide="lock"></i>
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar Senha" required aria-label="Confirmar Senha">
+                            <button type="button" class="toggle-password" aria-label="Mostrar/Esconder Senha">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="confirmPasswordError"></span>
+                    </div>
+                    <div class="form-group terms-checkbox">
+                        <label>
+                            <input type="checkbox" id="terms" required aria-label="Aceitar Termos">
+                            Concordo com os <a href="#" class="terms-link">Termos de Uso</a> e <a href="#" class="terms-link">Política de Privacidade</a>
+                        </label>
+                        <span class="error-message" id="termsError"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    <div class="social-login">
+                        <p>Ou cadastre-se com</p>
+                        <div class="social-buttons">
+                            <button type="button" class="btn btn-social" aria-label="Cadastrar com Google"><i data-lucide="chrome"></i> Google</button>
+                            <button type="button" class="btn btn-social" aria-label="Cadastrar com Facebook"><i data-lucide="facebook"></i> Facebook</button>
+                        </div>
+                    </div>
+                    <p class="auth-switch">Já tem conta? <a href="#" id="showLogin">Entrar</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toastNotification" aria-live="polite"></div>
+
+    <script src="../assets/js/login.js">
+        
+    </script>
+</body>
+</html>

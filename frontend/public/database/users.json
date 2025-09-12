@@ -1,0 +1,37 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@example.com",
+      "password": "password", 
+      "avatar": "../assets/randomUser/men1.jpg",
+      "joined": "Jan 2024",
+      "location": "Bié, Angola",
+      "rating": 4.7,
+      "reviews": 15
+    },
+    {
+      "id": 2,
+      "name": "João Silva",
+      "email": "joao.silva@email.com",
+      "password": "senha123456",  
+      "avatar": "../assets/randomUser/men2.jpg",
+      "joined": "Jan 2025",
+      "location": "Bié, Angola",
+      "rating": 5,
+      "reviews": 19
+    },
+    {
+      "id": 3,
+      "name": "Maria Santos",
+      "email": "maria.santos@email.com",
+      "password": "minhasenha789",  
+      "avatar": "../assets/randomUser/women1.jpg",
+      "joined": "Jan 2023",
+      "location": "Bié, Angola",
+      "rating": 6.7,
+      "reviews": 17
+    }
+  ]
+}

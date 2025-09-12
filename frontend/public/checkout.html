@@ -1,3 +1,209 @@
-<!-- checkout.html - template -->
-<!doctype html>
-<html><body><h1>checkout</h1></body></html>
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Finalizar compra no Bié Okutuala - O mercado online mais vibrante de Angola.">
+    <meta name="keywords" content="checkout, marketplace, Angola, compras, Bié Okutuala">
+    <meta name="author" content="Bié Okutuala">
+    <meta property="og:title" content="Checkout - Bié Okutuala">
+    <meta property="og:image" content="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg">
+    <title>Checkout - Bié Okutuala</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="./assets/css/checkout.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span>Bié Okutuala</span>
+            </a>
+            <div class="header-actions">
+                <button class="action-btn voice-toggle" id="voiceToggle" aria-label="Ativar/Desativar Assistente de Voz">
+                    <i data-lucide="mic"></i>
+                </button>
+                <button class="action-btn" id="themeToggle" aria-label="Alternar Tema">
+                    <i data-lucide="sun"></i>
+                    <i data-lucide="moon" style="display: none;"></i>
+                </button>
+                <a href="index.html" class="action-btn" aria-label="Voltar ao Início">
+                    <i data-lucide="arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="checkout-container">
+        <div class="container">
+            <!-- 3D Progress Ring -->
+            <div class="progress-ring" role="progressbar" aria-valuemin="0" aria-valuemax="4">
+                <div class="ring-step active" data-step="cart">
+                    <span class="step-icon"><i data-lucide="shopping-cart"></i></span>
+                    <span class="step-label">Carrinho</span>
+                </div>
+                <div class="ring-step" data-step="delivery">
+                    <span class="step-icon"><i data-lucide="truck"></i></span>
+                    <span class="step-label">Entrega</span>
+                </div>
+                <div class="ring-step" data-step="payment">
+                    <span class="step-icon"><i data-lucide="credit-card"></i></span>
+                    <span class="step-label">Pagamento</span>
+                </div>
+                <div class="ring-step" data-step="review">
+                    <span class="step-icon"><i data-lucide="check-circle"></i></span>
+                    <span class="step-label">Revisão</span>
+                </div>
+                <svg class="ring-track">
+                    <circle cx="50%" cy="50%" r="80" />
+                </svg>
+            </div>
+
+            <div class="checkout-content">
+                <!-- Main Form -->
+                <div class="checkout-main">
+                    <!-- Cart Summary -->
+                    <section class="checkout-section cart-summary" id="cartSection">
+                        <h2>Seu Carrinho</h2>
+                        <div id="cartItems"></div>
+                        <div class="promo-code">
+                            <label for="promoCode">Código Promocional</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="gift"></i>
+                                <input type="text" id="promoCode" placeholder="Ex.: BIE20OFF" aria-label="Código Promocional">
+                                <button class="apply-promo" aria-label="Aplicar Código"><i data-lucide="check"></i></button>
+                 <span class="error-message" id="promoCodeError"></span>
+                        </div>
+                        <div class="cart-total">
+                            <span>Total</span>
+                            <span id="cartTotal">Kz 0</span>
+                        </div>
+                        <button class="btn btn-primary" id="proceedToDelivery" aria-label="Continuar para Entrega">Continuar</button>
+                   <button id="clearCartBtn" class="btn btn-secondary">Limpar Carrinho</button>
+                            </div>
+                           
+                    </section>
+
+                    <!-- Delivery Details -->
+                <section class="checkout-section delivery-details" id="deliverySection" style="display: none;">
+                        <h2>Detalhes de Entrega</h2>
+                        <form id="deliveryForm">
+                            <div class="form-group">
+                                <label for="fullName">Nome Completo</label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="user"></i>
+                                    <input type="text" id="fullName" name="fullName" placeholder="Ex.: Afonso Kimbamba" required aria-label="Nome Completo">
+                                </div>
+                                <span class="error-message" id="fullNameError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Telefone</label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="phone"></i>
+                                    <input type="tel" id="phone" name="phone" placeholder="+244 923 456 789" required aria-label="Telefone">
+                                </div>
+                                <span class="error-message" id="phoneError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Endereço</label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="map-pin"></i>
+                                    <input type="text" id="address" name="address" placeholder="Ex.: Rua da Samba, Luanda" required aria-label="Endereço">
+                                </div>
+                                <span class="error-message" id="addressError"></span>
+                                <p class="delivery-estimate" id="deliveryEstimate"></p>
+                            </div>
+                            <div class="form-group">
+                                <label for="deliveryNotes">Notas de Entrega (Opcional)</label>
+                                <textarea id="deliveryNotes" name="deliveryNotes" placeholder="Ex.: Casa com portão vermelho" aria-label="Notas de Entrega"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="saveDelivery" aria-label="Salvar Detalhes de Entrega">Continuar</button>
+                        </form>
+                    </section>
+
+                    <!-- Payment Options -->
+                    <section class="checkout-section payment-options" id="paymentSection" style="display: none;">
+                        <h2>Método de Pagamento</h2>
+                        <div class="payment-methods">
+                            <label class="payment-method">
+                                <input type="radio" name="paymentMethod" value="mpesa" required aria-label="Pagar com M-Pesa">
+                                <span>M-Pesa <img src="images/mpesa-logo.png" alt="M-Pesa" class="payment-logo"></span>
+                            </label>
+                            <label class="payment-method">
+                                <input type="radio" name="paymentMethod" value="card" aria-label="Pagar com Cartão Bancário">
+                                <span>Cartão Bancário <img src="images/visa-mastercard.png" alt="Visa/Mastercard" class="payment-logo"></span>
+                            </label>
+                            <label class="payment-method">
+                                <input type="radio" name="paymentMethod" value="cash" aria-label="Pagar na Entrega">
+                                <span>Pagamento na Entrega <i data-lucide="banknote"></i></span>
+                            </label>
+                        </div>
+                        <div id="paymentDetails" class="payment-details"></div>
+                        <button class="btn btn-primary" id="savePayment" aria-label="Salvar Método de Pagamento">Continuar</button>
+                    </section>
+
+                    <!-- Order Review -->
+                    <section class="checkout-section order-review" id="reviewSection" style="display: none;">
+                        <h2>Revisão do Pedido</h2>
+                        <div class="order-summary">
+                            <p><strong>Itens:</strong> <span id="orderItemCount">0</span></p>
+                            <p><strong>Desconto:</strong> <span id="orderDiscount">Kz 0</span></p>
+                            <p><strong>Total:</strong> <span id="orderTotal">Kz 0</span></p>
+                            <p><strong>Entrega:</strong> <span id="orderDelivery">-</span></p>
+                            <p><strong>Pagamento:</strong> <span id="orderPayment">-</span></p>
+                        </div>
+                        <div class="trust-badges">
+                            <span><i data-lucide="lock"></i> Pagamentos Seguros</span>
+                            <span><i data-lucide="shield-check"></i> Compra Protegida</span>
+                            <span><i data-lucide="truck"></i> Entrega Garantida</span>
+                        </div>
+                        <button class="btn btn-primary" id="placeOrder" aria-label="Finalizar Pedido">Finalizar Pedido</button>
+                    </section>
+                </div>
+
+                <!-- Sticky Summary -->
+                <aside class="checkout-summary">
+                    <div class="summary-card">
+                        <h3>Resumo do Pedido</h3>
+                        <div id="summaryItems"></div>
+                        <div class="summary-discount">
+                            <span>Desconto</span>
+                            <span id="summaryDiscount">Kz 0</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span id="summaryTotal">Kz 0</span>
+                        </div>
+                        <button class="btn btn-primary sticky-btn" id="placeOrderSticky" aria-label="Finalizar Pedido" style="display: none;">Finalizar Pedido</button>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Order Confirmation Modal -->
+    <div class="modal" id="confirmationModal" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close-btn action-btn" id="modalCloseBtn" aria-label="Fechar Modal"><i data-lucide="x"></i></button>
+            <div class="confirmation-content">
+                <div class="success-animation">
+                    <i data-lucide="check-circle" class="success-icon"></i>
+                </div>
+                <h2>Oba! Pedido Confirmado!</h2>
+                <p>Gracias por comprar no Bié Okutuala. Sua confirmação está a caminho!</p>
+                <a href="index.html" class="btn btn-primary" aria-label="Voltar à Página Inicial">Explorar Mais</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toastNotification" aria-live="polite"></div>
+
+<script src="./assets/js/checkout.js"></script>
+</body>
+</html>

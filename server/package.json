@@ -6,7 +6,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "jest --runInBand",
-    "setup:db": "node db/migrate.js",
+    "setup:db": "node migrate_local.js",
     "setup:meili": "node scripts/setupMeili.js",
     "worker:indexer": "node server/src/workers/indexerWorker.js"
   },

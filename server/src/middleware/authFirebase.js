@@ -1,10 +1,17 @@
 const admin = require('../config/firebaseAdmin');
+
 module.exports = async (req, res, next) => {
   try {
-    const token = (req.headers.authorization || '').split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'No token' });
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+
+    if (!token) return res.status(401).json({ error: 'No token provided' });
+
     const decoded = await admin.auth().verifyIdToken(token);
-    req.user = decoded;
+    req.user = decoded; // payload do Firebase
     next();
-  } catch (e) { res.status(401).json({ error: 'Invalid token' }); }
+  } catch (e) {
+    console.error('[Firebase Auth Error]', e.message);
+    res.status(401).json({ error: 'Invalid Firebase token' });
+  }
 };

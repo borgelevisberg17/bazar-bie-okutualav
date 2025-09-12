@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
   firebase_uid text UNIQUE,
   name text,
   email text,
-  role text DEFAULT 'buyer',
+  role text DEFAULT 'customer',
   avatar_url text,
   created_at timestamptz DEFAULT now()
 );

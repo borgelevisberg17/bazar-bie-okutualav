@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const pgp = require('pg-promise')({});
 require('dotenv').config();
-const db = pgp(process.env.DATABASE_URL || 'postgres://bazar:bazarpass@localhost:5432/bazar');
+const db = pgp(process.env.DATABASE_URL || 'postgres://borge:senha@localhost:5432/bazar');
 
 (async () => {
   const dir = path.join(__dirname, 'migrations');

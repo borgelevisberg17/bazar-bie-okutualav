@@ -1,0 +1,666 @@
+{
+  "categories": [
+    {
+      "name": "Tudo",
+      "slug": "all",
+      "icon": "layout-grid"
+    },
+    {
+      "name": "Moda",
+      "slug": "moda",
+      "icon": "shirt"
+    },
+    {
+      "name": "Tecnologia",
+      "slug": "tecnologia",
+      "icon": "smartphone"
+    },
+    {
+      "name": "Casa & Lar",
+      "slug": "casa",
+      "icon": "home"
+    },
+    {
+      "name": "Artesanato",
+      "slug": "artesanato",
+      "icon": "gem"
+    },
+    {
+      "name": "Beleza",
+      "slug": "beleza",
+      "icon": "sparkles"
+    },
+    {
+      "name": "Comida",
+      "slug": "comida",
+      "icon": "utensils-crossed"
+    },
+    {
+      "name": "Esportes",
+      "slug": "esportes",
+      "icon": "dumbbell"
+    },
+    {
+      "name": "Livros",
+      "slug": "livros",
+      "icon": "book-open"
+    },
+    {
+      "name": "Transportes",
+      "slug": "transportes",
+      "icon": "truck"
+    },
+    {
+      "name": "Hotelaria e Arrendamento",
+      "slug": "hoteis",
+      "icon": "hotel"
+    },
+    {
+      "name": "Serviços e Anúncios",
+      "slug": "servicos",
+      "icon": "megaphone"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Sapatilha Jordan",
+      "price": 10000,
+      "images": ["../assets/produto–60.jpg"],
+      "tag": "Novo",
+      "category": "moda",
+      "rating": 4.8,
+      "reviews": 12,
+      "vendidos": 100,
+      "description": "Sapatilha Jordan original, perfeita para o dia a dia ou para sair com os amigos. Confortável e estilosa.",
+      "specs": ["Material: Couro sintético", "Cor: Branco e preto", "Tamanho: 40-45"],
+      "availability": "Em estoque",
+      "sellerId": 1,
+      "seller": {
+        "name": "Maria Artesã",
+        "avatar": "../assets/randomUser/women1.jpg"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Grif Urbano, Camiseta branca & Jaqueta Jeans Preta",
+      "price": 10000,
+      "images": ["../assets/produto–38.jpg"],
+      "tag": "Promoção",
+      "category": "moda",
+      "discount": 50,
+      "rating": 4.9,
+      "reviews": 25,
+      "vendidos": 2000,
+      "description": "Conjunto urbano completo para looks casuais. Camiseta branca básica e jaqueta jeans preta resistente.",
+      "specs": ["Material: Algodão e jeans", "Cor: Branco e preto", "Tamanhos: M a XXL"],
+      "availability": "Em estoque",
+      "sellerId": 2,
+      "seller": {
+        "name": "João Alfaiate",
+        "avatar": "../assets/randomUser/men1.jpg"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Camisa Social Polo",
+      "price": 15500,
+      "images": ["../assets/produto–63.jpg"],
+      "tag": "Novo",
+      "category": "moda",
+      "rating": 4.7,
+      "reviews": 8,
+      "vendidos": 340,
+      "description": "Camisa social polo de alta qualidade, ideal para eventos formais ou trabalho.",
+      "specs": ["Material: Algodão", "Cor: Azul claro", "Tamanhos: P a G"],
+      "availability": "Em estoque",
+      "sellerId": 5,
+      "seller": {
+        "name": "Carlos Veloz",
+        "avatar": "../assets/randomUser/men5.jpg"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Peruca Encaracolada",
+      "price": 3200,
+      "images": ["../assets/produto–19.jpg"],
+      "tag": "",
+      "category": "beleza",
+      "discount": 1000,
+      "rating": 4.6,
+      "reviews": 15,
+      "vendidos": 400,
+      "description": "Peruca encaracolada natural, perfeita para looks elegantes e festas.",
+      "specs": ["Material: Fibra sintética", "Cor: Preto", "Comprimento: Médio"],
+      "availability": "Em estoque",
+      "sellerId": 3,
+      "seller": {
+        "name": "Ana Bijuteria",
+        "avatar": "../assets/randomUser/women2.jpg"
+      }
+    },
+    {
+      "id": 5,
+      "name": "Peruca Brasileira",
+      "price": 10800,
+      "images": ["../assets/produto–20.jpg"],
+      "tag": "",
+      "category": "beleza",
+      "rating": 4.8,
+      "reviews": 20,
+      "vendidos": 10,
+      "description": "Peruca brasileira de alta qualidade, com cabelos naturais e duradouros.",
+      "specs": ["Material: Cabelo humano", "Cor: Castanho", "Comprimento: Longo"],
+      "availability": "Em estoque",
+      "sellerId": 6,
+      "seller": {
+        "name": "Perucas Style",
+        "avatar": "../assets/randomUser/women5.jpg"
+      }
+    },
+    {
+      "id": 6,
+      "name": "Relógio Pulse",
+      "price": 45900,
+      "images": ["../assets/produto–32.jpg"],
+      "tag": "Promoção",
+      "category": "tecnologia",
+      "rating": 4.5,
+      "reviews": 10,
+      "vendidos": 3000,
+      "description": "Relógio inteligente com monitoramento de saúde e notificações.",
+      "specs": ["Tela: AMOLED", "Bateria: 7 dias", "Conectividade: Bluetooth"],
+      "availability": "Em estoque",
+      "sellerId": 4,
+      "seller": {
+        "name": "Tech Usados",
+        "avatar": "../assets/randomUser/men3.jpg"
+      }
+    },
+    {
+      "id": 7,
+      "name": "Bolsa de Palha Artesanal",
+      "price": 12000,
+      "images": ["../assets/produto–45.jpg"],
+      "tag": "Novo",
+      "category": "artesanato",
+      "rating": 4.9,
+      "reviews": 18,
+      "vendidos": 30,
+      "description": "Bolsa de palha artesanal feita à mão, ideal para praia ou looks casuais.",
+      "specs": ["Material: Palha natural", "Cor: Marrom", "Tamanho: Médio"],
+      "availability": "Em estoque",
+      "sellerId": 7,
+      "seller": {
+        "name": "Artesãos do Bié",
+        "avatar": "../assets/randomUser/men2.jpg"
+      }
+    },
+    {
+      "id": 8,
+      "name": "Conjunto de Utensílios de Cozinha",
+      "price": 25000,
+      "images": ["../assets/produto–50.jpg"],
+      "tag": "",
+      "category": "casa",
+      "rating": 4.7,
+      "reviews": 22,
+      "vendidos": 100,
+      "description": "Conjunto completo de utensílios de cozinha em inox, resistente e durável.",
+      "specs": ["Material: Inox", "Peças: 12", "Cor: Prata"],
+      "availability": "Em estoque",
+      "sellerId": 8,
+      "seller": {
+        "name": "Casa & Conforto",
+        "avatar": "../assets/randomUser/women3.jpg"
+      }
+    },
+    {
+      "id": 9,
+      "name": "Livro de Receitas Angolanas",
+      "price": 8500,
+      "images": ["../assets/produto–55.jpg"],
+      "tag": "Novo",
+      "category": "livros",
+      "rating": 4.8,
+      "reviews": 14,
+      "vendidos": 5,
+      "description": "Livro com receitas tradicionais de Angola, perfeito para amantes da culinária local.",
+      "specs": ["Páginas: 200", "Idioma: Português", "Capa: Dura"],
+      "availability": "Em estoque",
+      "sellerId": 9,
+      "seller": {
+        "name": "Editora Bié",
+        "avatar": "../assets/randomUser/men6.jpg"
+      }
+    },
+    {
+      "id": 10,
+      "name": "Bicicleta Usada",
+      "price": 35000,
+      "images": ["../assets/produto–70.jpg"],
+      "tag": "",
+      "category": "transportes",
+      "rating": 4.4,
+      "reviews": 9,
+      "vendidos": 0,
+      "description": "Bicicleta usada em bom estado, ideal para passeios ou transporte diário.",
+      "specs": ["Modelo: Mountain Bike", "Estado: Usado", "Cor: Azul"],
+      "availability": "Em estoque",
+      "sellerId": 10,
+      "seller": {
+        "name": "Transportes Rápidos",
+        "avatar": "../assets/randomUser/men7.jpg"
+      }
+    },
+    {
+      "id": 11,
+      "name": "Jaqueta Viscolinho Tricômix",
+      "price": 14241,
+      "images": ["../assets/produto–40.jpg"],
+      "tag": "Promoção",
+      "category": "moda",
+      "discount": 38,
+      "rating": 4.6,
+      "reviews": 5,
+      "vendidos": 150,
+      "description": "Jaqueta de viscolinho tricômix, perfeita para dias frios com estilo urbano.",
+      "specs": ["Material: Viscolinho", "Cor: Cinza", "Tamanhos: M a XXL"],
+      "availability": "Em estoque",
+      "sellerId": 5,
+      "seller": {
+        "name": "Carlos Veloz",
+        "avatar": "../assets/randomUser/men5.jpg"
+      }
+    },
+    {
+      "id": 12,
+      "name": "Conjunto Nike Masculino",
+      "price": 10990,
+      "images": ["../assets/produto–47.jpg"],
+      "tag": "Promoção",
+      "category": "esportes",
+      "discount": 31,
+      "rating": 4.7,
+      "reviews": 12,
+      "vendidos": 500,
+      "description": "Conjunto esportivo Nike para homens, ideal para academia ou corrida.",
+      "specs": ["Material: Poliéster", "Cor: Preto", "Tamanhos: P a G"],
+      "availability": "Em estoque",
+      "sellerId": 4,
+      "seller": {
+        "name": "Tech Usados",
+        "avatar": "../assets/randomUser/men3.jpg"
+      }
+    },
+    {
+      "id": 13,
+      "name": "Conjunto Social Masculino",
+      "price": 14990,
+      "images": ["../assets/produto–53.jpg"],
+      "tag": "Promoção",
+      "category": "moda",
+      "discount": 25,
+      "rating": 4.8,
+      "reviews": 20,
+      "vendidos": 300,
+      "description": "Conjunto social masculino elegante, perfeito para eventos formais.",
+      "specs": ["Material: Algodão", "Cor: Azul marinho", "Tamanhos: M a XL"],
+      "availability": "Em estoque",
+      "sellerId": 5,
+      "seller": {
+        "name": "Carlos Veloz",
+        "avatar": "../assets/randomUser/men5.jpg"
+      }
+    },
+    {
+      "id": 14,
+      "name": "Vestido Floral",
+      "price": 12990,
+      "images": ["../assets/produto–66.jpg"],
+      "tag": "Novo",
+      "category": "moda",
+      "discount": 32,
+      "rating": 4.9,
+      "reviews": 18,
+      "vendidos": 80,
+      "description": "Vestido floral leve e elegante, ideal para primavera e verão.",
+      "specs": ["Material: Algodão", "Cor: Floral", "Tamanhos: P a G"],
+      "availability": "Em estoque",
+      "sellerId": 3,
+      "seller": {
+        "name": "Ana Bijuteria",
+        "avatar": "../assets/randomUser/women2.jpg"
+      }
+    },
+    {
+      "id": 15,
+      "name": "Sapatilha de Couro Bico Quadrado Arezzo",
+      "price": 18991,
+      "images": ["../assets/produto–39.jpg"],
+      "tag": "Promoção",
+      "category": "moda",
+      "discount": 33,
+      "rating": 4.5,
+      "reviews": 25,
+      "vendidos": 1200,
+      "description": "Sapatilha de couro com bico quadrado Arezzo, clássica e elegante.",
+      "specs": ["Material: Couro", "Cor: Preto", "Tamanho: 35-42"],
+      "availability": "Em estoque",
+      "sellerId": 1,
+      "seller": {
+        "name": "Maria Artesã",
+        "avatar": "../assets/randomUser/women1.jpg"
+      }
+    },
+    {
+      "id": 16,
+      "name": "Tênis Jordan Casual",
+      "price": 17990,
+      "images": ["../assets/produto–64.jpg"],
+      "tag": "Promoção",
+      "category": "esportes",
+      "discount": 28,
+      "rating": 4.8,
+      "reviews": 35,
+      "vendidos": 800,
+      "description": "Tênis Jordan casual, confortável e estiloso para o dia a dia.",
+      "specs": ["Material: Couro sintético", "Cor: Branco", "Tamanho: 38-45"],
+      "availability": "Em estoque",
+      "sellerId": 2,
+      "seller": {
+        "name": "João Alfaiate",
+        "avatar": "../assets/randomUser/men1.jpg"
+      }
+    },
+    {
+      "id": 17,
+      "name": "Sandalha Preta Casual",
+      "price": 22990,
+      "images": ["../assets/produto–26.jpg"],
+      "tag": "Promoção",
+      "category": "moda",
+      "discount": 28,
+      "rating": 4.6,
+      "reviews": 15,
+      "vendidos": 200,
+      "description": "Sandalha preta casual, perfeita para verão.",
+      "specs": ["Material: Couro", "Cor: Preto", "Tamanho: 35-42"],
+      "availability": "Em estoque",
+      "sellerId": 1,
+      "seller": {
+        "name": "Maria Artesã",
+        "avatar": "../assets/randomUser/women1.jpg"
+      }
+    },
+    {
+      "id": 18,
+      "name": "Bolsa Feminina Minimalista",
+      "price": 29990,
+      "images": ["../assets/produto–48.jpg"],
+      "tag": "Novo",
+      "category": "moda",
+      "discount": 25,
+      "rating": 4.9,
+      "reviews": 30,
+      "vendidos": 400,
+      "description": "Bolsa feminina minimalista, elegante e prática.",
+      "specs": ["Material: Couro sintético", "Cor: Preto", "Tamanho: Médio"],
+      "availability": "Em estoque",
+      "sellerId": 3,
+      "seller": {
+        "name": "Ana Bijuteria",
+        "avatar": "../assets/randomUser/women2.jpg"
+      }
+    }
+  ],
+  "sellers": [
+    {
+      "id": 1,
+      "name": "Maria Artesã",
+      "specialty": "Artesanato",
+      "avatar": "../assets/randomUser/women1.jpg"
+    },
+    {
+      "id": 2,
+      "name": "João Alfaiate",
+      "specialty": "Moda Masculina",
+      "avatar": "../assets/randomUser/men1.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Ana Bijuteria",
+      "specialty": "Acessórios e Beleza",
+      "avatar": "../assets/randomUser/women2.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Tech Usados",
+      "specialty": "Eletrônicos",
+      "avatar": "../assets/randomUser/men3.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Carlos Veloz",
+      "specialty": "Moda Geral",
+      "avatar": "../assets/randomUser/men5.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Perucas Style",
+      "specialty": "Beleza",
+      "avatar": "../assets/randomUser/women5.jpg"
+    },
+    {
+      "id": 7,
+      "name": "Artesãos do Bié",
+      "specialty": "Artesanato",
+      "avatar": "../assets/randomUser/men2.jpg"
+    },
+    {
+      "id": 8,
+      "name": "Casa & Conforto",
+      "specialty": "Casa e Lar",
+      "avatar": "../assets/randomUser/women3.jpg"
+    },
+    {
+      "id": 9,
+      "name": "Editora Bié",
+      "specialty": "Livros e Educação",
+      "avatar": "../assets/randomUser/men6.jpg"
+    },
+    {
+      "id": 10,
+      "name": "Transportes Rápidos",
+      "specialty": "Transportes",
+      "avatar": "../assets/randomUser/men7.jpg"
+    }
+  ],
+  "recentlyArrivedD": [
+    {
+      "id": 11,
+      "image": "../assets/produto–40.jpg",
+      "name": "Jaqueta Viscolinho Tricômix",
+      "originalPrice": 23990,
+      "discountPrice": 14241,
+      "discount": 38,
+      "installments": { "count": 2, "amount": 7495 }
+    },
+    {
+      "id": 12,
+      "image": "../assets/produto–47.jpg",
+      "name": "Conjunto Nike Masculino",
+      "originalPrice": 15990,
+      "discountPrice": 10990,
+      "discount": 31,
+      "installments": { "count": 3, "amount": 3663 }
+    },
+    {
+      "id": 13,
+      "image": "../assets/produto–53.jpg",
+      "name": "Conjunto Social Masculino",
+      "originalPrice": 19990,
+      "discountPrice": 14990,
+      "discount": 25,
+      "installments": { "count": 2, "amount": 7495 }
+    },
+    {
+      "id": 14,
+      "image": "../assets/produto–66.jpg",
+      "name": "Vestido Floral",
+      "originalPrice": 18990,
+      "discountPrice": 12990,
+      "discount": 32,
+      "installments": { "count": 2, "amount": 6495 }
+    }
+  ],
+  "topFindsD": [
+    {
+      "id": 15,
+      "image": "../assets/produto–39.jpg",
+      "name": "Sapatilha de Couro Bico Quadrado Arezzo",
+      "originalPrice": 29990,
+      "discountPrice": 18991,
+      "discount": 33,
+      "installments": { "count": 2, "amount": 9990 }
+    },
+    {
+      "id": 16,
+      "image": "../assets/produto–64.jpg",
+      "name": "Tênis Jordan Casual",
+      "originalPrice": 24990,
+      "discountPrice": 17990,
+      "discount": 28,
+      "installments": { "count": 4, "amount": 4497 }
+    },
+    {
+      "id": 17,
+      "image": "../assets/produto–26.jpg",
+      "name": "Sandalha Preta Casual",
+      "originalPrice": 31990,
+      "discountPrice": 22990,
+      "discount": 28,
+      "installments": { "count": 3, "amount": 7663 }
+    },
+    {
+      "id": 18,
+      "image": "../assets/produto–48.jpg",
+      "name": "Bolsa Feminina Minimalista",
+      "originalPrice": 39990,
+      "discountPrice": 29990,
+      "discount": 25,
+      "installments": { "count": 3, "amount": 9997 }
+    }
+  ],
+  "reviews": [
+    {
+      "productId": 1,
+      "user": "Maria S.",
+      "rating": 5,
+      "comment": "Ótima Sapatilha, legal mesmo!"
+    },
+    {
+      "productId": 2,
+      "user": "João K.",
+      "rating": 4.3,
+      "comment": "Um grif desses pra sair com a galera!"
+    },
+    {
+      "productId": 3,
+      "user": "Ana L.",
+      "rating": 4.9,
+      "comment": "Meu marido amou."
+    },
+    {
+      "productId": 4,
+      "user": "Pedro M.",
+      "rating": 4.9,
+      "comment": "Mesmo o que minha namorada queria!"
+    },
+    {
+      "productId": 5,
+      "user": "Carla T.",
+      "rating": 4.7,
+      "comment": "Qualidade excelente, recomendo!"
+    },
+    {
+      "productId": 6,
+      "user": "Miguel A.",
+      "rating": 4.5,
+      "comment": "Relógio bom, bateria dura muito."
+    },
+    {
+      "productId": 7,
+      "user": "Sofia R.",
+      "rating": 5,
+      "comment": "Artesanato de qualidade, amo!"
+    },
+    {
+      "productId": 8,
+      "user": "Ricardo P.",
+      "rating": 4.6,
+      "comment": "Utensílios práticos e duráveis."
+    },
+    {
+      "productId": 9,
+      "user": "Luísa F.",
+      "rating": 4.8,
+      "comment": "Livro incrível, cheio de receitas tradicionais."
+    },
+    {
+      "productId": 10,
+      "user": "António C.",
+      "rating": 4.4,
+      "comment": "Bicicleta em bom estado, vale a pena."
+    },
+    {
+      "productId": 11,
+      "user": "Júlia V.",
+      "rating": 4.6,
+      "comment": "Jaqueta perfeita para o inverno angolano!"
+    },
+    {
+      "productId": 12,
+      "user": "Ricardo M.",
+      "rating": 4.7,
+      "comment": "Nike de qualidade, treino melhorou."
+    },
+    {
+      "productId": 13,
+      "user": "Paula S.",
+      "rating": 4.8,
+      "comment": "Conjunto social elegante, recomendo!"
+    },
+    {
+      "productId": 14,
+      "user": "Luana P.",
+      "rating": 4.9,
+      "comment": "Vestido floral lindo, amo o tecido!"
+    },
+    {
+      "productId": 15,
+      "user": "Carlos R.",
+      "rating": 4.5,
+      "comment": "Sapatilha confortável, vale o preço."
+    },
+    {
+      "productId": 16,
+      "user": "Ana C.",
+      "rating": 4.8,
+      "comment": "Tênis Jordan original, estilo top!"
+    },
+    {
+      "productId": 17,
+      "user": "Mariana L.",
+      "rating": 4.6,
+      "comment": "Sandalha perfeita para o verão."
+    },
+    {
+      "productId": 18,
+      "user": "João P.",
+      "rating": 4.9,
+      "comment": "Bolsa minimalista, qualidade premium."
+    }
+  ]
+}

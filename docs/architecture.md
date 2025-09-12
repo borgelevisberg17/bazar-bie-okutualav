@@ -1,0 +1,2 @@
+# Arquitetura
+Detalhes do sistema.

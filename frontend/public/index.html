@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bazar Bié Okutuala</title>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="logo" href="/">Bazar</a>
+      <div class="nav-actions">
+        <a href="/" class="nav-link">Início</a>
+        <a href="/categories.html" class="nav-link">Categorias</a>
+        <a href="/explore.html" class="nav-link">Explorar</a>
+        <a href="/profile.html" class="nav-link">Perfil</a>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="products-section">
+      <div class="container" id="products-grid"></div>
+    </section>
+  </main>
+  <template id="product-card-template">
+    <article class="product-card">
+      <a href="#" class="product-link">
+        <div class="product-image">
+          <img src="./assets/images/placeholders/product.png" alt="produto">
+          <div class="product-tag">novo</div>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Produto</h3>
+          <p class="product-price">Kz 0</p>
+          <p class="product-desc">Descrição curta...</p>
+          <div class="product-card-footer">
+            <div class="seller-info">
+              <img src="./assets/images/placeholders/avatar.png" class="seller-avatar">
+              <span class="seller-name">Loja</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-like" aria-label="Gostei"><i data-lucide="heart"></i></button>
+              <button class="btn-share" aria-label="Compartilhar"><i data-lucide="share"></i></button>
+              <button class="btn-cart" aria-label="Adicionar ao carrinho"><i data-lucide="shopping-cart"></i></button>
+            </div>
+          </div>
+        </div>
+      </a>
+    </article>
+  </template>
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=> {
+      lucide.createIcons();
+    });
+  </script>
+  <script src="./assets/js/main.js"></script>
+</body>
+</html>

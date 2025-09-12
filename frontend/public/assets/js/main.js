@@ -1,10 +1,28 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const response = await fetch("../database/data.json");
-    const data = await response.json();
-    // --- DADOS MOCK ---
-    const categories = data.categories; // já é um array
-    const products = data.products;     // já é um array
-    const sellers = data.sellers;       // já é um array
+    const API_URL = "http://localhost:4000/api";
+
+    async function fetchData(endpoint) {
+        try {
+            const response = await fetch(`${API_URL}${endpoint}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error(`Could not fetch data from ${endpoint}:`, error);
+            return null;
+        }
+    }
+
+    const [categoriesData, productsData, sellersData] = await Promise.all([
+        fetchData("/categories"),
+        fetchData("/products"),
+        fetchData("/users?role=seller"), // Assuming you have a route to get sellers
+    ]);
+
+    const categories = categoriesData?.data || [];
+    const products = productsData?.data || [];
+    const sellers = sellersData?.data || [];
     const track = document.querySelector(".carousel-track");
     const dots = document.querySelectorAll(".dot");
 
@@ -64,247 +82,85 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    function renderProducts(productsToRender) {
-        productsGrid.innerHTML = "";
-        productsToRender.forEach((product, index) => {
-            const productCard = document.createElement("article");
-            productCard.className = "product-card";
-            productCard.dataset.category = product.category;
+    function renderProductCard(product) {
+        const productCard = document.createElement("article");
+        productCard.className = "product-card";
+        productCard.dataset.category = product.category;
 
-            let tagHTML = product.tag
-                ? `<div class="product-tag ${product.tag.toLowerCase()}">${
-                      product.tag
-                  }</div>`
-                : "";
+        let tagHTML = product.tag
+            ? `<div class="product-tag ${product.tag.toLowerCase()}">${
+                  product.tag
+              }</div>`
+            : "";
 
-            productCard.innerHTML = `
-    <a href="#" class="product-link" data-property-id="${product.id}">
-        <div class="product-image">
-            <img src="${product.images[0]}" alt="${product.name}" loading="lazy">
-            ${tagHTML}
-            ${
-                product.discount
-                    ? `<span class="discount-badge">-${product.discount}%</span>`
-                    : ""
-            }
+        productCard.innerHTML = `
+<a href="details/product-details.html?id=${
+            product.id
+        }" class="product-link" data-property-id="${product.id}">
+    <div class="product-image">
+        <img src="${
+            product.image_url || "assets/images/placeholders/product.png"
+        }" alt="${product.name}" loading="lazy">
+        ${tagHTML}
+    </div>
+    <div class="product-info">
+        <h3>${product.name}</h3>
+        <p class="product-price">
+            Kz ${parseFloat(product.price).toLocaleString("pt-AO")}
+        </p>
+        <p class="product-desc">${
+            product.description ?? "Produto incrível disponível no bazar local!"
+        }</p>
+        <div class="product-rating">
+            ${"★".repeat(product.rating || 4)}${"☆".repeat(
+            5 - (product.rating || 4)
+        )}
+            <span class="rating-count">(${product.reviews_count || 0})</span>
         </div>
-        <div class="product-info">
-            <h3>${product.name}</h3>
-            <p class="product-price">
-                ${
-                    product.discount
-                        ? `<span class="old-price">Kz ${product.price.toLocaleString(
-                              "pt-AO"
-                          )}</span> 
-                       <span class="new-price">Kz ${(
-                           product.price -
-                           (product.price * product.discount) / 100
-                       ).toLocaleString("pt-AO")}</span>`
-                        : `Kz ${product.price.toLocaleString("pt-AO")}`
-                }
-            </p>
-            <p class="product-desc">${
-                product.description ??
-                "Produto incrível disponível no bazar local!"
-            }</p>
-            <div class="product-rating">
-                ${"★".repeat(product.rating || 4)}${"☆".repeat(
-                    5 - (product.rating || 4)
-                )}
-                <span class="rating-count">(${product.reviews || 12})</span>
+        <div class="product-card-footer">
+            <div class="seller-info">
+                <img src="${
+                    product.seller_avatar ||
+                    "assets/images/placeholders/avatar.png"
+                }" alt="${product.seller_name}" class="seller-avatar">
+                <span class="seller-name">${product.seller_name}</span>
             </div>
-            <div class="product-card-footer">
-                <div class="seller-info">
-                    <img src="${product.seller.avatar}" alt="${
-                        product.seller.name
-                    }" class="seller-avatar">
-                    <span class="seller-name">${product.seller.name}</span>
-                </div>
-                <div class="card-actions">
-   
-  <button class="btn-like" aria-label="Gostei">
-    <i data-lucide="heart"></i>
-  </button>
-
-  <button class="btn-share" aria-label="Compartilhar">
-    <i data-lucide="share-2"></i>
-  </button>
-                    <button class="btn-cart" aria-label="Adicionar ao carrinho">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" 
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 
-                            2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                    </button>
-                </div>
+            <div class="card-actions">
+                <button class="btn-like" aria-label="Gostei">
+                    <i data-lucide="heart"></i>
+                </button>
+                <button class="btn-share" aria-label="Compartilhar">
+                    <i data-lucide="share-2"></i>
+                </button>
+                <button class="btn-cart" aria-label="Adicionar ao carrinho">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0
+                        2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </button>
             </div>
         </div>
-    </a>
+    </div>
+</a>
 `;
-            try {
-                lucide.createIcons();
-            } catch (e) {
-                console.error("Erro ao criar ícones Lucide:", e);
-            }
-            productsGrid.appendChild(productCard);
-        });
+        return productCard;
     }
-    // Sample data for recently arrived and top finds
-    // Sample data for recently arrived and top finds with real web image links
-    const recentlyArrivedData = data.recentlyArrivedD;
-    const topFindsData = data.topFindsD;
-   
-    productsGrid.addEventListener('click', (e) => {
-                const detailsButton = e.target.closest('.product-link');
-                const favoriteButton = e.target.closest('.btn-like');
 
-                if (detailsButton) {
-                    const productId = detailsButton.dataset.propertyId;
-                    console.log(`Navegando para detalhes do imóvel ID: ${productId}`);
-                    // Mantendo a lógica original de navegação
-                    localStorage.setItem('selectedPropertyId', productId);
-                 window.location.href = `../product-details.html?id=${productId}`; // Descomente para usar
-                 //   alert(`Redirecionando para a página de detalhes do imóvel ${propertyId}...`);
-                }
-
-                if (favoriteButton) {
-                    favoriteButton.classList.toggle('active');
-                }
-            });
-
-    // Function to render product cards
-    function renderProductTop(products) {
-        topFinds.innerHTML = ""; 
-        // Clear existing content
-        products.forEach((product, index) => {
-            const card = document.createElement("div");
-            card.className = "product-card";
-            card.innerHTML = `
-            <a href="#" class="product-link" >
-                <div class="product-image">
-                    <img src="${product.image}" alt="${
-                        product.name
-                    }" loading="lazy">
-                    ${
-                        product.discount
-                            ? `<span class="discount-badge">-${product.discount}%</span>`
-                            : ""
-                    }
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">${product.name}</h3>
-                    <p class="product-price">
-                        ${
-                            product.discount
-                                ? `<span class="old-price">Kz ${product.originalPrice.toLocaleString(
-                                      "pt-AO"
-                                  )}</span>
-                                   <span class="new-price">Kz ${product.discountPrice.toLocaleString(
-                                       "pt-AO"
-                                   )}</span>`
-                                : `Kz ${product.originalPrice.toLocaleString(
-                                      "pt-AO"
-                                  )}`
-                        }
-                    </p>
-                    ${
-                        product.installments
-                            ? `<p class="installments">À vista no Express ou Kz ${product.installments.amount.toLocaleString(
-                                  "pt-AO"
-                              )} em até ${product.installments.count}x</p>`
-                            : ""
-                    }
-                    <div class="product-actions">
-                    <button class="add-to-cart" data-property-id="${product.id}">Adicionar</button>
-                    </div>
-                </div>
-            </a>
-        `;
-            topFinds.appendChild(card);
+    function renderProducts(container, productsToRender) {
+        container.innerHTML = "";
+        productsToRender.forEach(product => {
+            const productCard = renderProductCard(product);
+            container.appendChild(productCard);
         });
+        try {
+            lucide.createIcons();
+        } catch (e) {
+            console.error("Erro ao criar ícones Lucide:", e);
+        }
     }
-    
-    function renderProductArrived(products) {
-        recentArrived.innerHTML = ""; 
-        // Clear existing content
-        products.forEach((product, index) => {
-            const card = document.createElement("div");
-            card.className = "product-card";
-            card.innerHTML = `
-            <a href="#" class="product-link" >
-                <div class="product-image">
-                    <img src="${product.image}" alt="${
-                        product.name
-                    }" loading="lazy">
-                    ${
-                        product.discount
-                            ? `<span class="discount-badge">-${product.discount}%</span>`
-                            : ""
-                    }
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">${product.name}</h3>
-                    <p class="product-price">
-                        ${
-                            product.discount
-                                ? `<span class="old-price">Kz ${product.originalPrice.toLocaleString(
-                                      "pt-AO"
-                                  )}</span>
-                                   <span class="new-price">Kz ${product.discountPrice.toLocaleString(
-                                       "pt-AO"
-                                   )}</span>`
-                                : `Kz ${product.originalPrice.toLocaleString(
-                                      "pt-AO"
-                                  )}`
-                        }
-                    </p>
-                    ${
-                        product.installments
-                            ? `<p class="installments">À vista no Express ou Kz ${product.installments.amount.toLocaleString(
-                                  "pt-AO"
-                              )} em até ${product.installments.count}x</p>`
-                            : ""
-                    }
-                    <div class="product-actions">
-                    <button class="add-to-cart" data-property-id="${product.id}">Adicionar</button>
-                    </div>
-                </div>
-            </a>
-        `;
-            recentArrived.appendChild(card);
-        });
-    }
-    // Render the sections
-recentArrived.addEventListener('click', (e) => {
-                const detailsButton = e.target.closest('.add-to-cart');
-                
-                if (detailsButton) {
-                    const productId = detailsButton.dataset.propertyId;
-                    console.log(`Navegando para detalhes do imóvel ID: ${productId}`);
-                    // Mantendo a lógica original de navegação
-                    localStorage.setItem('selectedPropertyId', productId);
-                 window.location.href = `../product-details.html?id=${productId}`; // Descomente para usar
-                 //   alert(`Redirecionando para a página de detalhes do imóvel ${propertyId}...`);
-                }
-
-                
-            });
-topFinds.addEventListener('click', (e) => {
-                const detailsButton = e.target.closest('.add-to-cart');
-                
-                if (detailsButton) {
-                    const productId = detailsButton.dataset.propertyId;
-                    console.log(`Navegando para detalhes do imóvel ID: ${productId}`);
-                    // Mantendo a lógica original de navegação
-                    localStorage.setItem('selectedPropertyId', productId);
-                 window.location.href = `../product-details.html?id=${productId}`; // Descomente para usar
-                 //   alert(`Redirecionando para a página de detalhes do imóvel ${propertyId}...`);
-                }
-
-                
-            });
 
     const renderSellers = sellersToRender => {
         if (!sellersGrid) return;
@@ -420,12 +276,12 @@ topFinds.addEventListener('click', (e) => {
     });
 
     // --- INICIALIZAÇÃO ---
-    renderProductArrived(recentlyArrivedData);
-    renderProductTop(topFindsData);
+    renderProducts(recentArrived, products.slice(0, 4));
+    renderProducts(topFinds, products.slice(4, 8));
+    renderProducts(productsGrid, products);
     renderFilters();
     renderCategories();
     renderSellers(sellers);
-    renderProducts(products);
     setupFiltering();
     setupHeaderScroll();
     document.getElementById("currentYear").textContent =

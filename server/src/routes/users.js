@@ -1,7 +1,7 @@
 // routes/userRoutes.js
 const { Router } = require('express');
 const userController = require('../controllers/userController');
-const authMiddleware = require('../middlewares/authfirebase'); // Middleware JWT/Firebase
+const authFirebase = require('../middleware/authFirebase'); // Middleware JWT/Firebase
 
 const router = Router();
 
@@ -10,10 +10,10 @@ router.post('/register', userController.register);
 router.post('/login', userController.login);
 
 // Perfil (precisa estar autenticado)
-router.get('/me', authMiddleware, userController.getProfile);
-router.put('/me', authMiddleware, userController.updateProfile);
+router.get('/me', authFirebase, userController.getProfile);
+router.put('/me', authFirebase, userController.updateProfile);
 
-// Administração (somente manager/admin)
-router.get('/', authMiddleware, userController.listUsers);
+// Listar usuários
+router.get('/', userController.listUsers);
 
 module.exports = router;

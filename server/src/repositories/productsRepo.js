@@ -3,16 +3,16 @@ const { paginate } = require("../utils/pagination");
 
 // 📜 Listar produtos com paginação
 exports.list = async ({ page, limit }) => {
-  const { limitClause, offset } = paginate(page, limit);
+  const { limit: pageLimit, offset } = paginate(page, limit);
   return db.any(
     `
     SELECT p.*, u.name as seller_name, u.email as seller_email
     FROM products p
     JOIN users u ON u.id = p.seller_id
     ORDER BY p.created_at DESC
-    ${limitClause} OFFSET $1
+    LIMIT $1 OFFSET $2
     `,
-    [offset]
+    [pageLimit, offset]
   );
 };
 

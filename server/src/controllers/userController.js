@@ -106,15 +106,21 @@ exports.updateProfile = async (req, res, next) => {
 // Listar todos os usuários (apenas admin)
 exports.listUsers = async (req, res, next) => {
   try {
-    if (req.user?.role !== 'manager') {
-      return res.status(403).json({ error: 'Acesso negado' });
+    const { role } = req.query;
+
+    let query = 'SELECT id, email, name, role, status, avatar_url, created_at FROM users';
+    const queryParams = [];
+
+    if (role) {
+      query += ' WHERE role = $1';
+      queryParams.push(role);
     }
 
-    const result = await pool.query(
-      'SELECT id, email, name, role, status, created_at FROM users ORDER BY created_at DESC'
-    );
+    query += ' ORDER BY created_at DESC';
 
-    res.json(result.rows);
+    const result = await pool.query(query, queryParams);
+
+    res.json({ data: result.rows });
   } catch (err) {
     next(err);
   }

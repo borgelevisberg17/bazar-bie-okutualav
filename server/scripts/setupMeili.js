@@ -1,4 +1,4 @@
-const meili = require("../config/meilisearch");
+const meili = require("../src/config/meilisearch.js");
 
 (async () => {
   try {

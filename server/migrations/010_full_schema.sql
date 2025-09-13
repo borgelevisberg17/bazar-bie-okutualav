@@ -49,6 +49,8 @@ CREATE TABLE IF NOT EXISTS categories (
 CREATE TABLE IF NOT EXISTS products (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   store_id uuid REFERENCES stores(id) ON DELETE CASCADE,
+  seller_id uuid REFERENCES users(id),
+  category_id uuid REFERENCES categories(id),
   name text NOT NULL,
   slug text UNIQUE,
   description text,

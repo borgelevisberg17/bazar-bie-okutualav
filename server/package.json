@@ -8,7 +8,7 @@
     "test": "jest --runInBand",
     "setup:db": "node migrate_local.js",
     "setup:meili": "node scripts/setupMeili.js",
-    "worker:indexer": "node server/src/workers/indexerWorker.js"
+    "worker:indexer": "node src/workers/indexerWorker.js"
   },
   "dependencies": {
     "axios": "^1.7.2",

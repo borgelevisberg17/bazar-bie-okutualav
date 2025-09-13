@@ -3,7 +3,7 @@
  * In production, this should call Meilisearch / Elasticsearch to update index.
  */
 const pgp = require('pg-promise')();
-const cn = process.env.DATABASE_URL || 'postgres://bazar:bazarpass@localhost:5432/bazar';
+const cn = process.env.DATABASE_URL || 'postgres://borge:senha@localhost:5432/bazar';
 const db = pgp(cn);
 
 (async () => {

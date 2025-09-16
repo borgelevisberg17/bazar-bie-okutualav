@@ -1,6 +1,6 @@
 // controllers/userController.js
 const pool = require('../config/db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // Registrar novo usuário local (caso queira permitir login sem Firebase)
 exports.register = async (req, res, next) => {

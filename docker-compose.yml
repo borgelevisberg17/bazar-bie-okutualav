@@ -30,6 +30,8 @@ services:
     env_file: [.env]
     depends_on: [db, redis, meilisearch, mailhog]
     ports: ['4000:4000']
+    volumes:
+      - ./frontend/public/database:/app/data
 
   web:
     build:

@@ -1,6 +1,6 @@
 // server/src/controllers/productController.js
 
-const db = require("../db/index");
+const db = require("../config/db");
 const productService = require("../services/productService");
 const { ok } = require("../utils/responses");
 

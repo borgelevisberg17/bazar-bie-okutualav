@@ -53,10 +53,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Carregar Dados ---
     const loadData = async () => {
         try {
-            const response = await fetch("../database/data.json");
-            if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-            const data = await response.json();
-            state.products = data.products || [];
+            const productsData = await fetch(`${API_URL}/products?limit=1000`).then(res => res.json());
+            state.products = productsData.data || [];
         } catch (error) {
             console.error("Erro ao carregar dados:", error);
             showToast("Erro ao carregar dados do produto.", "error");

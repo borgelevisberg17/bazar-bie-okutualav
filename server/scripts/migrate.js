@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const pgp = require('pg-promise')({});
-require('dotenv').config();
+require('dotenv').config({ path: path.resolve(__dirname, '../../config.env') });
 
 const db = pgp(process.env.DATABASE_URL);
 
 (async () => {
-  const dir = path.join(__dirname, '..', 'server', 'migrations');
+  const dir = path.join(__dirname, '..', 'migrations');
   const files = fs.readdirSync(dir).sort();
   for (const f of files) {
     const sql = fs.readFileSync(path.join(dir, f), 'utf8');

@@ -38,7 +38,9 @@ exports.create = [
   async (req, res, next) => {
     try {
       const sellerUid = req.user.uid; // Assuming req.user is populated by auth middleware
-      const product = await productService.create(sellerUid, req.body);
+      const images = req.files.map(file => ({ url: file.path }));
+      const productData = { ...req.body, images: JSON.stringify(images) };
+      const product = await productService.create(sellerUid, productData);
       res.status(201).json(ok(product, "Produto criado com sucesso!"));
     } catch (err) {
       console.error("Erro ao criar produto:", err);

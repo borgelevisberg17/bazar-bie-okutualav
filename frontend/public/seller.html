@@ -1,3 +1,81 @@
-<!-- seller.html - template -->
-<!doctype html>
-<html><body><h1>seller</h1></body></html>
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Vendedor - Bié Okutuala</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/seller.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <header class="main-header" id="mainHeader"></header>
+
+    <main class="container">
+        <h1>Painel do Vendedor</h1>
+        <div class="seller-dashboard">
+            <div class="dashboard-sidebar">
+                <button class="sidebar-btn active" data-section="products">Meus Produtos</button>
+                <button class="sidebar-btn" data-section="orders">Pedidos Recebidos</button>
+                <button class="sidebar-btn" data-section="settings">Configurações da Loja</button>
+            </div>
+            <div class="dashboard-content">
+                <section id="products" class="dashboard-section active">
+                    <h2>Meus Produtos</h2>
+                    <button id="add-product-btn" class="btn btn-primary">Adicionar Novo Produto</button>
+                    <div id="product-list"></div>
+                </section>
+                <section id="orders" class="dashboard-section">
+                    <h2>Pedidos Recebidos</h2>
+                    <div id="order-list"></div>
+                </section>
+                <section id="settings" class="dashboard-section">
+                    <h2>Configurações da Loja</h2>
+                    <form id="store-settings-form">
+                        <div class="form-group">
+                            <label for="store-name">Nome da Loja</label>
+                            <input type="text" id="store-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="store-description">Descrição</label>
+                            <textarea id="store-description"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer"></footer>
+
+    <div id="add-product-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Adicionar Novo Produto</h3>
+            <form id="add-product-form">
+                <div class="form-group">
+                    <label for="product-name">Nome do Produto</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Descrição</label>
+                    <textarea id="product-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Preço</label>
+                    <input type="number" id="product-price" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-stock">Stock</label>
+                    <input type="number" id="product-stock" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/seller.js"></script>
+</body>
+</html>

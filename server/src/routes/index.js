@@ -9,4 +9,7 @@ router.use('/orders', require('./orders'));
 router.use('/transactions', require('./transactions'));
 router.use('/reviews', require('./reviews'));
 router.use('/messages', require('./messages'));
+router.use('/stores', require('./stores'));
+router.use('/payments', require('./payments'));
+router.use('/uploads', require('./uploads'));
 module.exports = router;

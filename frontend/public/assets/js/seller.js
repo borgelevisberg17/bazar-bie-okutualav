@@ -82,22 +82,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addProductForm) {
         addProductForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const newProduct = {
-                name: document.getElementById('product-name').value,
-                description: document.getElementById('product-description').value,
-                price: document.getElementById('product-price').value,
-                stock: document.getElementById('product-stock').value,
-            };
+            const formData = new FormData();
+            formData.append('name', document.getElementById('product-name').value);
+            formData.append('description', document.getElementById('product-description').value);
+            formData.append('price', document.getElementById('product-price').value);
+            formData.append('stock', document.getElementById('product-stock').value);
+
+            const images = document.getElementById('product-images').files;
+            for (let i = 0; i < images.length; i++) {
+                formData.append('images', images[i]);
+            }
 
             try {
                 const accessToken = localStorage.getItem('accessToken');
                 const response = await fetch(`${API_URL}/products`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`
                     },
-                    body: JSON.stringify(newProduct)
+                    body: formData
                 });
                 const result = await response.json();
                 if (response.ok) {

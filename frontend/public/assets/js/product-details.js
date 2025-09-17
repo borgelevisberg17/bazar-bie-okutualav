@@ -301,6 +301,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     /**
      * Carrega dados do JSON.
      */
+    const API_URL = "http://localhost:4000/api";
     const loadData = async () => {
         // Nothing to load initially
     };
@@ -395,6 +396,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (dom.customerReviews) {
+
             try {
                 const reviewsRes = await fetch(`${API_URL}/reviews/product/${product.id}`);
                 const reviews = await reviewsRes.json();
@@ -414,6 +416,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error('Error fetching reviews:', error);
                 dom.customerReviews.textContent = 'Erro ao carregar avaliações.';
             }
+
         }
 
         if (dom.wishlistBtn) {

@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (e) {
         console.error("erro ao carregar: ", e);
     }
-    let categories = [];
+
+        let categories = [];
     let allProducts = [];
 
     async function fetchData(endpoint) {

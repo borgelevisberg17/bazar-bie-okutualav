@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const pgp = require('pg-promise')({});
+
 require('dotenv').config({ path: path.resolve(__dirname, '../../config.env') });
+
 
 const db = pgp(process.env.DATABASE_URL);
 

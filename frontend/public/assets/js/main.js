@@ -1,6 +1,18 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const API_URL = "http://localhost:4000/api";
 
+    function showLoading(element) {
+        if (element) {
+            element.innerHTML = '<div class="loading">Carregando...</div>';
+        }
+    }
+
+    function showError(element, message) {
+        if (element) {
+            element.innerHTML = `<div class="error">${message}</div>`;
+        }
+    }
+
     async function fetchData(endpoint) {
         try {
             const response = await fetch(`${API_URL}${endpoint}`);
@@ -10,33 +22,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             return await response.json();
         } catch (error) {
             console.error(`Could not fetch data from ${endpoint}:`, error);
-            return null;
+            throw error;
         }
     }
-
-    const [categoriesData, productsData, sellersData] = await Promise.all([
-        fetchData("/categories"),
-        fetchData("/products"),
-        fetchData("/users?role=seller"), // Assuming you have a route to get sellers
-    ]);
-
-    const categories = categoriesData?.data || [];
-    const products = productsData?.data || [];
-    const sellers = sellersData?.data || [];
-    const track = document.querySelector(".carousel-track");
-    const dots = document.querySelectorAll(".dot");
-
-    track.addEventListener("scroll", () => {
-        const index = Math.round(track.scrollLeft / track.offsetWidth);
-        dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
-    });
-
-    dots.forEach((dot, i) => {
-        dot.addEventListener("click", () => {
-            track.scrollTo({ left: i * track.offsetWidth, behavior: "smooth" });
-        });
-    });
-    // --- RENDERIZAÇÃO DINÂMICA ---
 
     const sellersGrid = document.getElementById("sellersGrid");
     const filtersContainer = document.getElementById("filters");
@@ -44,7 +32,60 @@ document.addEventListener("DOMContentLoaded", async () => {
     const recentArrived = document.getElementById("recently-arrived");
     const topFinds = document.getElementById("top-finds");
     const categoryShelf = document.getElementById("categorieList");
-    function renderCategories() {
+    const track = document.querySelector(".carousel-track");
+    const dots = document.querySelectorAll(".dot");
+
+    if (track && dots.length > 0) {
+        track.addEventListener("scroll", () => {
+            const index = Math.round(track.scrollLeft / track.offsetWidth);
+            dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+        });
+
+        dots.forEach((dot, i) => {
+            dot.addEventListener("click", () => {
+                track.scrollTo({ left: i * track.offsetWidth, behavior: "smooth" });
+            });
+        });
+    }
+
+    showLoading(categoryShelf);
+    showLoading(productsGrid);
+    showLoading(sellersGrid);
+    showLoading(recentArrived);
+    showLoading(topFinds);
+
+    try {
+        const [categoriesData, productsData, sellersData] = await Promise.all([
+            fetchData("/categories"),
+            fetchData("/products"),
+            fetchData("/users?role=seller"),
+        ]);
+
+        const categories = categoriesData?.data || [];
+        const products = productsData?.data || [];
+        const sellers = sellersData?.data || [];
+
+        renderCategories(categories);
+        renderFilters(categories);
+        renderProducts(productsGrid, products);
+        renderProducts(recentArrived, products.slice(0, 4));
+        renderProducts(topFinds, products.slice(4, 8));
+        renderSellers(sellers);
+        setupFiltering();
+    } catch (error) {
+        showError(categoryShelf, "Não foi possível carregar as categorias.");
+        showError(productsGrid, "Não foi possível carregar os produtos.");
+        showError(sellersGrid, "Não foi possível carregar os vendedores.");
+        showError(recentArrived, "Não foi possível carregar os produtos.");
+        showError(topFinds, "Não foi possível carregar os produtos.");
+    }
+
+    function renderCategories(categories) {
+        if (!categoryShelf) return;
+        if (categories.length === 0) {
+            categoryShelf.innerHTML = "";
+            return;
+        }
         categoryShelf.innerHTML = categories
             .map(
                 c => `
@@ -61,12 +102,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (e) {
             console.error("erro: ", e);
         }
-        document
-            .querySelector('.category-item[data-cat="all"]')
-            .classList.add("active");
+        const allCategory = document.querySelector('.category-item[data-cat="all"]');
+        if(allCategory) {
+            allCategory.classList.add("active");
+        }
     }
 
-    function renderFilters() {
+    function renderFilters(categories) {
+        if (!filtersContainer) return;
+        filtersContainer.innerHTML = "";
         const allBtn = document.createElement("button");
         allBtn.className = "filter-btn active";
         allBtn.dataset.filter = "all";
@@ -93,14 +137,18 @@ document.addEventListener("DOMContentLoaded", async () => {
               }</div>`
             : "";
 
+        const imageUrl = product.image_url || "assets/images/placeholders/product.png";
+        const sellerAvatar = product.seller_avatar || "assets/images/placeholders/avatar.png";
+        const description = product.description || "";
+        const rating = Math.round(product.rating || 0);
+        const reviews_count = product.reviews_count || 0;
+
         productCard.innerHTML = `
 <a href="details/product-details.html?id=${
             product.id
         }" class="product-link" data-property-id="${product.id}">
     <div class="product-image">
-        <img src="${
-            product.image_url || "assets/images/placeholders/product.png"
-        }" alt="${product.name}" loading="lazy">
+        <img src="${imageUrl}" alt="${product.name}" loading="lazy">
         ${tagHTML}
     </div>
     <div class="product-info">
@@ -108,21 +156,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         <p class="product-price">
             Kz ${parseFloat(product.price).toLocaleString("pt-AO")}
         </p>
-        <p class="product-desc">${
-            product.description ?? "Produto incrível disponível no bazar local!"
-        }</p>
+        <p class="product-desc">${description}</p>
         <div class="product-rating">
-            ${"★".repeat(product.rating || 4)}${"☆".repeat(
-            5 - (product.rating || 4)
-        )}
-            <span class="rating-count">(${product.reviews_count || 0})</span>
+            ${"★".repeat(rating)}${"☆".repeat(5 - rating)}
+            <span class="rating-count">(${reviews_count})</span>
         </div>
         <div class="product-card-footer">
             <div class="seller-info">
-                <img src="${
-                    product.seller_avatar ||
-                    "assets/images/placeholders/avatar.png"
-                }" alt="${product.seller_name}" class="seller-avatar">
+                <img src="${sellerAvatar}" alt="${product.seller_name}" class="seller-avatar">
                 <span class="seller-name">${product.seller_name}</span>
             </div>
             <div class="card-actions">
@@ -150,6 +191,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function renderProducts(container, productsToRender) {
+        if (!container) return;
+        if (productsToRender.length === 0) {
+            container.innerHTML = "<p>Nenhum produto encontrado.</p>";
+            return;
+        }
         container.innerHTML = "";
         productsToRender.forEach(product => {
             const productCard = renderProductCard(product);
@@ -164,31 +210,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const renderSellers = sellersToRender => {
         if (!sellersGrid) return;
+        if (sellersToRender.length === 0) {
+            sellersGrid.innerHTML = "<p>Nenhum vendedor encontrado.</p>";
+            return;
+        }
         sellersGrid.innerHTML = "";
         sellersToRender.forEach((seller, index) => {
             const sellerCard = document.createElement("div");
             sellerCard.className = "seller-card fade-in";
             sellerCard.style.transitionDelay = `${index * 0.1}s`;
             sellerCard.innerHTML = `
-                    <img src="${seller.avatar}" alt="${seller.name}" loading="lazy">
+                    <img src="${seller.avatar || 'assets/images/placeholders/avatar.png'}" alt="${seller.name}" loading="lazy">
                     <h3>${seller.name}</h3>
-                    <p>${seller.specialty}</p>
+                    <p>${seller.specialty || ''}</p>
                 `;
             sellersGrid.appendChild(sellerCard);
         });
     };
 
-    // --- INICIALIZAÇÃO ---
     try {
         lucide.createIcons();
     } catch (e) {
         console.error("Erro ao criar ícones Lucide:", e);
     }
 
-    // --- LÓGICA DE INTERAÇÃO ---
     function setupFiltering() {
         const filterButtons = document.querySelectorAll(".filter-btn");
         const productCards = document.querySelectorAll(".product-card");
+
+        if(filterButtons.length === 0) return;
 
         filterButtons.forEach(button => {
             button.addEventListener("click", () => {
@@ -212,7 +262,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         } else {
                             card.style.display = "none";
                         }
-                    }, 200);
+.                    }, 200);
                 });
             });
         });
@@ -220,45 +270,47 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function setupHeaderScroll() {
         const header = document.getElementById("mainHeader");
-        window.addEventListener("scroll", () => {
-            header.classList.toggle("scrolled", window.scrollY > 50);
-        });
+        if(header) {
+            window.addEventListener("scroll", () => {
+                header.classList.toggle("scrolled", window.scrollY > 50);
+            });
+        }
     }
-    //menu
+
     const menuToggle = document.getElementById("menu-toggle");
     const sideMenu = document.getElementById("side-menu");
     const overlay = document.getElementById("mobile-overlay");
 
-    function openMenu() {
-        menuToggle.classList.add("is-active");
-        sideMenu.classList.add("is-active");
-        overlay.classList.add("is-active");
-        document.body.classList.add("menu-open");
-    }
-
-    function closeMenu() {
-        menuToggle.classList.remove("is-active");
-        sideMenu.classList.remove("is-active");
-        overlay.classList.remove("is-active");
-        document.body.classList.remove("menu-open");
-        // Fecha todos os submenus ao fechar o menu principal
-        document.querySelectorAll(".has-submenu.is-open").forEach(submenu => {
-            submenu.classList.remove("is-open");
-            submenu.querySelector(".submenu").style.maxHeight = null;
-        });
-    }
-
-    menuToggle.addEventListener("click", () => {
-        if (sideMenu.classList.contains("is-active")) {
-            closeMenu();
-        } else {
-            openMenu();
+    if(menuToggle && sideMenu && overlay) {
+        function openMenu() {
+            menuToggle.classList.add("is-active");
+            sideMenu.classList.add("is-active");
+            overlay.classList.add("is-active");
+            document.body.classList.add("menu-open");
         }
-    });
 
-    overlay.addEventListener("click", closeMenu);
+        function closeMenu() {
+            menuToggle.classList.remove("is-active");
+            sideMenu.classList.remove("is-active");
+            overlay.classList.remove("is-active");
+            document.body.classList.remove("menu-open");
+            document.querySelectorAll(".has-submenu.is-open").forEach(submenu => {
+                submenu.classList.remove("is-open");
+                submenu.querySelector(".submenu").style.maxHeight = null;
+            });
+        }
 
-    // Lógica para Submenus
+        menuToggle.addEventListener("click", () => {
+            if (sideMenu.classList.contains("is-active")) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        overlay.addEventListener("click", closeMenu);
+    }
+
     document.querySelectorAll(".has-submenu > a").forEach(link => {
         link.addEventListener("click", e => {
             e.preventDefault();
@@ -269,21 +321,22 @@ document.addEventListener("DOMContentLoaded", async () => {
                 parentLi.classList.remove("is-open");
                 submenu.style.maxHeight = null;
             } else {
+                // Close other open submenus
+                document.querySelectorAll(".has-submenu.is-open").forEach(openSubmenu => {
+                    if(openSubmenu !== parentLi) {
+                        openSubmenu.classList.remove("is-open");
+                        openSubmenu.querySelector(".submenu").style.maxHeight = null;
+                    }
+                });
                 parentLi.classList.add("is-open");
                 submenu.style.maxHeight = submenu.scrollHeight + "px";
             }
         });
     });
 
-    // --- INICIALIZAÇÃO ---
-    renderProducts(recentArrived, products.slice(0, 4));
-    renderProducts(topFinds, products.slice(4, 8));
-    renderProducts(productsGrid, products);
-    renderFilters();
-    renderCategories();
-    renderSellers(sellers);
-    setupFiltering();
     setupHeaderScroll();
-    document.getElementById("currentYear").textContent =
-        new Date().getFullYear();
+    const currentYear = document.getElementById("currentYear");
+    if(currentYear) {
+        currentYear.textContent = new Date().getFullYear();
+    }
 });

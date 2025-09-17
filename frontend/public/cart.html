@@ -1,3 +1,43 @@
-<!-- cart.html - template -->
-<!doctype html>
-<html><body><h1>cart</h1></body></html>
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrinho de Compras - Bié Okutuala</title>
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/cart.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <header class="main-header" id="mainHeader"></header>
+
+    <main class="container">
+        <h1>Carrinho de Compras</h1>
+        <div class="cart-container">
+            <div class="cart-items">
+                <!-- Items do carrinho serão inseridos aqui via JS -->
+            </div>
+            <div class="cart-summary">
+                <h2>Resumo do Pedido</h2>
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">AOA 0,00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Taxa de Entrega</span>
+                    <span id="shipping">AOA 0,00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span id="total">AOA 0,00</span>
+                </div>
+                <button class="btn-checkout">Finalizar Compra</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer"></footer>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/cart.js"></script>
+</body>
+</html>

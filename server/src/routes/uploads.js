@@ -1,9 +1,9 @@
 const { Router } = require('express');
-const ordersController = require('../controllers/ordersController');
+const uploadsController = require('../controllers/uploadsController');
 const authFirebase = require('../middleware/authFirebase');
 
 const router = Router();
 
-router.get('/me', authFirebase, ordersController.getUserOrders);
+router.post('/avatar', authFirebase, uploadsController.uploadAvatar);
 
 module.exports = router;

@@ -90,14 +90,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // Render Functions
-    const renderUserInfo = () => {
-        userAvatar.src = user.avatar;
-        userAvatar.alt = user.name;
-        userName.textContent = user.name;
-        userLocation.textContent = `${user.location} • Membro desde ${user.joined}`;
-        userStars.innerHTML = renderStars(user.rating);
-        userReviews.textContent = `(${user.reviews})`;
-        initializeIcons();
+    const renderUserInfo = async () => {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await fetch(`${API_URL}/users/me`, {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            const userData = await response.json();
+            if (response.ok) {
+                const user = userData;
+                userAvatar.src = user.avatar_url || 'https://getavataaars.com/?avatarStyle=Circle&topType=ShortHairShortFlat&hairColor=BrownDark&clotheType=ShirtCrewNeck&clotheColor=PastelBlue&eyeType=Default&mouthType=Smile&skinColor=Light';
+                userAvatar.alt = user.name;
+                userName.textContent = user.name;
+                userLocation.textContent = `Membro desde ${new Date(user.created_at).toLocaleDateString()}`;
+                userStars.innerHTML = renderStars(user.rating || 0);
+                userReviews.textContent = `(${user.reviews_count || 0})`;
+                initializeIcons();
+            } else {
+                console.error('Failed to fetch user profile:', userData.error);
+            }
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+        }
     };
 
     const renderOrders = () => {
@@ -219,18 +233,71 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    document.getElementById('editProfileForm').addEventListener('submit', (e) => {
+    document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        user.name = document.getElementById('profileName').value;
-        user.location = document.getElementById('profileLocation').value;
-        const avatarFile = document.getElementById('profileAvatar').files[0];
-        if (avatarFile) {
-            user.avatar = URL.createObjectURL(avatarFile);
+        const name = document.getElementById('profileName').value;
+        const phone = document.getElementById('profileLocation').value; // Assuming location is phone for now
+
+        const updatedData = { name, phone };
+
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await fetch(`${API_URL}/users/me`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(updatedData)
+            });
+            const result = await response.json();
+            if (response.ok) {
+                renderUserInfo();
+                editProfileModal.style.display = 'none';
+                showToast('Perfil atualizado com sucesso!', 'success');
+            } else {
+                showToast(`Erro: ${result.error}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            showToast('Ocorreu um erro ao atualizar o perfil.', 'error');
         }
-        localStorage.setItem('user', JSON.stringify(user));
-        renderUserInfo();
-        editProfileModal.style.display = 'none';
-        showToast('Perfil atualizado com ginga!', 'success');
+    });
+
+    const changeAvatarBtn = document.getElementById('change-avatar-btn');
+    const avatarInput = document.createElement('input');
+    avatarInput.type = 'file';
+    avatarInput.accept = 'image/*';
+
+    changeAvatarBtn.addEventListener('click', () => {
+        avatarInput.click();
+    });
+
+    avatarInput.addEventListener('change', async () => {
+        const file = avatarInput.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('avatar', file);
+
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await fetch(`${API_URL}/uploads/avatar`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${accessToken}` },
+                body: formData
+            });
+            const result = await response.json();
+            if (response.ok) {
+                renderUserInfo();
+                showToast('Avatar atualizado com sucesso!', 'success');
+            } else {
+                showToast(`Erro: ${result.error}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error uploading avatar:', error);
+            showToast('Ocorreu um erro ao enviar o avatar.', 'error');
+        }
     });
 
     document.getElementById('newListingBtn').addEventListener('click', () => {

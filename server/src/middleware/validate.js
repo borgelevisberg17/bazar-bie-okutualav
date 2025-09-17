@@ -1,4 +1,8 @@
-module.exports = (schema) => (req, res, next) => {
-  try { req.body = schema.parse(req.body); next(); }
-  catch (e) { res.status(400).json({ error: 'Validation error', details: e.errors }); }
+module.exports = (schema, source = 'body') => (req, res, next) => {
+  try {
+    req[source] = schema.parse(req[source]);
+    next();
+  } catch (e) {
+    res.status(400).json({ error: 'Validation error', details: e.errors });
+  }
 };

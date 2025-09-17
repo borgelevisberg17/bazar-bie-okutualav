@@ -10,7 +10,7 @@ router.get("/:id", productController.get);
 router.post(
   "/",
   authFirebase,
-  upload.single("image"),
+  upload.array("images", 5), // Aceitar até 5 imagens
   productController.create
 );
 

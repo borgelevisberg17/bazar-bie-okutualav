@@ -2,12 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartItemsContainer = document.querySelector('.cart-items');
     const subtotalEl = document.getElementById('subtotal');
     const shippingEl = document.getElementById('shipping');
-    const totalEl = document.getElementById('total');
+     const totalEl = document.getElementById('total');
 
-    const API_URL = "http://localhost:4000/api";
-    let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-    let products = [];
-
+let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+let products = [];
     async function loadCartProducts() {
         if (cart.length === 0) {
             renderCart();

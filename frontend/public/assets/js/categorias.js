@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (e) {
         console.error("erro ao carregar: ", e);
     }
-    const API_URL = "http://localhost:4000/api";
-    let categories = [];
+
+        let categories = [];
     let allProducts = [];
 
     async function fetchData(endpoint) {

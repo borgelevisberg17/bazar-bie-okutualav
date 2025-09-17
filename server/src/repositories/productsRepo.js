@@ -33,7 +33,7 @@ exports.create = async (sellerUid, p) => {
   return db.one(
     `
     INSERT INTO products
-      (seller_id, name, description, price, currency, image_url, stock, tag)
+      (seller_id, name, description, price, currency, images, stock, tag)
     SELECT id, $2, $3, $4, COALESCE($5,'AOA'), $6, COALESCE($7,0), $8
     FROM users WHERE firebase_uid=$1
     RETURNING *
@@ -44,7 +44,7 @@ exports.create = async (sellerUid, p) => {
       p.description,
       p.price,
       p.currency,
-      p.image_url,
+      p.images,
       p.stock,
       p.tag,
     ]

@@ -1,9 +1,9 @@
 const { Router } = require('express');
-const ordersController = require('../controllers/ordersController');
+const paymentsController = require('../controllers/paymentsController');
 const authFirebase = require('../middleware/authFirebase');
 
 const router = Router();
 
-router.get('/me', authFirebase, ordersController.getUserOrders);
+router.post('/', authFirebase, paymentsController.createPayment);
 
 module.exports = router;

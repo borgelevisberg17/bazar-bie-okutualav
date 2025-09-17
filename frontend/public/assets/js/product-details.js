@@ -396,7 +396,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (dom.customerReviews) {
-            dom.customerReviews.textContent = 'Sem avaliações ainda. Seja o primeiro!'; // No reviews from backend yet
+
+            try {
+                const reviewsRes = await fetch(`${API_URL}/reviews/product/${product.id}`);
+                const reviews = await reviewsRes.json();
+                if (reviewsRes.ok && reviews.length > 0) {
+                    dom.customerReviews.innerHTML = reviews.map(r => `
+                        <div class="customer-review">
+                            <h4>${r.user_id}</h4>
+                            <div class="stars">${renderStars(r.rating)}</div>
+                            <p>${r.body}</p>
+                        </div>
+                    `).join('');
+                    initializeIcons();
+                } else {
+                    dom.customerReviews.textContent = 'Sem avaliações ainda. Seja o primeiro!';
+                }
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+                dom.customerReviews.textContent = 'Erro ao carregar avaliações.';
+            }
+
         }
 
         if (dom.wishlistBtn) {

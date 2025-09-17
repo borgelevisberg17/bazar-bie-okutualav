@@ -5,9 +5,6 @@ const authFirebase = require('../middleware/authFirebase'); // Middleware JWT/Fi
 
 const router = Router();
 
-// Registro e login local (sem Firebase)
-router.post('/register', userController.register);
-router.post('/login', userController.login);
 
 // Perfil (precisa estar autenticado)
 router.get('/me', authFirebase, userController.getProfile);

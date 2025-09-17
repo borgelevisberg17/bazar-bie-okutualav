@@ -6,24 +6,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (e) {
         console.error("erro ao carregar: ", e);
     }
-    const response = await fetch("../database/data.json");
-    const data = await response.json();
-    const categories = data.categories;
+    const API_URL = "http://localhost:4000/api";
+    let categories = [];
+    let allProducts = [];
 
-    const allProducts = Array.from({ length: 79 }, (_, i) => ({
-        id: i + 1,
-        name: `Descrição do produto #${i + 1}`,
-        price: Math.floor(Math.random() * 99000) + 1000,
-        discount: Math.floor(Math.random()) + 30,
-        vendidos: Math.floor(Math.random() * 3000) + 10,
-        image: `../assets/produto–${i + 1}.jpg`,
-        category:
-            categories[Math.floor(Math.random() * (categories.length - 1)) + 1]
-                .slug,
-        reviews: Math.floor(Math.random() * 100) + 10,
-        rating: Math.floor(Math.random(1, 9)),
-        isNew: Math.random() > 0.8
-    }));
+    async function fetchData(endpoint) {
+        try {
+            const response = await fetch(`${API_URL}${endpoint}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error(`Could not fetch data from ${endpoint}:`, error);
+            throw error;
+        }
+    }
+
+    const categoriesData = await fetchData("/categories");
+    categories = categoriesData?.data || [];
 
     const productsGrid = document.getElementById("productsGrid");
     const loader = document.getElementById("loader");
@@ -40,44 +41,46 @@ document.addEventListener("DOMContentLoaded", async () => {
         const card = document.createElement("article");
         card.className = "card";
         card.setAttribute("data-aos", "fade-up");
+        const imageUrl = p.images && p.images.length > 0 ? p.images[0].url : 'assets/images/placeholders/product.png';
+        const rating = Math.round(p.rating || 0);
         card.innerHTML = `
             <div class="media">
-              <img src="${p.image}" alt="${p.name}" loading="lazy">
-              ${p.isNew ? '<span class="badge">Novo</span>' : ""}
+              <img src="${imageUrl}" alt="${p.name}" loading="lazy">
               <div class="option-card">
               <button class="fav-btn" aria-label="Adicionar aos favoritos" title="Favoritar"><i data-lucide="heart"></i></button>
-
                </div>
-                ${
-                    p.discount
-                        ? `<span class="discount-badge">-${p.discount}%</span>`
-                        : ""
-                }
             </div>
             <div class="meta">
-
               <div class="price-action">
-                <span class="price">${
-                    formatAOA(p.discount)
-                        ? `<span class="old-price">${formatAOA(p.price)}</span> 
-                       <span class="new-price"> ${formatAOA(
-                           p.price - (p.price * p.discount) / 100
-                       )}</span>`
-                        : `${formatAOA(p.price)}`
-                }
-                </span>
+                <span class="price">${formatAOA(p.price)}</span>
               </div>
-        <div class="p-info">
-        <p class="total-vendidos">${p.vendidos} + vendidos</p>
-        <div class="product-rating">
-                ${"★".repeat(p.rating || 1)}${"☆".repeat(1 - (p.rating || 1))}
-                <span class="rating-count">(${p.reviews || 12})</span>
-            </div></div>
-           <h3 class="title">${p.name}</h3>
+              <div class="p-info">
+                <div class="product-rating">
+                ${"★".repeat(rating)}${"☆".repeat(5 - rating)}
+                <span class="rating-count">(${p.reviews_count || 0})</span>
+                    </div></div>
+              <h3 class="title">${p.name}</h3>
             </div>
+            <button class="btn-add-to-cart" data-id="${p.id}"><i data-lucide="shopping-cart"></i></button>
           `;
         return card;
     }
+
+    productsGrid.addEventListener('click', (e) => {
+        if (e.target.closest('.btn-add-to-cart')) {
+            const button = e.target.closest('.btn-add-to-cart');
+            const productId = button.dataset.id;
+            let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+            const item = cart.find(item => item.id == productId);
+            if (item) {
+                item.quantity++;
+            } else {
+                cart.push({ id: productId, quantity: 1 });
+            }
+            localStorage.setItem('cartItems', JSON.stringify(cart));
+            // You can add a visual feedback here, like a toast notification
+        }
+    });
 
     function renderCategories() {
         categoryShelf.innerHTML = categories
@@ -119,26 +122,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         loadProducts();
     }
 
-    function loadProducts() {
+    async function loadProducts() {
         if (state.isLoading) return;
         state.isLoading = true;
         loader.innerHTML = `<div class="spinner"></div>`;
 
-        setTimeout(() => {
-            const filteredProducts =
-                state.filter === "all"
-                    ? allProducts
-                    : allProducts.filter(p => p.category === state.filter);
+        try {
+            let endpoint = `/products?page=${state.page}&limit=${state.perPage}`;
+            if (state.filter !== "all") {
+                endpoint += `&category=${state.filter}`;
+            }
+            const productsData = await fetchData(endpoint);
+            const products = productsData.data || [];
 
-            const start = (state.page - 1) * state.perPage;
-            const end = start + state.perPage;
-            const slice = filteredProducts.slice(start, end);
-
-            state.isLoading = false;
-            loader.innerHTML = "";
-
-            if (slice.length) {
-                slice.forEach(p => productsGrid.appendChild(productCard(p)));
+            if (products.length) {
+                products.forEach(p => productsGrid.appendChild(productCard(p)));
                 state.page++;
                 try {
                     lucide.createIcons();
@@ -152,7 +150,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                         '<p style="color:var(--muted)">Nenhum produto encontrado nesta categoria.</p>';
                 }
             }
-        }, 600);
+        } catch (error) {
+            loader.innerHTML =
+                '<p style="color:var(--muted)">Ocorreu um erro ao carregar os produtos.</p>';
+        } finally {
+            state.isLoading = false;
+            loader.innerHTML = "";
+        }
     }
 
     const io = new IntersectionObserver(

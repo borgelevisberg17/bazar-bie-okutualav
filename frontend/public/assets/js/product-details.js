@@ -301,18 +301,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     /**
      * Carrega dados do JSON.
      */
+    const API_URL = "http://localhost:4000/api";
     const loadData = async () => {
-        try {
-            const response = await fetch('../database/data.json');
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const data = await response.json();
-            state.products = Array.isArray(data.products) ? data.products : [];
-            state.sellers = Array.isArray(data.sellers) ? data.sellers : [];
-            state.reviews = Array.isArray(data.reviews) ? data.reviews : [];
-        } catch (error) {
-            console.error('Erro ao carregar dados:', error);
-            showToast('Erro ao carregar dados do produto. Verifique sua conexão.', 'error');
-        }
+        // Nothing to load initially
     };
 
     /**
@@ -329,106 +320,105 @@ document.addEventListener('DOMContentLoaded', async () => {
     /**
      * Renderiza detalhes do produto.
      */
-    const renderProductDetails = () => {
+    const renderProductDetails = async () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const productId = parseInt(urlParams.get('id'));
-        if (isNaN(productId)) {
-            if (dom.productName) dom.productName.textContent = 'Produto não encontrado';
-            showToast('Produto não encontrado.', 'error');
-            return;
-        }
-        const product = state.products.find(p => p.id === productId);
-        if (!product) {
+        const productId = urlParams.get('id');
+        if (!productId) {
             if (dom.productName) dom.productName.textContent = 'Produto não encontrado';
             showToast('Produto não encontrado.', 'error');
             return;
         }
 
-        if (dom.mainImage) {
-            dom.mainImage.src = product.images[0] || '../assets/background11.jpg';
-            dom.mainImage.alt = product.name || 'Imagem do Produto';
+        try {
+            const productData = await fetch(`${API_URL}/products/${productId}`).then(res => res.json());
+            const product = productData.data;
+
+            if (!product) {
+                if (dom.productName) dom.productName.textContent = 'Produto não encontrado';
+                showToast('Produto não encontrado.', 'error');
+                return;
+            }
+
+            state.products = [product]; // Store the product in the state
+
+            if (dom.mainImage) {
+                dom.mainImage.src = product.images && product.images.length > 0 ? product.images[0].url : '../assets/background11.jpg';
+                dom.mainImage.alt = product.name || 'Imagem do Produto';
+            }
+        } catch (error) {
+            console.error('Erro ao carregar detalhes do produto:', error);
+            showToast('Erro ao carregar detalhes do produto.', 'error');
         }
+        const product = state.products[0];
         if (dom.thumbnails) {
             dom.thumbnails.innerHTML = '';
-            product.images.forEach((img, index) => {
-                const thumbnail = document.createElement('img');
-                thumbnail.src = img || '../assets/background11.jpg';
-                thumbnail.alt = `${product.name} imagem ${index + 1}`;
-                thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
-                thumbnail.loading = 'lazy';
-                dom.thumbnails.appendChild(thumbnail);
-            });
-            animateWithGsap(
-                '.thumbnail',
-                { x: -20, opacity: 0 },
-                { x: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out', delay: 0.5 }
-            );
+            if (product.images && product.images.length > 0) {
+                product.images.forEach((img, index) => {
+                    const thumbnail = document.createElement('img');
+                    thumbnail.src = img.url || '../assets/background11.jpg';
+                    thumbnail.alt = `${product.name} imagem ${index + 1}`;
+                    thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+                    thumbnail.loading = 'lazy';
+                    dom.thumbnails.appendChild(thumbnail);
+                });
+                animateWithGsap(
+                    '.thumbnail',
+                    { x: -20, opacity: 0 },
+                    { x: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out', delay: 0.5 }
+                );
+            }
         }
         if (dom.productName) dom.productName.textContent = product.name || 'Produto Indisponível';
         if (dom.productStars) dom.productStars.innerHTML = renderStars(product.rating || 0);
-        if (dom.productReviews) dom.productReviews.textContent = `(${product.reviews || 0} avaliações)`;
+        if (dom.productReviews) dom.productReviews.textContent = `(${product.reviews_count || 0} avaliações)`;
         if (dom.newPrice) dom.newPrice.textContent = `Kz ${(product.price || 0).toLocaleString('pt-AO')}`;
-        if (dom.oldPrice) {
-            if (product.oldPrice) {
-                dom.oldPrice.textContent = `Kz ${product.oldPrice.toLocaleString('pt-AO')}`;
-                dom.oldPrice.style.display = 'inline';
-            } else {
-                dom.oldPrice.style.display = 'none';
-            }
-        }
-        if (dom.productAvailability) dom.productAvailability.textContent = product.availability || 'Indisponível';
+        if (dom.oldPrice) dom.oldPrice.style.display = 'none'; // No old price from backend yet
+        if (dom.productAvailability) dom.productAvailability.textContent = product.stock > 0 ? 'Em stock' : 'Indisponível';
         if (dom.productDescription) dom.productDescription.textContent = product.description || 'Descrição indisponível';
         if (dom.productSpecs) {
-            dom.productSpecs.innerHTML = '';
-            (product.specs || []).forEach(spec => {
-                const li = document.createElement('li');
-                li.textContent = spec;
-                dom.productSpecs.appendChild(li);
-            });
+            dom.productSpecs.innerHTML = ''; // No specs from backend yet
         }
 
-        const seller = state.sellers.find(s => s.id === product.sellerId);
-        if (seller) {
-            if (dom.sellerAvatar) {
-                dom.sellerAvatar.src = seller.avatar || '../assets/background11.jpg';
-                dom.sellerAvatar.alt = `Avatar de ${seller.name || 'Vendedor'}`;
-            }
-            if (dom.sellerName) dom.sellerName.textContent = seller.name || 'Vendedor Indisponível';
-            if (dom.sellerStars) dom.sellerStars.innerHTML = renderStars(seller.rating || 0);
+        if (product.seller_id) {
+            fetch(`${API_URL}/users/${product.seller_id}`)
+                .then(res => res.json())
+                .then(sellerData => {
+                    if (sellerData.data) {
+                        const seller = sellerData.data;
+                        if (dom.sellerAvatar) {
+                            dom.sellerAvatar.src = seller.avatar || '../assets/background11.jpg';
+                            dom.sellerAvatar.alt = `Avatar de ${seller.name || 'Vendedor'}`;
+                        }
+                        if (dom.sellerName) dom.sellerName.textContent = seller.name || 'Vendedor Indisponível';
+                        if (dom.sellerStars) dom.sellerStars.innerHTML = renderStars(seller.rating || 0);
+                    }
+                });
         }
 
         if (dom.customerReviews) {
-            const productReviews = state.reviews.filter(r => r.productId === productId);
-            dom.customerReviews.innerHTML = '';
-            if (productReviews.length) {
-                productReviews.forEach(r => {
-                    const review = document.createElement('div');
-                    review.className = 'customer-review';
-                    review.innerHTML = `
-                        <h4>${sanitizeHTML(r.user)}</h4>
-                        <div class="stars">${renderStars(r.rating)}</div>
-                        <p>${sanitizeHTML(r.comment)}</p>
-                    `;
-                    dom.customerReviews.appendChild(review);
-                });
-                animateWithGsap(
-                    '.customer-review',
-                    { y: 30, opacity: 0 },
-                    { y: 0, opacity: 1, stagger: 0.2, duration: 0.6, ease: 'power3.out' }
-                );
-            } else {
-                dom.customerReviews.textContent = 'Sem avaliações ainda. Seja o primeiro!';
-            }
+            dom.customerReviews.textContent = 'Sem avaliações ainda. Seja o primeiro!'; // No reviews from backend yet
         }
 
         if (dom.wishlistBtn) {
-            const isInWishlist = state.wishlist.includes(productId);
+            const isInWishlist = state.wishlist.includes(product.id);
             dom.wishlistBtn.classList.toggle('active', isInWishlist);
             const icon = dom.wishlistBtn.querySelector('i');
             if (icon) icon.style.fill = isInWishlist ? 'var(--color-brand-primary)' : 'none';
         }
 
-        if (dom.breadcrumbCategory) dom.breadcrumbCategory.textContent = product.category || 'Categoria Indisponível';
+        if (dom.breadcrumbCategory) {
+            if (product.category_id) {
+                fetch(`${API_URL}/categories/${product.category_id}`)
+                    .then(res => res.json())
+                    .then(categoryData => {
+                        if (categoryData.data) {
+                            dom.breadcrumbCategory.textContent = categoryData.data.name;
+                        }
+                    });
+            } else {
+                dom.breadcrumbCategory.textContent = 'Categoria Indisponível';
+            }
+        }
 
         animateWithGsap(
             ['.product-gallery', '.product-buy-box', '.product-buy-box .btn'],
@@ -475,68 +465,70 @@ document.addEventListener('DOMContentLoaded', async () => {
      * @param {number} [page=1] - Página atual.
      * @param {string} [category='all'] - Categoria selecionada.
      */
-    const renderRelatedProducts = (page = 1, category = state.selectedCategory) => {
+    const renderRelatedProducts = async (page = 1, category = state.selectedCategory) => {
         if (!dom.relatedProducts) {
             console.error('Elemento relatedProducts não encontrado');
             return;
         }
         const urlParams = new URLSearchParams(window.location.search);
-        const productId = parseInt(urlParams.get('id'));
-        if (isNaN(productId)) {
+        const productId = urlParams.get('id');
+        if (!productId) {
             console.error('ID do produto inválido na URL');
             dom.relatedProducts.textContent = 'Erro ao carregar produtos relacionados.';
             return;
         }
-        let related = state.products.filter(p => p.id !== productId);
-        if (category !== 'all') related = related.filter(p => p.category === category);
 
-        if (related.length === 0) {
-            dom.relatedProducts.textContent = 'Nenhum produto relacionado encontrado.';
-            return;
-        }
+        try {
+            const currentProduct = state.products[0];
+            let endpoint = `/products?limit=5`;
+            if (currentProduct && currentProduct.category_id) {
+                endpoint += `&category=${currentProduct.category_id}`;
+            }
+            const productsData = await fetch(API_URL + endpoint).then(res => res.json());
+            let related = productsData.data.filter(p => p.id !== productId);
 
-        const start = (page - 1) * state.productsPerPage;
-        const end = start + state.productsPerPage;
-        const pageProducts = related.slice(start, end);
+            if (related.length === 0) {
+                dom.relatedProducts.textContent = 'Nenhum produto relacionado encontrado.';
+                return;
+            }
 
-        if (page === 1) dom.relatedProducts.innerHTML = '';
-        pageProducts.forEach(p => {
-            const card = document.createElement('a');
-            card.href = `product-details.html?id=${p.id}`;
-            card.className = 'product-card';
-            card.innerHTML = `
-                <div class="media">
-                    <img src="${p.images[0] || '../assets/background11.jpg'}" alt="${sanitizeHTML(p.name)}" loading="lazy" onerror="this.src='../assets/background11.jpg';">
-                    <div class="option-card">
-                        <button class="add-to-cart-btn" data-id="${p.id}" aria-label="Adicionar ${sanitizeHTML(p.name)} ao Carrinho">
-                            <i data-lucide="shopping-cart" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-details">
-                    <div class="p-info">
-                        <p class="total-vendidos">${p.vendidos || 0} + vendidos</p>
-                        <div class="product-rating-r">
-                            <div class="stars">${renderStars(p.rating || 0)}</div>
-                            <span>(${p.reviews || 0})</span>
+            if (page === 1) dom.relatedProducts.innerHTML = '';
+            related.forEach(p => {
+                const card = document.createElement('a');
+                card.href = `product-details.html?id=${p.id}`;
+                card.className = 'product-card';
+                const imageUrl = p.images && p.images.length > 0 ? p.images[0].url : '../assets/background11.jpg';
+                card.innerHTML = `
+                    <div class="media">
+                        <img src="${imageUrl}" alt="${sanitizeHTML(p.name)}" loading="lazy" onerror="this.src='../assets/background11.jpg';">
+                        <div class="option-card">
+                            <button class="add-to-cart-btn" data-id="${p.id}" aria-label="Adicionar ${sanitizeHTML(p.name)} ao Carrinho">
+                                <i data-lucide="shopping-cart" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
-                    <p class="product-price">Kz ${(p.price || 0).toLocaleString('pt-AO')}</p>
-                </div>
-            `;
-            dom.relatedProducts.appendChild(card);
-        });
-        animateWithGsap(
-            '.product-card',
-            { y: 50, opacity: 0 },
-            { y: 0, opacity: 1, stagger: 0.15, duration: 0.7, ease: 'power3.out' }
-        );
-        state.isLoading = false;
-        window.removeEventListener('scroll', debouncedHandleScroll);
-        if (end < related.length) {
-            window.addEventListener('scroll', debouncedHandleScroll);
+                    <div class="product-details">
+                        <div class="p-info">
+                            <div class="product-rating-r">
+                                <div class="stars">${renderStars(p.rating || 0)}</div>
+                                <span>(${p.reviews_count || 0})</span>
+                            </div>
+                        </div>
+                        <p class="product-price">Kz ${(p.price || 0).toLocaleString('pt-AO')}</p>
+                    </div>
+                `;
+                dom.relatedProducts.appendChild(card);
+            });
+            animateWithGsap(
+                '.product-card',
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, stagger: 0.15, duration: 0.7, ease: 'power3.out' }
+            );
+            initializeIcons();
+        } catch (error) {
+            console.error('Erro ao carregar produtos relacionados:', error);
+            dom.relatedProducts.textContent = 'Erro ao carregar produtos relacionados.';
         }
-        initializeIcons();
     };
 
     /**
@@ -587,7 +579,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <button id="voiceToggle" class="action-btn" title="Ativar/Desativar Voz" aria-label="Ativar ou Desligar Assistente de Voz">
                 <i data-lucide="${state.isVoiceEnabled ? 'mic' : 'mic-off'}" aria-hidden="true"></i>
             </button>
-            <a href="checkout.html" class="action-btn" title="Carrinho" aria-label="Ver Carrinho">
+            <a href="cart.html" class="action-btn" title="Carrinho" aria-label="Ver Carrinho">
                 <i data-lucide="shopping-cart" aria-hidden="true"></i>
                 ${state.cartItems.length ? `<span class="cart-badge">${state.cartItems.reduce((sum, item) => sum + item.quantity, 0)}</span>` : ''}
             </a>
@@ -686,12 +678,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (dom.addToCartBtn) {
         dom.addToCartBtn.addEventListener('click', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const productId = parseInt(urlParams.get('id'));
+            const productId = urlParams.get('id');
             const quantity = parseInt(dom.quantityInput?.value || 1);
-            const item = state.cartItems.find(item => item.id === productId);
-            if (item) item.quantity += quantity;
-            else state.cartItems.push({ id: productId, quantity });
-            localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+            let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+            const item = cart.find(item => item.id == productId);
+            if (item) {
+                item.quantity += quantity;
+            } else {
+                cart.push({ id: productId, quantity: quantity });
+            }
+            localStorage.setItem('cartItems', JSON.stringify(cart));
             updateCartCount();
             animateAddToCart(dom.addToCartBtn);
             showToast('Adicionado ao carrinho!', 'success');

@@ -54,31 +54,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     showLoading(recentArrived);
     showLoading(topFinds);
 
-    try {
-        const [categoriesData, productsData, sellersData] = await Promise.all([
-            fetchData("/categories"),
-            fetchData("/products"),
-            fetchData("/users?role=seller"),
-        ]);
+    async function loadPageData() {
+        try {
+            const [categoriesData, productsData, sellersData] = await Promise.all([
+                fetchData("/categories"),
+                fetchData("/products"),
+                fetchData("/users?role=seller"),
+            ]);
 
-        const categories = categoriesData?.data || [];
-        const products = productsData?.data || [];
-        const sellers = sellersData?.data || [];
+            const categories = categoriesData?.data || [];
+            const products = productsData?.data || [];
+            const sellers = sellersData?.data || [];
 
-        renderCategories(categories);
-        renderFilters(categories);
-        renderProducts(productsGrid, products);
-        renderProducts(recentArrived, products.slice(0, 4));
-        renderProducts(topFinds, products.slice(4, 8));
-        renderSellers(sellers);
-        setupFiltering();
-    } catch (error) {
-        showError(categoryShelf, "Não foi possível carregar as categorias.");
-        showError(productsGrid, "Não foi possível carregar os produtos.");
-        showError(sellersGrid, "Não foi possível carregar os vendedores.");
-        showError(recentArrived, "Não foi possível carregar os produtos.");
-        showError(topFinds, "Não foi possível carregar os produtos.");
+            renderCategories(categories);
+            renderFilters(categories);
+            renderProducts(productsGrid, products);
+            renderProducts(recentArrived, products.slice(0, 4));
+            renderProducts(topFinds, products.slice(4, 8));
+            renderSellers(sellers);
+            setupFiltering();
+        } catch (error) {
+            showError(categoryShelf, "Não foi possível carregar as categorias.");
+            showError(productsGrid, "Não foi possível carregar os produtos.");
+            showError(sellersGrid, "Não foi possível carregar os vendedores.");
+            showError(recentArrived, "Não foi possível carregar os produtos.");
+            showError(topFinds, "Não foi possível carregar os produtos.");
+        }
     }
+
+    loadPageData();
 
     function renderCategories(categories) {
         if (!categoryShelf) return;

@@ -7,10 +7,12 @@
     "dev": "nodemon src/index.js",
     "test": "jest --runInBand",
     "setup:db": "node migrate_local.js",
+     "setup:sb": "node migraSb.js",
     "setup:meili": "node scripts/setupMeili.js",
     "worker:indexer": "node src/workers/indexerWorker.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.57.4",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.41.0",

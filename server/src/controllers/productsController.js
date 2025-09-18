@@ -1,50 +1,81 @@
 // server/src/controllers/productController.js
-
-const db = require("../config/db");
 const productService = require("../services/productService");
-const { ok } = require("../utils/responses");
+const { ok, fail } = require("../utils/responses");
 const { createProductSchema, listProductsSchema, getProductSchema } = require("../validators/productSchemas");
 const validate = require("../middleware/validate");
 
-// 📜 Listar produtos (com paginação e busca)
+// 📜 Listar produtos
 exports.list = [
-  validate(listProductsSchema, 'query'),
+  validate(listProductsSchema, "query"),
   async (req, res, next) => {
     try {
       const { page, limit, q } = req.query;
       const data = await productService.list({ page, limit, q });
       res.json(ok(data));
-    } catch (e) {
-      next(e);
+    } catch (err) {
+      next(err);
     }
   }
 ];
 
 // 📜 Buscar produto por ID
 exports.get = [
-  validate(getProductSchema, 'params'),
+  validate(getProductSchema, "params"),
   async (req, res, next) => {
     try {
-      res.json(ok(await productService.get(req.params.id)));
-    } catch (e) {
-      next(e);
+      const product = await productService.get(req.params.id);
+      if (!product) return res.status(404).json(fail("Produto não encontrado"));
+      res.json(ok(product));
+    } catch (err) {
+      next(err);
     }
   }
 ];
 
-// ➕ Criar produto (com upload + indexação no Meili)
+// ➕ Criar produto (upload + indexação Meili)
 exports.create = [
   validate(createProductSchema),
   async (req, res, next) => {
     try {
-      const sellerUid = req.user.uid; // Assuming req.user is populated by auth middleware
-      const images = req.files.map(file => ({ url: file.path }));
+      const sellerUid = req.user.uid;
+      const images = req.files?.map(file => ({ url: file.path })) || [];
       const productData = { ...req.body, images: JSON.stringify(images) };
+
       const product = await productService.create(sellerUid, productData);
+
+      // TODO: indexar no Meili (chamar serviço de indexação)
+      // await indexService.indexProduct(product);
+
       res.status(201).json(ok(product, "Produto criado com sucesso!"));
     } catch (err) {
       console.error("Erro ao criar produto:", err);
       next(err);
     }
-  },
+  }
+];
+
+// ✏️ Atualizar produto
+exports.update = [
+  validate(getProductSchema, "params"),
+  async (req, res, next) => {
+    try {
+      const updatedProduct = await productService.update(req.params.id, req.body);
+      res.json(ok(updatedProduct, "Produto atualizado com sucesso!"));
+    } catch (err) {
+      next(err);
+    }
+  }
+];
+
+// ❌ Remover produto
+exports.remove = [
+  validate(getProductSchema, "params"),
+  async (req, res, next) => {
+    try {
+      await productService.remove(req.params.id);
+      res.json(ok(null, "Produto removido com sucesso!"));
+    } catch (err) {
+      next(err);
+    }
+  }
 ];

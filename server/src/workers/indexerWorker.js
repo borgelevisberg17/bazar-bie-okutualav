@@ -1,26 +1,57 @@
 /**
- * Simple indexer worker example: listens to pg_notify channel 'meili' and logs payload.
- * In production, this should call Meilisearch / Elasticsearch to update index.
+ * Production Indexer Worker
+ * Listens to pg_notify channel 'meili' and updates Meilisearch index automatically.
  */
+
 const pgp = require('pg-promise')();
-const cn = process.env.DATABASE_URL || 'postgres://borge:senha@localhost:5432/bazar';
-const db = pgp(cn);
+const { MeiliSearch } = require('meilisearch');
+
+const DATABASE_URL = process.env.DATABASE_URL;
+const MEILI_HOST = process.env.MEILI_HOST || 'http://localhost:7700';
+const MEILI_MASTER_KEY = process.env.MEILI_MASTER_KEY || '';
+
+const db = pgp(DATABASE_URL);
+const meili = new MeiliSearch({ host: MEILI_HOST, apiKey: MEILI_MASTER_KEY });
+
+/**
+ * Atualiza o índice do Meilisearch
+ * @param {string} indexName - nome do índice
+ * @param {object} payload - dados do evento do PostgreSQL
+ */
+async function updateIndex(indexName, payload) {
+  try {
+    const index = meili.index(indexName);
+    await index.addDocuments([payload]); // adiciona ou atualiza
+    console.log(`✅ Meili index '${indexName}' atualizado com payload:`, payload);
+  } catch (err) {
+    console.error(`❌ Erro ao atualizar Meili index '${indexName}':`, err);
+  }
+}
 
 (async () => {
   const client = await db.connect();
+
   try {
     await client.client.query('LISTEN meili');
-    console.log('Listening to meili channel...');
-    client.client.on('notification', (msg) => {
+    console.log('🚀 Listening to PostgreSQL channel "meili"...');
+
+    client.client.on('notification', async (msg) => {
       try {
         const payload = JSON.parse(msg.payload);
-        console.log('meili event', payload);
-        // TODO: call Meilisearch to update document
+        console.log('📢 Evento recebido do PostgreSQL:', payload);
+
+        // Determina índice pelo tipo de tabela (exemplo: 'products', 'orders', etc.)
+        const indexName = payload.table || 'default';
+        await updateIndex(indexName, payload);
       } catch (e) {
-        console.error('Invalid payload', e);
+        console.error('❌ Payload inválido:', e);
       }
     });
+
+    client.client.on('error', (err) => {
+      console.error('PostgreSQL client error:', err);
+    });
   } catch (err) {
-    console.error(err);
+    console.error('Erro ao conectar/listen no PostgreSQL:', err);
   }
-})().catch(console.error);
+})();

@@ -1,6 +1,6 @@
 // server/src/routes/paymentRouter.js
 const { Router } = require('express');
-const paymentsController = require('../controllers/paymentController');
+const paymentsController = require('../controllers/paymentsController');
 const authFirebase = require('../middleware/authFirebase');
 
 const router = Router();

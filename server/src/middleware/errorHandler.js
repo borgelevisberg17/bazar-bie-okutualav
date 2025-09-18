@@ -1,10 +1,25 @@
+// middleware/errorHandler.js
 module.exports = (err, req, res, next) => {
-  console.error('[Error Handler]', err.message);
+  console.error('[Error Handler]', err.stack);
 
+  // Status padrão
+  const statusCode = err.status || err.statusCode || 500;
+
+  // Mensagem do cliente
+  const message =
+    err.message ||
+    (statusCode === 404
+      ? `Rota ${req.originalUrl} não encontrada`
+      : 'Erro interno no servidor');
+
+  // Resposta consistente em JSON
   if (!res.headersSent) {
-    res.status(500).json({
-      error: 'Internal Server Error',
-      message: process.env.NODE_ENV === 'development' ? err.message : undefined,
+    res.status(statusCode).json({
+      status: 'error',
+      code: statusCode,
+      message: process.env.NODE_ENV === 'development' ? message : undefined,
+      // opcional: só para dev
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
     });
   }
 };

@@ -59,11 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // IMPORTANT: The Firebase config should be loaded securely, not hardcoded.
-    // I will ask the user how to handle this.
-    // For now, I will assume the config is available globally.
-    firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const googleProvider = new firebase.auth.GoogleAuthProvider();
 

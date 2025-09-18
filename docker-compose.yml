@@ -1,44 +1,137 @@
 version: '3.9'
+
 services:
+  # ----------------------
+  # Traefik (Reverse Proxy + HTTPS)
+  # ----------------------
+  traefik:
+    image: traefik:v2.9
+    container_name: bie_okutuala_traefik
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=${TRAEFIK_EMAIL}"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Dashboard Traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-certs:/letsencrypt
+    networks:
+      - bie_network
+
+  # ----------------------
+  # Banco de Dados PostgreSQL
+  # ----------------------
   db:
     image: postgres:15
+    container_name: bie_okutuala_db
     environment:
-      POSTGRES_DB: bazar
-      POSTGRES_USER: bazar
-      POSTGRES_PASSWORD: bazarpass
-    volumes: [db-data:/var/lib/postgresql/data]
-    ports: ['5432:5432']
+      POSTGRES_DB: ${POSTGRES_DB:-bazar}
+      POSTGRES_USER: ${POSTGRES_USER:-bazar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bazarpass}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - bie_network
 
+  # ----------------------
+  # Redis
+  # ----------------------
   redis:
     image: redis:7-alpine
-    ports: ['6379:6379']
+    container_name: bie_okutuala_redis
+    ports:
+      - '6379:6379'
+    networks:
+      - bie_network
 
+  # ----------------------
+  # MeiliSearch
+  # ----------------------
   meilisearch:
     image: getmeili/meilisearch:v1.7
+    container_name: bie_okutuala_meili
     environment:
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
-    ports: ['7700:7700']
+    ports:
+      - '7700:7700'
+    networks:
+      - bie_network
 
+  # ----------------------
+  # Mailhog (Somente dev)
+  # ----------------------
   mailhog:
     image: mailhog/mailhog
-    ports: ['1025:1025', '8025:8025']
+    container_name: bie_okutuala_mailhog
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+    networks:
+      - bie_network
 
+  # ----------------------
+  # Servidor Node.js
+  # ----------------------
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
-    env_file: [.env]
-    depends_on: [db, redis, meilisearch, mailhog]
-    ports: ['4000:4000']
+    container_name: bie_okutuala_server
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+      - meilisearch
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bie-server.rule=Host(`${DOMAIN_SERVER}`)"
+      - "traefik.http.routers.bie-server.entrypoints=websecure"
+      - "traefik.http.routers.bie-server.tls.certresolver=myresolver"
     volumes:
+      - ./server:/app
       - ./frontend/public/database:/app/data
+    networks:
+      - bie_network
 
+  # ----------------------
+  # Frontend Web
+  # ----------------------
   web:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    depends_on: [server]
-    ports: ['8080:80']
+    container_name: bie_okutuala_web
+    depends_on:
+      - server
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bie-web.rule=Host(`${DOMAIN_WEB}`)"
+      - "traefik.http.routers.bie-web.entrypoints=websecure"
+      - "traefik.http.routers.bie-web.tls.certresolver=myresolver"
+    volumes:
+      - ./frontend/public:/usr/share/nginx/html
+    networks:
+      - bie_network
 
+# ----------------------
+# Volumes persistentes
+# ----------------------
 volumes:
   db-data:
+  traefik-certs:
+
+# ----------------------
+# Rede interna
+# ----------------------
+networks:
+  bie_network:
+    driver: bridge

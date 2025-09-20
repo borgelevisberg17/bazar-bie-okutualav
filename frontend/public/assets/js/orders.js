@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const ordersListContainer = document.getElementById('orders-list');
-    const API_URL = 'http://localhost:4000/api';
 
     async function loadOrders() {
         try {

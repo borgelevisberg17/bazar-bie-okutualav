@@ -36,7 +36,7 @@ Nosso objetivo é **simplificar o comércio local**, oferecendo uma experiência
 
 - **Frontend:** HTML, CSS, JavaScript (responsivo e moderno)  
 - **Backend:** Node.js, Express  
-- **Banco de Dados:** MySQL ou Supabase  
+- **Banco de Dados:** PostgrelSQL e Supabase  
 - **Armazenamento de arquivos:** Cloudinary (imagens e documentos)  
 - **Envio de notificações:** Email via SMTP  
 

@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // --- Carregar Dados ---
-    const API_URL = "http://localhost:4000/api";
+
     const loadData = async () => {
         try {
             const productsData = await fetch(`${API_URL}/products?limit=1000`).then(res => res.json());

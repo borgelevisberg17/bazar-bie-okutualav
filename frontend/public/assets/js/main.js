@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const API_URL = "http://localhost:4000/api";
 
     function showLoading(element) {
         if (element) {

@@ -295,7 +295,7 @@ body.menu-open {
             var(--color-background) 0%,
             transparent 50%
         ),
-        url("../assets/brands/vende.png");
+        url("../images/placeholders/brand-hero.png");
     background-size: cover;
     background-position: center 30%;
     text-align: center;

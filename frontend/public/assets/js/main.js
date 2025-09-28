@@ -1,3 +1,5 @@
+import { getCategories, getProducts, getSellers } from "./services/api.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     function showLoading(element) {
@@ -9,19 +11,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     function showError(element, message) {
         if (element) {
             element.innerHTML = `<div class="error">${message}</div>`;
-        }
-    }
-
-    async function fetchData(endpoint) {
-        try {
-            const response = await fetch(`${API_URL}${endpoint}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error(`Could not fetch data from ${endpoint}:`, error);
-            throw error;
         }
     }
 
@@ -56,9 +45,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function loadPageData() {
         try {
             const [categoriesData, productsData, sellersData] = await Promise.all([
-                fetchData("/categories"),
-                fetchData("/products"),
-                fetchData("/users?role=seller"),
+                getCategories(),
+                getProducts(),
+                getSellers(),
             ]);
 
             const categories = categoriesData?.data || [];

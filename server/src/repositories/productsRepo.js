@@ -3,27 +3,52 @@ const { paginate } = require("../utils/pagination");
 
 // 📜 Listar produtos com paginação
 exports.list = async ({ page, limit }) => {
-  const { limit: pageLimit, offset } = paginate(page, limit);
+    const { limit: pageLimit, offset } = paginate(page, limit);
 
-  if (mode === "pg") {
-    return db.any(
-      `
-      SELECT p.*, u.name as seller_name, u.email as seller_email
+    if (mode === 'pg') {
+        return db.any(
+            `
+      SELECT p.*,
+             u.name as seller_name,
+             u.avatar as seller_avatar
       FROM products p
       JOIN users u ON u.id = p.seller_id
       ORDER BY p.created_at DESC
       LIMIT $1 OFFSET $2
       `,
-      [pageLimit, offset]
-    );
-  } else {
-    const { data, error } = await db.select("products").range(offset, offset + pageLimit - 1);
-    if (error) throw error;
-    // Paginação manual
-    return data
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-      .slice(offset, offset + pageLimit);
-  }
+            [pageLimit, offset],
+        );
+    } else {
+        // Supabase query with join and pagination
+        const { data, error } = await db
+            .from('products')
+            .select(
+                `
+        *,
+        users (
+          name,
+          avatar
+        )
+      `,
+            )
+            .range(offset, offset + pageLimit - 1)
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Supabase error fetching products:', error);
+            throw error;
+        }
+
+        // Flatten the response to match frontend expectations
+        return data.map(p => {
+            const { users, ...productData } = p;
+            return {
+                ...productData,
+                seller_name: users ? users.name : 'Vendedor Anônimo',
+                seller_avatar: users ? users.avatar : null,
+            };
+        });
+    }
 };
 
 // 📜 Buscar produto por ID

@@ -19,10 +19,29 @@ const app = express();
 // Segurança & Middleware
 // ======================
 app.use(helmet());
-app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+const whitelist = [
+  'https://bie-okutuala.vercel.app',
+  'http://localhost:8080',
+  'http://127.0.0.1:5500',
+  'http://127.0.0.1:5501'
+];
+
+if (process.env.FRONTEND_URL) {
+  whitelist.push(process.env.FRONTEND_URL);
+}
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());

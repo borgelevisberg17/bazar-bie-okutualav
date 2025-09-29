@@ -12,4 +12,5 @@ router.use('/messages', require('./messages'));
 router.use('/stores', require('./stores'));
 router.use('/payments', require('./payments'));
 router.use('/uploads', require('./uploads'));
+
 module.exports = router;

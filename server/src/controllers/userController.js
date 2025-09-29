@@ -27,6 +27,73 @@ exports.getProfile = async (req, res, next) => {
   }
 };
 
+// (Admin) Atualizar um usuário
+exports.updateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { role, status } = req.body;
+
+    if (!role && !status) {
+      return res.status(400).json({ error: 'Pelo menos um campo (role, status) deve ser fornecido para atualização.' });
+    }
+
+    if (mode === 'pg') {
+      const updatedUser = await db.one(
+        `UPDATE users SET
+          role = COALESCE($1, role),
+          status = COALESCE($2, status),
+          updated_at = NOW()
+         WHERE id = $3
+         RETURNING id, email, name, role, status`,
+        [role, status, id]
+      );
+      res.json(updatedUser);
+    } else {
+      const updateData = {};
+      if (role) updateData.role = role;
+      if (status) updateData.status = status;
+      updateData.updated_at = new Date().toISOString();
+
+      const { data, error } = await db
+        .from('users')
+        .update(updateData)
+        .eq('id', id)
+        .select('id, email, name, role, status')
+        .single();
+
+      if (error) throw error;
+      if (!data) return res.status(404).json({ error: 'Usuário não encontrado' });
+
+      res.json(data);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+// (Admin) Deletar um usuário
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (mode === 'pg') {
+      const result = await db.result('DELETE FROM users WHERE id = $1', [id]);
+      if (result.rowCount === 0) {
+        return res.status(404).json({ error: 'Usuário não encontrado' });
+      }
+    } else {
+      const { error } = await db.from('users').delete().eq('id', id);
+      if (error) {
+        throw error;
+      }
+    }
+
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+};
+
 // Atualizar perfil
 exports.updateProfile = async (req, res, next) => {
   try {

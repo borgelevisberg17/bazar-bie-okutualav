@@ -10,7 +10,16 @@ const router = Router();
 router.get('/me', authFirebase, userController.getProfile);
 router.put('/me', authFirebase, userController.updateProfile);
 
-// Listar usuários
-router.get('/', userController.listUsers);
+const authAdmin = require('../middleware/authAdmin');
+
+// Listar usuários (apenas admin)
+router.get('/', authFirebase, authAdmin, userController.listUsers);
+
+// Atualizar usuário (apenas admin)
+router.put('/:id', authFirebase, authAdmin, userController.updateUser);
+
+// Deletar usuário (apenas admin)
+router.delete('/:id', authFirebase, authAdmin, userController.deleteUser);
+
 
 module.exports = router;

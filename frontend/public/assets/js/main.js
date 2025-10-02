@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    loadPageData();
+   await loadPageData();
 
     function renderCategories(categories) {
         if (!categoryShelf) return;
@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         } else {
                             card.style.display = "none";
                         }
-.                    }, 200);
+                    }, 200);
                 });
             });
         });

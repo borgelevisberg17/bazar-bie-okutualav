@@ -42,13 +42,9 @@ a {
     z-index: 1000;
     padding: 1rem 0;
     transition: var(--transition-fast);
-    border-bottom: 1px solid transparent;
+    background-color: var(--color-background);
 }
-.main-header.scrolled {
-    background-color: rgba(249, 246, 241, 0.8);
-    backdrop-filter: blur(10px);
-    border-bottom-color: rgba(0, 0, 0, 0.05);
-}
+
 .header-content {
     display: flex;
     justify-content: space-between;
@@ -56,7 +52,7 @@ a {
 }
 .logo {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--color-brand-primary);
     text-decoration: none;
@@ -71,8 +67,8 @@ a {
     background: none;
     border: none;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
     position: relative;
     z-index: 1001;
 }
@@ -289,11 +285,11 @@ body.menu-open {
 /* --- HERO SECTION --- */
 .hero-section {
     position: relative;
-    padding: 10rem 0 6rem;
+    padding: 5rem 0 2rem;
     background-image: linear-gradient(
             to top,
-            var(--color-background) 0%,
-            transparent 50%
+            var(--color-background) 50%,
+            transparent 0%
         ),
         url("../images/placeholders/brand-hero.png");
     background-size: cover;

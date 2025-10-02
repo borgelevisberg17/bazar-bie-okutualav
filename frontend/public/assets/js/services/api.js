@@ -12,8 +12,8 @@
  * The base URL for the API, configured in config.js.
  * @type {string}
  */
-import { API_URL } from '../config.js';
-
+// import { API_URL } from '../config.js';
+// 
 /**
  * A reusable fetch function to interact with the API.
  *
@@ -22,6 +22,7 @@ import { API_URL } from '../config.js';
  * @returns {Promise<any>} - A promise that resolves with the JSON data from the API.
  * @throws {Error} - Throws an error if the network response is not OK.
  */
+ const API_URL = 'https://localhost:4000/api'; 
 async function fetchFromAPI(endpoint, options = {}) {
     try {
         const response = await fetch(`${API_URL}${endpoint}`, options);

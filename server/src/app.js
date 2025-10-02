@@ -22,6 +22,7 @@ app.use(helmet());
 const whitelist = [
   'https://bie-okutuala.vercel.app',
   'http://localhost:8080',
+  'http://localhost:3000',
   'http://127.0.0.1:5500',
   'http://127.0.0.1:5501'
 ];
@@ -47,7 +48,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 app.use(timeout('30s')); // timeout global
 app.use(rateLimit({
-  windowMs: 60_000, // 1 minuto
+  windowMs: 60000, // 1 minuto
   max: 100,
   message: "Muitas requisições, tente novamente mais tarde",
 }));

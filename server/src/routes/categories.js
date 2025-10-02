@@ -1,4 +1,7 @@
-const { Router } = require('express');
-const router = Router();
-router.get('/', (req,res) => res.json({ok:true, route:'/categories'}));
+const express = require("express");
+const router = express.Router();
+const categoriesController = require('../controllers/categoriesController');
+
+router.get('/', categoriesController.list);
+
 module.exports = router;

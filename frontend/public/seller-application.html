@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torne-se um Vendedor - Bié Okutuala</title>
+    <link rel="stylesheet" href="./assets/css/main.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">Bié Okutuala</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Torne-se um Vendedor</h1>
+        <p>Para se tornar um vendedor, você precisa pagar uma taxa única de 5.000 Kz.</p>
+
+        <form id="seller-application-form">
+            <h2>Informações de Pagamento</h2>
+            <div class="form-group">
+                <label for="card-number">Número do Cartão</label>
+                <input type="text" id="card-number" required>
+            </div>
+            <div class="form-group">
+                <label for="expiry-date">Data de Validade</label>
+                <input type="text" id="expiry-date" placeholder="MM/AA" required>
+            </div>
+            <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" required>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">Eu concordo com os <a href="#">termos e condições</a> para vendedores.</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Pagar e Aplicar</button>
+        </form>
+    </main>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/seller-application.js"></script>
+</body>
+</html>

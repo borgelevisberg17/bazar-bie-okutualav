@@ -19,9 +19,9 @@ const useCache = process.env.NODE_ENV === "development";
 // ======================================================
 // 🔸 CONEXÕES
 // ======================================================
-if (process.env.NODE_ENV === "development" && process.env.DATABASE_URL_Local) {
+if (process.env.NODE_ENV === "development" && process.env.DATABASE_URL_LOCAL) {
     const pgp = require("pg-promise")({});
-    db = pgp(process.env.DATABASE_URL_Local);
+    db = pgp(process.env.DATABASE_URL_LOCAL);
     mode = "pg";
     log.info("💻 Conectado ao BANCO LOCAL via pg-promise (DEV)");
 } else if (

@@ -2,9 +2,9 @@ const repo = require("../repositories/productsRepo");
 const search = require("./searchService");
 
 // 📜 Listar com paginação e busca
-exports.list = async ({ page, limit, q }) => {
+exports.list = async ({ page, limit, q, status }) => {
   if (q) return search.searchProducts(q, { page, limit });
-  return repo.list({ page, limit });
+  return repo.list({ page, limit, status });
 };
 
 // 📜 Buscar por ID

@@ -15,15 +15,15 @@ const findUser = async (field, value) => {
 };
 
 // Função auxiliar para criar usuário
-const createUser = async ({ firebase_uid, name, email, password_hash }) => {
+const createUser = async ({ firebase_uid, name, email, password_hash, role = 'user' }) => {
   if (mode === 'pg') {
     return db.one(
-      'INSERT INTO users (firebase_uid, name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING id, name, email',
-      [firebase_uid, name, email, password_hash]
+      'INSERT INTO users (firebase_uid, name, email, password_hash, role) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email, role',
+      [firebase_uid, name, email, password_hash, role]
     );
   } else {
     const { data, error } = await db.insert('users', [
-      { firebase_uid, name, email, password_hash },
+      { firebase_uid, name, email, password_hash, role },
     ]);
     if (error) throw error;
     return data[0];

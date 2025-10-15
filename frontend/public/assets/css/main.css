@@ -105,13 +105,15 @@ a {
 /* --- NOVA SEÇÃO DE CATEGORIAS --- */
 .categories-section {
     padding: 10px 0;
-    background-color: var(--bg-color);
+    background-color: var(--category-color);
 }
 .categories-list {
     display: flex;
     gap: 15px;
     align-items: center;
     overflow-x: auto;
+    background-color: var(--category-color);
+    border-radius: 15px;
     padding-bottom: 20px; /* For scrollbar */
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -144,7 +146,7 @@ a {
 }
 .category-item span {
     font-weight: 400;
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--text-color);
 }
 .category-item:hover .category-icon {
@@ -188,20 +190,25 @@ a {
     border-color: var(--color-brand-secondary);
 }
 .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
 }
-
+.products-grid::-webkit-scrollbar {
+    display: none;
+}
 .product-card {
     background-color: var(--color-surface);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: var(--shadow-light);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     transition: var(--transition-fast);
-    min-width: 300px; /* Fixed minimum width for cards */
+    min-width: 200px; /* Fixed minimum width for cards */
     cursor: pointer;
     position: relative;
 }
@@ -211,10 +218,10 @@ a {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: var(--color-tag-newr);
-    color: var(--text-color);
-    padding: 0.3rem 0.8rem;
-    font-size: 0.8rem;
+    background: var(--color-tag-promo);
+    color: var(--color-surface);
+    padding: 0.3rem 0.6rem;
+    font-size: 0.6rem;
     font-weight: 700;
     border-radius: 4px;
     z-index: 1;
@@ -238,12 +245,12 @@ a {
 }
 .product-card:hover {
     transform: translateY(-8px);
-    box-shadow: var(--shadow-medium);
 }
 .product-image {
-    height: 220px;
+    height: 180px;
     background: var(--bg-primary);
     overflow: hidden;
+    position: relative;
 }
 .product-image img {
     width: 100%;
@@ -258,9 +265,9 @@ a {
     position: absolute;
     top: 1rem;
     left: 1rem;
-    padding: 0.3rem 0.8rem;
+    padding: 0.3rem 0.6rem;
     border-radius: 6px;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     font-weight: 600;
     color: white;
 }
@@ -271,46 +278,32 @@ a {
     background-color: var(--color-tag-promo);
 }
 .product-info {
-    padding: 1.2rem;
+    padding: 0.4rem;
 }
 .product-info h3 {
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-size: 0.7rem;
     font-weight: 500;
-    margin-bottom: 0.5rem;
     color: var(--color-text-primary);
 }
 .product-price {
-    font-size: 1.5rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    color: var(--new-price);
-    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+    justify-self: start;
 }
 .product-card-footer {
     margin-top: auto;
-    padding-top: 1rem;
     border-top: 1px solid var(--color-background);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    padding: 0.2rem;
 }
-.seller-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.seller-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-.seller-name {
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-}
+
 .btn-cart {
-    background-color: var(--color-brand-secondary);
+    background-color: var(--color-brand-primary);
     color: white;
     width: 40px;
     height: 40px;
@@ -346,7 +339,7 @@ a {
 .new-price {
     color: var(--new-price);
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .product-desc {
@@ -356,27 +349,16 @@ a {
 }
 
 .product-rating {
+    position: absolute;
+    right: 0.4rem;
+    top: 0.4rem;
     font-size: 0.9rem;
     color: #ffd700;
     margin-bottom: 0.8rem;
 }
 
 .card-actions {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-.btn-like,
-.btn-share {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: transform 0.2s;
-}
-.btn-like:hover,
-.btn-share:hover {
-    transform: scale(1.2);
+    padding: 1rem;
 }
 
 /* ============ NOVO LAYOUT MODERNO PARA O BAZAR ============ */
@@ -414,78 +396,12 @@ a {
     bottom: -4px;
     width: 40px;
     height: 3px;
-    background: linear-gradient(90deg, #ff4d4d, #ff884d);
+    background: linear-gradient(
+        90deg,
+        var(--color-brand-primary),
+        var(--color-brand-primary)
+    );
     border-radius: 6px;
-}
-
-/* --- SEÇÃO VENDEDORES EM DESTAQUE --- */
-.sellers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-}
-.seller-card {
-    text-align: center;
-}
-.seller-card img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto 15px;
-    border: 4px solid var(--card-bg);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-.seller-card h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-.seller-card p {
-    font-size: 0.9rem;
-    color: var(--secondary-color);
-    font-weight: 500;
-}
-/* --- SEÇÃO "COMO FUNCIONA" --- */
-.how-it-works-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-}
-.step-card {
-    text-align: center;
-}
-.step-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
-    background-color: var(--category-bg);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--primary-color);
-}
-.step-icon .lucide {
-    color: var(--primary-color);
-    width: 36px;
-    height: 36px;
-}
-.step-card h3 {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-}
-.step-card p {
-    color: var(--text-light);
-}
-/* --- RESPONSIVIDADE --- */
-@media (max-width: 992px) {
-    .how-it-works-grid {
-        grid-template-columns: 1fr;
-    }
-    .step-card:not(:last-child) {
-        margin-bottom: 40px;
-    }
 }
 
 /* --- FOOTER --- */

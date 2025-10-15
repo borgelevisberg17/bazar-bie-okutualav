@@ -128,30 +128,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         <img src="${imageUrl}" alt="${product.name}" loading="lazy">
         ${tagHTML}
     </div>
+  <div class="product-card-footer">
     <div class="product-info">
         <h3>${product.name}</h3>
         <p class="product-price">
-            Kz ${parseFloat(product.price).toLocaleString("pt-AO")}
-        </p>
-        <p class="product-desc">${description}</p>
-        <div class="product-rating">
-            ${"★".repeat(rating)}${"☆".repeat(5 - rating)}
-            <span class="rating-count">(${reviews_count})</span>
-        </div>
-        <div class="product-card-footer">
-            <div class="seller-info">
-                <img src="${sellerAvatar}" alt="${
-                    product.seller_name
-                }" class="seller-avatar">
-                <span class="seller-name">${product.seller_name}</span>
-            </div>
+            ${parseFloat(product.price).toLocaleString("pt-AO")}Kz
+        </p></div>
+          
             <div class="card-actions">
-                <button class="btn-like" aria-label="Gostei">
-                    <i data-lucide="heart"></i>
-                </button>
-                <button class="btn-share" aria-label="Compartilhar">
-                    <i data-lucide="share-2"></i>
-                </button>
                 <button class="btn-cart" aria-label="Adicionar ao carrinho">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -163,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </button>
             </div>
         </div>
-    </div>
+    
 </a>
 `;
         return productCard;
@@ -187,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    function renderSellers(sellersToRender){
+    function renderSellers(sellersToRender) {
         if (!sellersGrid) return;
         if (sellersToRender.length === 0) {
             sellersGrid.innerHTML = "<p>Nenhum vendedor encontrado.</p>";
@@ -207,7 +191,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 `;
             sellersGrid.appendChild(sellerCard);
         });
-    };
+    }
 
     try {
         lucide.createIcons();

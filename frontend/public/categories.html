@@ -1,153 +1,274 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-AO">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Descubra o melhor do Bié. Moda, eletrônicos, artesanato e mais. Bié Okutuala é o seu mercado digital para encontrar produtos únicos e de qualidade.">
-  <title>Bié Okutuala - O Seu Mercado Digital</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Descubra o melhor do Bié. Moda, eletrônicos, artesanato e mais. Bié Okutuala é o seu mercado digital para encontrar produtos únicos e de qualidade."
+        />
+        <title>Bié Okutuala - O Seu Mercado Digital</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/components/navbar.css" />
- <link rel="stylesheet" href="./assets/css/categorias.css">
-</head>
-<body>
-     <header class="main-header" id="mainHeader">
-        <div class="container header-content">
-            <a href="#" class="logo">Bié Okutuala</a>
-            <nav class="desktop-nav">
-                <!-- Conteúdo do desktop nav aqui -->
-            </nav>
-            <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
-                <div class="hamburger-box">
-                    <div class="hamburger-inner"></div>
-                </div>
-            </button>
-        </div>
-    </header>
-
-    <!-- Overlay para o fundo -->
-    <div class="mobile-overlay" id="mobile-overlay"></div>
-
-    <!-- O Novo Menu Lateral -->
-    <nav class="side-menu" id="side-menu" aria-label="Menu principal">
-        <div class="side-menu-content">
-            
-            <!-- Bloco de Perfil -->
-            <div class="menu-profile">
-                <div class="menu-profile-avatar">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                </div>
-                <div class="menu-profile-info">
-                    <h3>Olá, Visitante!</h3>
-                    <a href="#">Entrar ou Cadastrar-se</a>
-                </div>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <link
+            href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./assets/css/components/navbar.css" />
+        <link rel="stylesheet" href="./assets/css/categorias.css" />
+    </head>
+    <body>
+        <header class="main-header" id="mainHeader">
+            <div class="container header-content">
+                <a href="#" class="logo">Bié Okutuala</a>
+                <nav class="desktop-nav">
+                    <!-- Conteúdo do desktop nav aqui -->
+                </nav>
+                <button
+                    class="mobile-menu-toggle"
+                    id="menu-toggle"
+                    aria-label="Abrir menu"
+                >
+                    <div class="hamburger-box">
+                        <div class="hamburger-inner"></div>
+                    </div>
+                </button>
             </div>
-
-            <!-- Barra de Busca -->
-            <div class="menu-search">
-                <span class="search-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                </span>
-                <input type="text" placeholder="Buscar no bazar...">
-            </div>
-
-            <!-- Navegação Principal -->
-            <nav class="menu-nav">
-                <ul>
-                    <li>
-                        <a href="#">
-<span class="nav-icon">
-  <i data-lucide="compass"></i>
-</span>
-                            Explorar Tudo
-                        </a>
-                    </li>
-                    <li class="has-submenu">
-                        <a href="#">
-                       <span class="nav-icon">
-  <i data-lucide="layout-grid"></i>
-</span>
-                            Categorias
-                            <span class="submenu-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
-                        </a>
-                        <ul class="submenu">
-                            <li><a href="#">Moda</a></li>
-                            <li><a href="#">Calçados</a></li>
-                            <li><a href="#">Artesanato</a></li>
-                            <li><a href="#">Casa & Lar</a></li>
-                            <li><a href="#">Eletrônicos</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg></span>
-                            Promoções
-                        </a>
-                    </li>
-                    <li class="menu-section-title">Minha Atividade</li>
-                    <li>
-                        <a href="#">
-                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span>
-                            Favoritos
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg></span>
-                            Minhas Compras
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <!-- Rodapé do Menu -->
-        <div class="menu-footer">
-            <a href="#" class="menu-cta-button">Vender Agora</a>
-        </div>
-    </nav>
-          <div class="hero-searchbar">
-        <input type="search" placeholder="O que você procura hoje?"/>
-        <button class="search-btn">
-                <span class="search-icon-">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                </span>
-        </button>
-      </div>
-  <main class="container">
-    <section class="hero" data-aos="fade-in">
-
-    </section>
-
-    <section class="category-shelf" data-aos="fade-up">
-      <div class="shelf-scroller" id="categoryShelf">
-        <!-- Categorias carregadas via JS -->
-      </div>
-    </section>
-
-    <div class="shop">
-      <div class="feed">
-        <header class="feed-header" data-aos="fade-up">
-          <h2 id="feedTitle">Para Si</h2>
-          <select id="sortSelect" class="sort-select">
-            <option value="relevance">Relevância</option>
-            <option value="price_asc">Preço: Menor</option>
-            <option value="price_desc">Preço: Maior</option>
-          </select>
         </header>
-        <div class="grid" id="productsGrid"></div>
-        <div id="loader"></div>
-      </div>
-    </div>
-  </main>
-  
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-   <script src="assets/js/config.js"></script>
-    <script src="assets/js/geral.js"></script>
-   <script src="assets/js/categorias.js"></script>
-</body>
+
+        <!-- Overlay para o fundo -->
+        <div class="mobile-overlay" id="mobile-overlay"></div>
+
+        <!-- O Novo Menu Lateral -->
+        <nav class="side-menu" id="side-menu" aria-label="Menu principal">
+            <div class="side-menu-content">
+                <!-- Bloco de Perfil -->
+                <div class="menu-profile">
+                    <div class="menu-profile-avatar">
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path
+                                d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                            ></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="menu-profile-info">
+                        <h3>Olá, Visitante!</h3>
+                        <a href="#">Entrar ou Cadastrar-se</a>
+                    </div>
+                </div>
+
+                <!-- Barra de Busca -->
+                <div class="menu-search">
+                    <span class="search-icon">
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </span>
+                    <input type="text" placeholder="Buscar no bazar..." />
+                </div>
+
+                <!-- Navegação Principal -->
+                <nav class="menu-nav">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <span class="nav-icon">
+                                    <i data-lucide="compass"></i>
+                                </span>
+                                Explorar Tudo
+                            </a>
+                        </li>
+                        <li class="has-submenu">
+                            <a href="#">
+                                <span class="nav-icon">
+                                    <i data-lucide="layout-grid"></i>
+                                </span>
+                                Categorias
+                                <span class="submenu-toggle"
+                                    ><svg
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <polyline
+                                            points="9 18 15 12 9 6"
+                                        ></polyline></svg
+                                ></span>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="#">Moda</a></li>
+                                <li><a href="#">Calçados</a></li>
+                                <li><a href="#">Artesanato</a></li>
+                                <li><a href="#">Casa & Lar</a></li>
+                                <li><a href="#">Eletrônicos</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="nav-icon"
+                                    ><svg
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path
+                                            d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+                                        ></path>
+                                        <line
+                                            x1="7"
+                                            y1="7"
+                                            x2="7.01"
+                                            y2="7"
+                                        ></line></svg
+                                ></span>
+                                Promoções
+                            </a>
+                        </li>
+                        <li class="menu-section-title">Minha Atividade</li>
+                        <li>
+                            <a href="#">
+                                <span class="nav-icon"
+                                    ><svg
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                                        ></path></svg
+                                ></span>
+                                Favoritos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="nav-icon"
+                                    ><svg
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path
+                                            d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                                        ></path>
+                                        <line
+                                            x1="3"
+                                            y1="6"
+                                            x2="21"
+                                            y2="6"
+                                        ></line>
+                                        <path
+                                            d="M16 10a4 4 0 0 1-8 0"
+                                        ></path></svg
+                                ></span>
+                                Minhas Compras
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Rodapé do Menu -->
+            <div class="menu-footer">
+                <a href="#" class="menu-cta-button">Vender Agora</a>
+            </div>
+        </nav>
+        <div class="hero-search">
+            <div class="hero-searchbar">
+                <input type="text" placeholder="Estou procurando por..." />
+                <button class="btn-search">
+                    <span class="search-icon">
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <main class="container">
+            <section class="hero" data-aos="fade-in"></section>
+
+            <section class="category-shelf" data-aos="fade-up">
+                <div class="shelf-scroller" id="categoryShelf">
+                    <!-- Categorias carregadas via JS -->
+                </div>
+            </section>
+
+            <div class="shop">
+                <div class="feed">
+                    <header class="feed-header" data-aos="fade-up">
+                        <h2 id="feedTitle">Para Si</h2>
+                        <select id="sortSelect" class="sort-select">
+                            <option value="relevance">Relevância</option>
+                            <option value="price_asc">Preço: Menor</option>
+                            <option value="price_desc">Preço: Maior</option>
+                        </select>
+                    </header>
+                    <div class="grid" id="productsGrid"></div>
+                    <div id="loader"></div>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="assets/js/config.js"></script>
+        <script src="assets/js/geral.js"></script>
+        <script src="assets/js/categorias.js"></script>
+    </body>
 </html>

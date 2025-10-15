@@ -7,13 +7,18 @@
     --secondary-color: #a75d34;
     --bg-icone: #f9ead3;
     --bg-color: #f5f0e8;
+    --category-color: #f5efe4;
     --text-color: #211b12;
     --text-light: #6b645b;
     --color-surface: #ffffff;
     --color-text-primary: #2c261f;
     --color-text-secondary: #7a7268;
     --color-tag-new: #ff4d4d;
-    --color-tag-promo: linear-gradient(135deg, #ff4d4d, #ff884d);
+    --color-tag-promo: linear-gradient(
+        135deg,
+        var(--color-brand-primary),
+        var(--color-brand-primary)
+    );
     --new-price: #ff4d4d;
     --border-color: #e2e8f0;
     --star-color: #ffd700;
@@ -32,7 +37,7 @@
     --brand-primary: #8c5b48; /* Laranja Vibrante */
     --brand-secondary: #3d5a4b; /* Azul-escuro/Carvão */
     --bg: #f9f6f1;
-    --surface: #ffffff;
+    --surface: #f9f6f1;
     --ink: #1a1a1a;
     --muted: #718096;
     --border: #e2e8f0;

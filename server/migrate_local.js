@@ -35,10 +35,21 @@ const db = pgp(connectionString);
 
       const sql = fs.readFileSync(path.join(dir, f), 'utf8');
       console.log(`Running ${f}`);
-      await db.tx(async t => {
-        await t.none(sql);
-        await t.none('INSERT INTO schema_migrations (version) VALUES ($1)', [version]);
-      });
+      try {
+        await db.tx(async t => {
+          await t.none(sql);
+          await t.none('INSERT INTO schema_migrations (version) VALUES ($1)', [version]);
+        });
+      } catch (err) {
+        // If the error is that the column already exists, we can assume the migration was applied
+        // but not recorded in the schema_migrations table.
+        if (err.message.includes('already exists')) {
+          console.log(`Skipping ${f} (already applied, but not recorded)`);
+          await db.none('INSERT INTO schema_migrations (version) VALUES ($1)', [version]);
+        } else {
+          throw err;
+        }
+      }
     }
 
     console.log('Migrations complete');

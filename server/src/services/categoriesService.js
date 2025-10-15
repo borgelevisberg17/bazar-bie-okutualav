@@ -1,6 +1,13 @@
-const repo = ('../repositories/categoriesRepository');
+const repo = require('../repositories/categoriesRepository');
 
-  exports.list = async () => {
-    return repo.list();
+/**
+ * Business logic for categories
+ */
+exports.list = async () => {
+  try {
+    return await repo.list();
+  } catch (err) {
+    console.error("❌ Error in categoriesService.list:", err.message);
+    throw err;
   }
-  
+};

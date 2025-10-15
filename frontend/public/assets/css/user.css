@@ -1,21 +1,4 @@
 /* css/user.css - PÁGINA DE USUÁRIO IMERSIVA */
-:root {
-    /* Mesma paleta de product-details.css */
-    --primary-color: #FF6B6B;
-    --secondary-color: #4ECDC4;
-    --accent-color: #D4A373;
-    --text-color: #2D3748;
-    --background-color: #F7FAFC;
-    --card-bg: #FFFFFF;
-    --border-color: #E2E8F0;
-    --star-color: #FFD700;
-    --success-color: #28A745;
-    --error-color: #DC3545;
-    --info-color: #17A2B8;
-    --shadow: 0 4px 12px rgba(45, 55, 72, 0.05);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-}
 
 .dark-theme {
     --text-color: #E2E8F0;
@@ -29,19 +12,6 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    color: var(--text-color);
-    background-color: var(--background-color);
-    line-height: 1.7;
-    font-size: 16px;
-    margin: 0;
-}
-
-h1, h2, h3 {
-    font-family: 'Poppins', sans-serif;
-}
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -51,28 +21,6 @@ h1, h2, h3 {
 }
 
 /* Header - Igual a product-details */
-.header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border-color);
-    z-index: 1000;
-    padding: 1rem 0;
-}
-
-.dark-theme .header {
-    background: rgba(26, 32, 44, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    text-decoration: none;
-}
 
 .user-actions {
     display: flex;
@@ -121,8 +69,8 @@ h1, h2, h3 {
 .sidebar {
     width: 250px;
     padding: 6rem 0 2rem;
-    background: var(--background-color);
-    position: sticky;
+    background: var(--color-background);
+    position: fixed;
     top: 5rem;
     height: calc(100vh - 5rem);
     overflow-y: auto;
@@ -207,7 +155,7 @@ h1, h2, h3 {
 
 .section {
     display: none;
-    background: var(--background-color);
+    background: var(--color-background);
 }
 
 .section.active {
@@ -263,7 +211,7 @@ h1, h2, h3 {
 }
 
 .product-card {
-    background: var(--background-color);
+    background: var(--color-background);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     overflow: hidden;
@@ -373,7 +321,7 @@ h1, h2, h3 {
 }
 
 .modal-content {
-    background: var(--card-bg);
+    background: var(--bg-color);
     padding: 2rem;
     border-radius: 12px;
     max-width: 500px;
@@ -408,7 +356,7 @@ h1, h2, h3 {
     padding: 0.8rem;
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    background: var(--card-bg);
+    background: var(--bg-color);
     color: var(--text-color);
     margin-bottom: 1rem;
 }

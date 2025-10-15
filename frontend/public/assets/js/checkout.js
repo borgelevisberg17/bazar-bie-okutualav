@@ -514,7 +514,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Inicialização ---
     if (localStorage.getItem('isLoggedIn') !== 'true') {
         showToast('Faça login', 'error');
-        setTimeout(() => window.location.href = 'login.html', 1500);
+        setTimeout(() => window.location.href = '/auth/login.html', 1500);
         return;
     }
 

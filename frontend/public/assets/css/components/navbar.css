@@ -1,0 +1,262 @@
+@import url("../style.css");
+/* --- HEADER --- */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 60px;
+    padding: 1rem 0;
+    transition: var(--transition-fast);
+    background-color: var(--color-background);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    text-decoration: none;
+}
+.desktop-nav {
+    display: none;
+} /* Oculto para focar no mobile */
+
+/* --- ÍCONE DO MENU HAMBÚRGUER ANIMADO --- */
+.mobile-menu-toggle {
+    display: block; /* Visível em todos os tamanhos para este exemplo */
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    position: relative;
+    z-index: 1001;
+}
+.hamburger-box {
+    width: 20px;
+    height: 18px;
+    position: relative;
+    margin: auto;
+}
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+    width: 20px;
+    height: 2px;
+    background-color: var(--color-brand-primary);
+    border-radius: 4px;
+    position: absolute;
+    transition:
+        transform 0.2s ease-in-out,
+        top 0.2s ease-in-out,
+        bottom 0.2s ease-in-out;
+}
+.hamburger-inner {
+    top: 50%;
+    transform: translateY(-50%);
+}
+.hamburger-inner::before,
+.hamburger-inner::after {
+    content: "";
+}
+.hamburger-inner::before {
+    top: -8px;
+}
+.hamburger-inner::after {
+    bottom: -8px;
+}
+
+.mobile-menu-toggle.is-active .hamburger-inner {
+    transform: rotate(45deg);
+}
+.mobile-menu-toggle.is-active .hamburger-inner::before {
+    top: 0;
+    transform: rotate(90deg);
+}
+.mobile-menu-toggle.is-active .hamburger-inner::after {
+    bottom: 0;
+    transform: rotate(90deg);
+}
+
+/* --- MENU LATERAL (SIDE MENU) --- */
+body.menu-open {
+    overflow: hidden;
+}
+.mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-menu);
+    z-index: 999;
+}
+.mobile-overlay.is-active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 85%;
+    max-width: 320px;
+    height: 100vh;
+    background-color: var(--color-background);
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform var(--transition-menu);
+    z-index: 1000;
+}
+.side-menu.is-active {
+    transform: translateX(0);
+}
+
+.side-menu-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+/* Perfil do Usuário */
+.menu-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.menu-profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--border-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+}
+.menu-profile-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.menu-profile-info a {
+    font-size: 0.9rem;
+    color: var(--color-brand-primary);
+    font-weight: 500;
+}
+
+/* Barra de Busca */
+.menu-search {
+    position: relative;
+    margin-bottom: 2rem;
+}
+.menu-search input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color-light);
+    background-color: var(--color-surface);
+    font-size: 1rem;
+}
+.menu-search .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.8rem;
+    transform: translateY(-50%);
+    color: var(--color-text-secondary);
+}
+
+/* Navegação Principal */
+.menu-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.menu-nav li {
+    border-bottom: 1px solid var(--border-color-light);
+}
+.menu-nav a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    transition: color 0.2s;
+}
+.menu-nav a:hover {
+    color: var(--color-brand-primary);
+}
+.menu-nav .nav-icon {
+    color: var(--color-text-secondary);
+}
+
+/* Submenus */
+.has-submenu > a {
+    justify-content: space-between;
+}
+.submenu-toggle {
+    transition: transform 0.3s;
+}
+.submenu {
+    list-style: none;
+    padding-left: 1rem;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+}
+.has-submenu.is-open > a .submenu-toggle {
+    transform: rotate(90deg);
+}
+
+/* Seção de Suporte e CTA */
+.menu-section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    padding: 2rem 0 0.5rem;
+    border-bottom: none;
+}
+.menu-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color-light);
+}
+.menu-cta-button {
+    display: block;
+    width: 100%;
+    background-color: var(--color-brand-secondary);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+.menu-cta-button:hover {
+    background-color: #223838;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+}
+@media (min-width: 1100px) {
+    .desktop-nav {
+        display: block;
+    }
+}

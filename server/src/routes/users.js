@@ -14,6 +14,7 @@ const authAdmin = require('../middleware/authAdmin');
 
 // Listar usuários (apenas admin)
 router.get('/', authFirebase, authAdmin, userController.listUsers);
+router.get('/sellers', userController.listUsers);
 
 // Atualizar usuário (apenas admin)
 router.put('/:id', authFirebase, authAdmin, userController.updateUser);

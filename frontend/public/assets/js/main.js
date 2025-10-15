@@ -1,19 +1,6 @@
 import { getCategories, getProducts, getSellers } from "./services/api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-
-    function showLoading(element) {
-        if (element) {
-            element.innerHTML = '<div class="loading">Carregando...</div>';
-        }
-    }
-
-    function showError(element, message) {
-        if (element) {
-            element.innerHTML = `<div class="error">${message}</div>`;
-        }
-    }
-
     const sellersGrid = document.getElementById("sellersGrid");
     const filtersContainer = document.getElementById("filters");
     const productsGrid = document.getElementById("products-grid");
@@ -26,29 +13,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (track && dots.length > 0) {
         track.addEventListener("scroll", () => {
             const index = Math.round(track.scrollLeft / track.offsetWidth);
-            dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+            dots.forEach((dot, i) =>
+                dot.classList.toggle("active", i === index)
+            );
         });
 
         dots.forEach((dot, i) => {
             dot.addEventListener("click", () => {
-                track.scrollTo({ left: i * track.offsetWidth, behavior: "smooth" });
+                track.scrollTo({
+                    left: i * track.offsetWidth,
+                    behavior: "smooth"
+                });
             });
         });
     }
-
-    showLoading(categoryShelf);
-    showLoading(productsGrid);
-    showLoading(sellersGrid);
-    showLoading(recentArrived);
-    showLoading(topFinds);
-
+    await loadPageData();
     async function loadPageData() {
         try {
-            const [categoriesData, productsData, sellersData] = await Promise.all([
-                getCategories(),
-                getProducts(),
-                getSellers(),
-            ]);
+            const [categoriesData, productsData, sellersData] =
+                await Promise.all([
+                    getCategories(),
+                    getProducts(),
+                    getSellers()
+                ]);
 
             const categories = categoriesData?.data || [];
             const products = productsData?.data || [];
@@ -62,15 +49,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             renderSellers(sellers);
             setupFiltering();
         } catch (error) {
-            showError(categoryShelf, "Não foi possível carregar as categorias.");
-            showError(productsGrid, "Não foi possível carregar os produtos.");
-            showError(sellersGrid, "Não foi possível carregar os vendedores.");
-            showError(recentArrived, "Não foi possível carregar os produtos.");
-            showError(topFinds, "Não foi possível carregar os produtos.");
+            console.log("erro: ", error);
         }
     }
-
-   await loadPageData();
 
     function renderCategories(categories) {
         if (!categoryShelf) return;
@@ -83,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 c => `
                 <a class="category-item" data-cat="${c.slug}">
                  <div class="category-icon">
-                    <i data-lucide="${c.icon}"></i>
+                    <i data-lucide="${c.slug}"></i>
                   </div>  <span>${c.name}</span>
                 </a>
             `
@@ -94,8 +75,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (e) {
             console.error("erro: ", e);
         }
-        const allCategory = document.querySelector('.category-item[data-cat="all"]');
-        if(allCategory) {
+        const allCategory = document.querySelector(
+            '.category-item[data-cat="all"]'
+        );
+        if (allCategory) {
             allCategory.classList.add("active");
         }
     }
@@ -129,8 +112,10 @@ document.addEventListener("DOMContentLoaded", async () => {
               }</div>`
             : "";
 
-        const imageUrl = product.image_url || "assets/images/placeholders/product.png";
-        const sellerAvatar = product.seller_avatar || "assets/images/placeholders/avatar.png";
+        const imageUrl =
+            product.image_url || "assets/images/placeholders/product.png";
+        const sellerAvatar =
+            product.seller_avatar || "assets/images/placeholders/avatar.png";
         const description = product.description || "";
         const rating = Math.round(product.rating || 0);
         const reviews_count = product.reviews_count || 0;
@@ -155,7 +140,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
         <div class="product-card-footer">
             <div class="seller-info">
-                <img src="${sellerAvatar}" alt="${product.seller_name}" class="seller-avatar">
+                <img src="${sellerAvatar}" alt="${
+                    product.seller_name
+                }" class="seller-avatar">
                 <span class="seller-name">${product.seller_name}</span>
             </div>
             <div class="card-actions">
@@ -200,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    const renderSellers = sellersToRender => {
+    function renderSellers(sellersToRender){
         if (!sellersGrid) return;
         if (sellersToRender.length === 0) {
             sellersGrid.innerHTML = "<p>Nenhum vendedor encontrado.</p>";
@@ -212,9 +199,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             sellerCard.className = "seller-card fade-in";
             sellerCard.style.transitionDelay = `${index * 0.1}s`;
             sellerCard.innerHTML = `
-                    <img src="${seller.avatar || 'assets/images/placeholders/avatar.png'}" alt="${seller.name}" loading="lazy">
+                    <img src="${
+                        seller.avatar || "assets/images/placeholders/avatar.png"
+                    }" alt="${seller.name}" loading="lazy">
                     <h3>${seller.name}</h3>
-                    <p>${seller.specialty || ''}</p>
+                    <p>${seller.specialty || ""}</p>
                 `;
             sellersGrid.appendChild(sellerCard);
         });
@@ -230,7 +219,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const filterButtons = document.querySelectorAll(".filter-btn");
         const productCards = document.querySelectorAll(".product-card");
 
-        if(filterButtons.length === 0) return;
+        if (filterButtons.length === 0) return;
 
         filterButtons.forEach(button => {
             button.addEventListener("click", () => {
@@ -262,73 +251,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function setupHeaderScroll() {
         const header = document.getElementById("mainHeader");
-        if(header) {
+        if (header) {
             window.addEventListener("scroll", () => {
                 header.classList.toggle("scrolled", window.scrollY > 50);
             });
         }
     }
 
-    const menuToggle = document.getElementById("menu-toggle");
-    const sideMenu = document.getElementById("side-menu");
-    const overlay = document.getElementById("mobile-overlay");
-
-    if(menuToggle && sideMenu && overlay) {
-        function openMenu() {
-            menuToggle.classList.add("is-active");
-            sideMenu.classList.add("is-active");
-            overlay.classList.add("is-active");
-            document.body.classList.add("menu-open");
-        }
-
-        function closeMenu() {
-            menuToggle.classList.remove("is-active");
-            sideMenu.classList.remove("is-active");
-            overlay.classList.remove("is-active");
-            document.body.classList.remove("menu-open");
-            document.querySelectorAll(".has-submenu.is-open").forEach(submenu => {
-                submenu.classList.remove("is-open");
-                submenu.querySelector(".submenu").style.maxHeight = null;
-            });
-        }
-
-        menuToggle.addEventListener("click", () => {
-            if (sideMenu.classList.contains("is-active")) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
-        });
-
-        overlay.addEventListener("click", closeMenu);
-    }
-
-    document.querySelectorAll(".has-submenu > a").forEach(link => {
-        link.addEventListener("click", e => {
-            e.preventDefault();
-            const parentLi = link.parentElement;
-            const submenu = parentLi.querySelector(".submenu");
-
-            if (parentLi.classList.contains("is-open")) {
-                parentLi.classList.remove("is-open");
-                submenu.style.maxHeight = null;
-            } else {
-                // Close other open submenus
-                document.querySelectorAll(".has-submenu.is-open").forEach(openSubmenu => {
-                    if(openSubmenu !== parentLi) {
-                        openSubmenu.classList.remove("is-open");
-                        openSubmenu.querySelector(".submenu").style.maxHeight = null;
-                    }
-                });
-                parentLi.classList.add("is-open");
-                submenu.style.maxHeight = submenu.scrollHeight + "px";
-            }
-        });
-    });
-
     setupHeaderScroll();
     const currentYear = document.getElementById("currentYear");
-    if(currentYear) {
+    if (currentYear) {
         currentYear.textContent = new Date().getFullYear();
     }
 });

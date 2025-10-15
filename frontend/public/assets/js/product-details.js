@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <button id="voiceToggle" class="action-btn" title="Ativar/Desativar Voz" aria-label="Ativar ou Desligar Assistente de Voz">
                 <i data-lucide="${state.isVoiceEnabled ? 'mic' : 'mic-off'}" aria-hidden="true"></i>
             </button>
-            <a href="cart.html" class="action-btn" title="Carrinho" aria-label="Ver Carrinho">
+            <a href="../cart.html" class="action-btn" title="Carrinho" aria-label="Ver Carrinho">
                 <i data-lucide="shopping-cart" aria-hidden="true"></i>
                 ${state.cartItems.length ? `<span class="cart-badge">${state.cartItems.reduce((sum, item) => sum + item.quantity, 0)}</span>` : ''}
             </a>
@@ -725,7 +725,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             else state.cartItems.push({ id: productId, quantity });
             localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
             showToast('Indo para checkout!', 'success');
-            setTimeout(() => window.location.href = 'checkout.html', 1000);
+            setTimeout(() => window.location.href = ' ../checkout.html', 1000);
         });
     }
 

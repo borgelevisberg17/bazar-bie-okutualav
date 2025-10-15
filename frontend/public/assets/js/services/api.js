@@ -3,53 +3,87 @@
 /**
  * @file api.js
  * @description Centralized API service for handling all backend communication.
- * This service encapsulates the logic for making HTTP requests to the API,
- * including error handling and data parsing. It promotes the Single Responsibility
- * Principle by separating data fetching from UI logic.
+ * Includes intelligent error handling, environment-based base URLs, and
+ * helper methods for RESTful API calls.
  */
 
-/**
- * The base URL for the API, configured in config.js.
- * @type {string}
- */
-// import { API_URL } from '../config.js';
-// 
-/**
- * A reusable fetch function to interact with the API.
- *
- * @param {string} endpoint - The API endpoint to fetch data from (e.g., "/products").
- * @param {object} [options={}] - Optional fetch options (e.g., method, headers, body).
- * @returns {Promise<any>} - A promise that resolves with the JSON data from the API.
- * @throws {Error} - Throws an error if the network response is not OK.
- */
- const API_URL = 'https://localhost:4000/api'; 
+// =============================================================
+// 🌐 Environment configuration
+// =============================================================
+const isLocalhost =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1";
+const API_URL = isLocalhost
+    ? "http://localhost:4000/api" // Dev mode
+    : "https://bie-okutuala-server.onrender.com/api"; // Production
+
+// =============================================================
+// 🧩 Generic fetch wrapper
+// =============================================================
 async function fetchFromAPI(endpoint, options = {}) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000); // 8s timeout
+
     try {
-        const response = await fetch(`${API_URL}${endpoint}`, options);
+        const response = await fetch(`${API_URL}${endpoint}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            ...options,
+            signal: controller.signal
+        });
+
+        clearTimeout(timeout);
+
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errText = await response.text();
+            throw new Error(
+                `HTTP ${response.status} - ${response.statusText} → ${errText}`
+            );
         }
-        return await response.json();
+
+        const data = await response.json();
+        console.log(`✅ [API] ${options.method || "GET"} ${endpoint}`, data);
+        return data;
     } catch (error) {
-        console.error(`Could not fetch data from ${endpoint}:`, error);
-        throw error; // Re-throw the error to be handled by the caller
+        clearTimeout(timeout);
+        console.error(`❌ [API Error] ${endpoint}:`, error.message);
+
+        // Fallback para ambiente local ou sem rede
+        if (isLocalhost && error.name === "AbortError") {
+            console.warn(`⚠️ Timeout atingido ao acessar ${endpoint}.`);
+        }
+        throw error;
     }
 }
 
-/**
- * Fetches all categories from the backend.
- * @returns {Promise<Array>} A promise that resolves to an array of category objects.
- */
-export const getCategories = () => fetchFromAPI("/categories");
+// =============================================================
+// 🧠 REST Helpers
+// =============================================================
+export const api = {
+    get: endpoint => fetchFromAPI(endpoint),
+    post: (endpoint, body) =>
+        fetchFromAPI(endpoint, {
+            method: "POST",
+            body: JSON.stringify(body)
+        }),
+    put: (endpoint, body) =>
+        fetchFromAPI(endpoint, {
+            method: "PUT",
+            body: JSON.stringify(body)
+        }),
+    delete: endpoint => fetchFromAPI(endpoint, { method: "DELETE" })
+};
 
-/**
- * Fetches all products from the backend.
- * @returns {Promise<Array>} A promise that resolves to an array of product objects.
- */
-export const getProducts = () => fetchFromAPI("/products");
+// =============================================================
+// 📦 Entity-specific functions
+// =============================================================
+export const getCategories = () => api.get("/categories");
+export const getProducts = () => api.get("/products");
+export const getSellers = () => api.get("/users/sellers?role=seller");
 
-/**
- * Fetches all users with the "seller" role from the backend.
- * @returns {Promise<Array>} A promise that resolves to an array of seller objects.
- */
-export const getSellers = () => fetchFromAPI("/users?role=seller");
+// =============================================================
+// 🧰 Example of a POST helper (if needed later)
+// =============================================================
+// export const createProduct = (productData) => api.post("/products", productData);

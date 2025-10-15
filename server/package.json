@@ -6,7 +6,8 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "jest --runInBand",
-    "setup:db": "node migrate_local.js",
+    "setup:db": "node migrate_local.js postgresql://bazar:bazarpass@localhost:5432/bazar",
+    "manual:migration": "node scripts/manual_migration.js postgresql://bazar:bazarpass@localhost:5432/bazar",
     "setup:sb": "node migraSb.js",
     "setup:meili": "node scripts/setupMeili.js",
     "worker:indexer": "node src/workers/indexerWorker.js"

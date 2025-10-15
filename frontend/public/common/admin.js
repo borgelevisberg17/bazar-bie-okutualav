@@ -1,7 +1,102 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const userList = document.getElementById('user-list');
+  const sellerApplicationsList = document.getElementById('seller-applications-list');
+  const pendingProductsList = document.getElementById('pending-products-list');
   let token = null;
   let usersCache = [];
+
+  const fetchSellerApplications = async () => {
+    try {
+      const response = await fetch('/api/seller-applications', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error(`Erro na requisição: ${response.statusText}`);
+      const { data: applications } = await response.json();
+      renderSellerApplications(applications);
+    } catch (error) {
+      handleError(error, 'fetchSellerApplications');
+    }
+  };
+
+  pendingProductsList.addEventListener('click', async (e) => {
+    const productId = e.target.dataset.id;
+    if (e.target.classList.contains('approve-product-btn')) {
+      updateProductStatus(productId, 'active');
+    } else if (e.target.classList.contains('reject-product-btn')) {
+      updateProductStatus(productId, 'rejected');
+    }
+  });
+
+  const updateProductStatus = async (id, status) => {
+    try {
+      const response = await fetch(`/api/products/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+      });
+      if (!response.ok) throw new Error('Falha ao atualizar o status do produto.');
+      await fetchPendingProducts();
+    } catch (error) {
+      handleError(error, 'updateProductStatus');
+    }
+  };
+
+  const renderSellerApplications = (applications) => {
+    if (applications.length === 0) {
+      sellerApplicationsList.innerHTML = '<tr><td colspan="4" class="text-center">Nenhuma aplicação pendente.</td></tr>';
+      return;
+    }
+
+    const rows = applications.map(app => `
+      <tr id="application-row-${app.id}">
+        <td>${app.user_id}</td>
+        <td>${app.user_email}</td>
+        <td>${new Date(app.created_at).toLocaleDateString()}</td>
+        <td>
+          <button class="btn btn-sm btn-success approve-btn" data-id="${app.id}">Aprovar</button>
+          <button class="btn btn-sm btn-danger reject-btn" data-id="${app.id}">Rejeitar</button>
+        </td>
+      </tr>
+    `).join('');
+    sellerApplicationsList.innerHTML = rows;
+  };
+
+  const fetchPendingProducts = async () => {
+    try {
+      const response = await fetch('/api/products?status=pending_approval', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error(`Erro na requisição: ${response.statusText}`);
+      const { data: products } = await response.json();
+      renderPendingProducts(products);
+    } catch (error) {
+      handleError(error, 'fetchPendingProducts');
+    }
+  };
+
+  const renderPendingProducts = (products) => {
+    if (products.length === 0) {
+      pendingProductsList.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum produto pendente.</td></tr>';
+      return;
+    }
+
+    const rows = products.map(prod => `
+      <tr id="product-row-${prod.id}">
+        <td>${prod.id}</td>
+        <td>${prod.name}</td>
+        <td>${prod.seller_name}</td>
+        <td>${new Date(prod.created_at).toLocaleDateString()}</td>
+        <td>
+          <button class="btn btn-sm btn-success approve-product-btn" data-id="${prod.id}">Aprovar</button>
+          <button class="btn btn-sm btn-danger reject-product-btn" data-id="${prod.id}">Rejeitar</button>
+        </td>
+      </tr>
+    `).join('');
+    pendingProductsList.innerHTML = rows;
+  };
 
   const fetchUsers = async () => {
     try {
@@ -80,6 +175,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       token = await user.getIdToken();
       await fetchUsers();
+      await fetchSellerApplications();
+      await fetchPendingProducts();
     } catch (error) {
       handleError(error, 'inicialização');
     }
@@ -102,6 +199,32 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   });
+
+  sellerApplicationsList.addEventListener('click', async (e) => {
+    const applicationId = e.target.dataset.id;
+    if (e.target.classList.contains('approve-btn')) {
+      updateSellerApplication(applicationId, 'approved');
+    } else if (e.target.classList.contains('reject-btn')) {
+      updateSellerApplication(applicationId, 'rejected');
+    }
+  });
+
+  const updateSellerApplication = async (id, status) => {
+    try {
+      const response = await fetch(`/api/seller-applications/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+      });
+      if (!response.ok) throw new Error('Falha ao atualizar a aplicação.');
+      await fetchSellerApplications();
+    } catch (error) {
+      handleError(error, 'updateSellerApplication');
+    }
+  };
 
   // Salvar alterações do Modal
   document.getElementById('saveUserChanges').addEventListener('click', async () => {

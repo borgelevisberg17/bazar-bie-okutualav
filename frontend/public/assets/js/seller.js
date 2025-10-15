@@ -1,4 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const userRole = localStorage.getItem('userRole');
+    if (userRole !== 'seller') {
+        window.location.href = 'index.html';
+    }
+
     const productList = document.getElementById('product-list');
     const orderList = document.getElementById('order-list');
     const storeSettingsForm = document.getElementById('store-settings-form');
@@ -87,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('description', document.getElementById('product-description').value);
             formData.append('price', document.getElementById('product-price').value);
             formData.append('stock', document.getElementById('product-stock').value);
+            formData.append('status', 'pending_approval');
 
             const images = document.getElementById('product-images').files;
             for (let i = 0; i < images.length; i++) {

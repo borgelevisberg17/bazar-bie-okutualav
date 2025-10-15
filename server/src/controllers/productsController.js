@@ -9,8 +9,8 @@ exports.list = [
   validate(listProductsSchema, "query"),
   async (req, res, next) => {
     try {
-      const { page, limit, q } = req.query;
-      const data = await productService.list({ page, limit, q });
+      const { page, limit, q, status } = req.query;
+      const data = await productService.list({ page, limit, q, status });
       res.json(ok(data));
     } catch (err) {
       next(err);
@@ -32,14 +32,21 @@ exports.get = [
   }
 ];
 
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
 // ➕ Criar produto (upload + indexação Meili)
 exports.create = [
+  upload.array('images', 10),
   validate(createProductSchema),
   async (req, res, next) => {
     try {
+      if (req.user.role !== 'seller') {
+        return res.status(403).json(fail('Apenas vendedores podem criar produtos.'));
+      }
       const sellerUid = req.user.uid;
       const images = req.files?.map(file => ({ url: file.path })) || [];
-      const productData = { ...req.body, images: JSON.stringify(images) };
+      const productData = { ...req.body, images: JSON.stringify(images), status: 'pending_approval' };
 
       const product = await productService.create(sellerUid, productData);
 

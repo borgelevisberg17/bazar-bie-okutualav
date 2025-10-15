@@ -5,78 +5,161 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel de Administração</title>
   <link rel="stylesheet" href="./assets/css/framework/bootstrap.min.css">
+  <link rel="stylesheet" href="./assets/css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-  <div class="container mt-5">
-    <h2>Painel de Administração</h2>
-    <p>Bem-vindo ao painel de administração.</p>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Admin Panel</h3>
+      </div>
+      <ul class="list-unstyled components">
+        <li class="active"><a href="#dashboard-section"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="#users-section"><i class="fas fa-users"></i> Users</a></li>
+        <li><a href="#products-section"><i class="fas fa-box"></i> Products</a></li>
+        <li><a href="#sellers-section"><i class="fas fa-store"></i> Sellers</a></li>
+        <li><a href="#chat-section"><i class="fas fa-comments"></i> Chat</a></li>
+      </ul>
+    </nav>
 
-    <div id="alert-container"></div>
+    <!-- Page Content -->
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-primary">
+            <i class="fas fa-align-left"></i>
+            <span>Toggle Sidebar</span>
+          </button>
+        </div>
+      </nav>
 
-    <div class="card mt-4">
-      <div class="card-header">
-        <h4>Lista de Usuários</h4>
+      <div id="dashboard-section">
+        <h2>Dashboard</h2>
+        <p>Welcome to the modern admin panel.</p>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <p class="card-text" id="total-users">0</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Pending Products</h5>
+                <p class="card-text" id="pending-products">0</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Pending Sellers</h5>
+                <p class="card-text" id="pending-sellers">0</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Email</th>
-              <th>Nome</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Criado em</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="user-list">
-            <tr><td colspan="7" class="text-center">Carregando...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
-    <div class="card mt-4">
-      <div class="card-header">
-        <h4>Produtos Pendentes de Aprovação</h4>
+      <div id="users-section" class="mt-4" style="display: none;">
+        <div class="card">
+          <div class="card-header">
+            <h4>Lista de Usuários</h4>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Email</th>
+                  <th>Nome</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Criado em</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="user-list">
+                <tr><td colspan="7" class="text-center">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>ID do Produto</th>
-              <th>Nome</th>
-              <th>Vendedor</th>
-              <th>Data da Publicação</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="pending-products-list">
-            <tr><td colspan="5" class="text-center">Carregando...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
-    <div class="card mt-4">
-      <div class="card-header">
-        <h4>Aplicações de Vendedores Pendentes</h4>
+      <div id="products-section" class="mt-4" style="display: none;">
+        <div class="card">
+          <div class="card-header">
+            <h4>Produtos Pendentes de Aprovação</h4>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID do Produto</th>
+                  <th>Nome</th>
+                  <th>Vendedor</th>
+                  <th>Data da Publicação</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="pending-products-list">
+                <tr><td colspan="5" class="text-center">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>ID do Usuário</th>
-              <th>Email</th>
-              <th>Data da Aplicação</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="seller-applications-list">
-            <tr><td colspan="4" class="text-center">Carregando...</td></tr>
-          </tbody>
-        </table>
+
+      <div id="sellers-section" class="mt-4" style="display: none;">
+        <div class="card">
+          <div class="card-header">
+            <h4>Aplicações de Vendedores Pendentes</h4>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID do Usuário</th>
+                  <th>Email</th>
+                  <th>Data da Aplicação</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="seller-applications-list">
+                <tr><td colspan="4" class="text-center">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="chat-section" class="mt-4" style="display: none;">
+        <div class="card">
+          <div class="card-header">
+            <h4>Chat Details</h4>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="user-select">Select a user to chat with:</label>
+              <select class="form-control" id="user-select"></select>
+            </div>
+            <div class="chat-box" id="chatBox">
+              <!-- Chat messages will be appended here -->
+            </div>
+            <div class="input-group mt-3">
+              <input type="text" id="chatInput" class="form-control" placeholder="Type a message...">
+              <div class="input-group-append">
+                <button class="btn btn-primary" id="sendMessage">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -87,7 +170,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="editUserModalLabel">Editar Usuário</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-dismiss-modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -121,12 +204,139 @@
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="/assets/css/framework/bootstrap.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="/common/firebase-init.js"></script>
   <script src="/common/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sidebarLinks = document.querySelectorAll('#sidebar .components a');
+      const sections = document.querySelectorAll('#content > div[id$="-section"]');
+      const chatBox = document.getElementById('chatBox');
+      const chatInput = document.getElementById('chatInput');
+      const sendMessageBtn = document.getElementById('sendMessage');
+      const userSelect = document.getElementById('user-select');
+
+      const API_URL = '/api'; // Assuming the API is at /api
+      const currentUser = JSON.parse(localStorage.getItem('user'));
+
+      const fetchUsers = async () => {
+        try {
+          const response = await fetch(`${API_URL}/users`);
+          const users = await response.json();
+          userSelect.innerHTML = '';
+          users.forEach(user => {
+            const option = document.createElement('option');
+            option.value = user.id;
+            option.textContent = user.name;
+            userSelect.appendChild(option);
+          });
+        } catch (error) {
+          console.error('Error fetching users:', error);
+        }
+      };
+
+      const fetchMessages = async () => {
+        try {
+          const receiverId = userSelect.value;
+          const response = await fetch(`${API_URL}/messages`);
+          const messages = await response.json();
+          chatBox.innerHTML = '';
+          messages.forEach(msg => {
+            if ((msg.sender_id === currentUser.uid && msg.receiver_id === receiverId) || (msg.sender_id === receiverId && msg.receiver_id === currentUser.uid)) {
+              const messageElement = document.createElement('div');
+              messageElement.classList.add('chat-message');
+              messageElement.classList.add(msg.sender_id === currentUser.uid ? 'sender' : 'receiver');
+              messageElement.textContent = msg.message;
+              chatBox.appendChild(messageElement);
+            }
+          });
+          chatBox.scrollTop = chatBox.scrollHeight;
+        } catch (error) {
+          console.error('Error fetching messages:', error);
+        }
+      };
+
+      const sendMessage = async () => {
+        const message = chatInput.value;
+        if (message.trim() === '') return;
+
+        try {
+          await fetch(`${API_URL}/messages`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sender_id: currentUser.uid,
+              receiver_id: userSelect.value,
+              message: message,
+            }),
+          });
+          chatInput.value = '';
+          fetchMessages();
+        } catch (error) {
+          console.error('Error sending message:', error);
+        }
+      };
+
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+
+          sections.forEach(section => {
+            if (section.id === targetId) {
+              section.style.display = 'block';
+            } else {
+              section.style.display = 'none';
+            }
+          });
+
+          if (targetId === 'chat-section') {
+            fetchUsers();
+            fetchMessages();
+          }
+
+          sidebarLinks.forEach(l => l.parentElement.classList.remove('active'));
+          link.parentElement.classList.add('active');
+        });
+      });
+
+      sendMessageBtn.addEventListener('click', sendMessage);
+      userSelect.addEventListener('change', fetchMessages);
+
+      // Update dashboard cards
+      const userList = document.getElementById('user-list');
+      const pendingProductsList = document.getElementById('pending-products-list');
+      const sellerApplicationsList = document.getElementById('seller-applications-list');
+
+      const updateTotalUsers = () => {
+        const totalUsers = userList.getElementsByTagName('tr').length;
+        document.getElementById('total-users').textContent = totalUsers;
+      };
+
+      const updatePendingProducts = () => {
+        const pendingProducts = pendingProductsList.getElementsByTagName('tr').length;
+        document.getElementById('pending-products').textContent = pendingProducts;
+      };
+
+      const updatePendingSellers = () => {
+        const pendingSellers = sellerApplicationsList.getElementsByTagName('tr').length;
+        document.getElementById('pending-sellers').textContent = pendingSellers;
+      };
+
+      const observer = new MutationObserver(() => {
+        updateTotalUsers();
+        updatePendingProducts();
+        updatePendingSellers();
+      });
+
+      observer.observe(userList, { childList: true });
+      observer.observe(pendingProductsList, { childList: true });
+      observer.observe(sellerApplicationsList, { childList: true });
+    });
+  </script>
 </body>
 </html>

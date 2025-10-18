@@ -1,10 +1,11 @@
 const { Router } = require('express');
 const router = Router();
-const { isAuthenticated, isAdmin } = require('../middleware/auth');
+const authAdmin = require('../middleware/authAdmin');
+const authFirebase = require('../middleware/authFirebase');
 const sellerApplicationsController = require('../controllers/sellerApplicationsController');
 
-router.post('/', isAuthenticated, sellerApplicationsController.createSellerApplication);
-router.get('/', isAuthenticated, isAdmin, sellerApplicationsController.getSellerApplications);
-router.put('/:id', isAuthenticated, isAdmin, sellerApplicationsController.updateSellerApplication);
+router.post('/', authFirebase, sellerApplicationsController.createSellerApplication);
+router.get('/', authFirebase, authAdmin, sellerApplicationsController.getSellerApplications);
+router.put('/:id', authFirebase, authAdmin, sellerApplicationsController.updateSellerApplication);
 
 module.exports = router;

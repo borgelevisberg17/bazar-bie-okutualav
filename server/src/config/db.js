@@ -19,9 +19,12 @@ const useCache = process.env.NODE_ENV === "development";
 // ======================================================
 // 🔸 CONEXÕES
 // ======================================================
-if (process.env.NODE_ENV === "development" && process.env.DATABASE_URL_LOCAL) {
+if (process.env.NODE_ENV === "development") {
     const pgp = require("pg-promise")({});
-    db = pgp(process.env.DATABASE_URL_LOCAL);
+    db = pgp(
+        process.env.DATABASE_URL_LOCAL ||
+            "postgres://borge:senha@localhost:5432/bazar"
+    );
     mode = "pg";
     log.info("💻 Conectado ao BANCO LOCAL via pg-promise (DEV)");
 } else if (

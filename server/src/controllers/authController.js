@@ -2,6 +2,8 @@ const admin = require('../config/firebaseAdmin');
 const { generateAccessToken, generateRefreshToken, verifyToken } = require('../utils/tokenUtils');
 const bcrypt = require('bcryptjs');
 const { db, mode } = require('../config/db');
+const speakeasy = require('speakeasy');
+const qrcode = require('qrcode');
 
 // Função auxiliar para buscar usuário por campo
 const findUser = async (field, value) => {
@@ -58,6 +60,84 @@ exports.exchangeToken = async (req, res, next) => {
   }
 };
 
+// Disable 2FA
+exports.disable2FA = async (req, res, next) => {
+  try {
+    const { uid } = req.user;
+    if (mode === 'pg') {
+      await db.none('UPDATE users SET two_factor_enabled = FALSE, two_factor_secret = NULL WHERE id = $1', [uid]);
+    } else {
+      const { error } = await db.update('users', { two_factor_enabled: false, two_factor_secret: null }).eq('id', uid);
+      if (error) throw error;
+    }
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Verify 2FA
+exports.verify2FA = async (req, res, next) => {
+  try {
+    const { uid } = req.user;
+    const { token } = req.body;
+
+    const user = await findUser('id', uid);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const verified = speakeasy.totp.verify({
+      secret: user.two_factor_secret,
+      encoding: 'base32',
+      token,
+    });
+
+    if (verified) {
+      if (mode === 'pg') {
+        await db.none('UPDATE users SET two_factor_enabled = TRUE WHERE id = $1', [uid]);
+      } else {
+        const { error } = await db.update('users', { two_factor_enabled: true }).eq('id', uid);
+        if (error) throw error;
+      }
+      res.json({ success: true });
+    } else {
+      res.status(400).json({ error: 'Invalid token' });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Setup 2FA
+exports.setup2FA = async (req, res, next) => {
+  try {
+    const { uid } = req.user;
+    const secret = speakeasy.generateSecret({
+      name: `Bazar Universal (${uid})`,
+    });
+
+    if (mode === 'pg') {
+      await db.none('UPDATE users SET two_factor_secret = $1 WHERE id = $2', [secret.base32, uid]);
+    } else {
+      const { error } = await db.update('users', { two_factor_secret: secret.base32 }).eq('id', uid);
+      if (error) throw error;
+    }
+
+    qrcode.toDataURL(secret.otpauth_url, (err, data_url) => {
+      if (err) {
+        return next(err);
+      }
+      res.json({
+        secret: secret.base32,
+        qrCodeUrl: data_url,
+      });
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // Registro tradicional com email/senha
 exports.register = async (req, res, next) => {
   try {
@@ -84,7 +164,7 @@ exports.register = async (req, res, next) => {
 // Login com email/senha
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, token } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
 
     const user = await findUser('email', email);
@@ -92,6 +172,22 @@ exports.login = async (req, res, next) => {
 
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
+
+    if (user.two_factor_enabled) {
+      if (!token) {
+        return res.status(401).json({ error: '2FA token is required', twoFactorRequired: true });
+      }
+
+      const verified = speakeasy.totp.verify({
+        secret: user.two_factor_secret,
+        encoding: 'base32',
+        token,
+      });
+
+      if (!verified) {
+        return res.status(401).json({ error: 'Invalid 2FA token' });
+      }
+    }
 
     const payload = { uid: user.id, email: user.email };
     const accessToken = generateAccessToken(payload);

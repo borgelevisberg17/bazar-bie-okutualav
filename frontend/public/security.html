@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security - Bazar Universal</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/security.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <h1>Security Settings</h1>
+        <div id="2fa-setup">
+            <h2>Two-Factor Authentication (2FA)</h2>
+            <p>Add an extra layer of security to your account.</p>
+            <div id="2fa-status"></div>
+            <button id="setup-2fa-btn">Enable 2FA</button>
+            <div id="qr-code-container" style="display: none;">
+                <p>Scan this QR code with your authenticator app:</p>
+                <img id="qr-code" src="" alt="QR Code">
+                <p>Then, enter the 6-digit code from your app to verify and enable 2FA.</p>
+                <input type="text" id="otp-input" placeholder="Enter OTP">
+                <button id="verify-2fa-btn">Verify & Enable</button>
+            </div>
+            <button id="disable-2fa-btn" style="display: none;">Disable 2FA</button>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="common/auth.js"></script>
+    <script src="common/header.js"></script>
+    <script src="common/footer.js"></script>
+    <script src="assets/js/security.js"></script>
+</body>
+</html>

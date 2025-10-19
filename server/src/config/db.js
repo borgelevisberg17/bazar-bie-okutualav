@@ -19,14 +19,14 @@ const useCache = process.env.NODE_ENV === "development";
 // ======================================================
 // 🔸 CONEXÕES
 // ======================================================
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
     const pgp = require("pg-promise")({});
     db = pgp(
         process.env.DATABASE_URL_LOCAL ||
             "postgres://borge:senha@localhost:5432/bazar"
     );
     mode = "pg";
-    log.info("💻 Conectado ao BANCO LOCAL via pg-promise (DEV)");
+    log.info("💻 Conectado ao BANCO LOCAL via pg-promise (DEV/TEST)");
 } else if (
     process.env.NODE_ENV === "production" &&
     process.env.SUPABASE_URL &&
@@ -147,4 +147,15 @@ db.safeTransaction = async callback => {
     }
 };
 
-module.exports = { db, mode };
+let pgp;
+if (mode === 'pg') {
+    pgp = require('pg-promise')();
+}
+
+const close = () => {
+    if (pgp) {
+        pgp.end();
+    }
+};
+
+module.exports = { db, mode, close };

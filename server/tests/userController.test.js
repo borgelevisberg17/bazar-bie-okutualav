@@ -18,7 +18,6 @@ describe("User Controller", () => {
   afterAll(async () => {
     await db.none("DELETE FROM users WHERE id = $1", ["test-user-id"]);
     server.close();
-    close();
   });
 
   it("should update user role to BUYER and set status to null", async () => {

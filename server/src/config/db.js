@@ -3,7 +3,7 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 
 const chalk = require("chalk"); // 🔹 Melhor visual para logs
-let db, mode;
+let db, mode, pgp;
 
 const log = {
     info: msg => console.log(chalk.blueBright(`[INFO] ${msg}`)),
@@ -20,7 +20,7 @@ const useCache = process.env.NODE_ENV === "development";
 // 🔸 CONEXÕES
 // ======================================================
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
-    const pgp = require("pg-promise")({});
+    pgp = require("pg-promise")({});
     db = pgp(
         process.env.DATABASE_URL_LOCAL ||
             "postgres://borge:senha@localhost:5432/bazar"
@@ -147,15 +147,10 @@ db.safeTransaction = async callback => {
     }
 };
 
-let pgp;
-if (mode === 'pg') {
-    pgp = require('pg-promise')();
-}
-
 const close = () => {
     if (pgp) {
         pgp.end();
     }
 };
 
-module.exports = { db, mode, close };
+module.exports = { db, mode, close, pgp };

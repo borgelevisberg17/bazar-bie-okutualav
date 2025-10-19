@@ -1,0 +1,21 @@
+#2fa-setup {
+    margin-top: 2rem;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#qr-code-container {
+    margin-top: 1rem;
+}
+
+#qr-code {
+    max-width: 200px;
+    margin-bottom: 1rem;
+}
+
+#otp-input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}

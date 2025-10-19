@@ -37,15 +37,18 @@ exports.updateUser = async (req, res, next) => {
       return res.status(400).json({ error: 'Pelo menos um campo (role, status) deve ser fornecido para atualização.' });
     }
 
+    // Se o novo role for BUYER, o status deve ser null
+    const finalStatus = role === 'BUYER' ? null : status;
+
     if (mode === 'pg') {
       const updatedUser = await db.one(
         `UPDATE users SET
-          role = COALESCE($1, role),
+          role = COALESce($1, role),
           status = COALESCE($2, status),
           updated_at = NOW()
          WHERE id = $3
          RETURNING id, email, name, role, status`,
-        [role, status, id]
+        [role, finalStatus, id]
       );
       res.json(updatedUser);
     } else {

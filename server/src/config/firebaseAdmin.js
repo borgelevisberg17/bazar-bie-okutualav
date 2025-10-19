@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 if (!process.env.FIREBASE_PROJECT_ID ||
     !process.env.FIREBASE_CLIENT_EMAIL ||
     !process.env.FIREBASE_PRIVATE_KEY) {
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test') {
         throw new Error('Missing Firebase environment variables');
     } else {
         console.warn("Firebase credentials not found, skipping initialization.");

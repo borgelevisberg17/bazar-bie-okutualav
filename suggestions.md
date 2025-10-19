@@ -6,7 +6,6 @@ This document outlines several suggestions to enhance the functionality, user ex
 
 A modern and intuitive user interface is crucial for attracting and retaining users.
 
-*   **Adopt a Modern Frontend Framework:** Migrate from static HTML files to a component-based framework like **React**, **Vue**, or **Svelte**. This will lead to more maintainable, scalable, and reusable code.
 *   **Implement a Design System:** While there are some shared styles, creating a full-fledged design system with reusable components (buttons, inputs, cards, etc.) will ensure consistency and speed up development.
 *   **Enhanced User Feedback:** Implement non-intrusive feedback mechanisms like toast notifications for actions like "item added to cart" or "profile updated."
 *   **Accessibility (a11y):** Improve accessibility by ensuring proper use of ARIA roles, semantic HTML, and keyboard navigation to make the platform usable for people with disabilities.
@@ -28,7 +27,7 @@ A fast and responsive platform is critical for user satisfaction.
 
 *   **Image Optimization:** Automatically compress and resize images upon upload. Serve images in modern formats like WebP to reduce load times. Services like Cloudinary can automate this process.
 *   **Lazy Loading:** Lazy load images and other non-critical assets so they only load when they are about to enter the viewport.
-*   **Code Splitting:** If a frontend framework is adopted, split the code by routes or components. This means users only download the code they need for the specific page they are viewing, leading to faster initial page loads.
+
 *   **Caching Strategies:** Implement more effective browser and server-side caching for static assets and frequently accessed data.
 
 ## 4. Backend and DevOps

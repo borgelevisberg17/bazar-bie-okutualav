@@ -24,6 +24,8 @@
             rel="stylesheet"
         />
         <script src="https://unpkg.com/lucide@latest"></script>
+        <link rel="stylesheet" href="./assets/css/design-system.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" href="./assets/css/main.css" />
         <link rel="stylesheet" href="./assets/css/components/navbar.css" />
     </head>
@@ -270,12 +272,14 @@
         <main>
             <section class="hero-section">
                 <div class="container hero-content">
-                    <div class="search-container">
+                    <form class="search-container" role="search">
+                        <label for="search-input" class="sr-only">Procurar por...</label>
                         <input
                             type="text"
+                            id="search-input"
                             placeholder="Estou procurando por..."
                         />
-                        <button class="btn-search">
+                        <button class="btn-search" aria-label="Procurar">
                             <span class="search-icon">
                                 <svg
                                     width="18"
@@ -332,11 +336,11 @@
 
         <footer class="main-footer">
             <div class="container footer-content">
-                <a href="#" class="footer-logo">Bié Okutuala</a>
+                <a href="#" class="footer-logo" aria-label="Página inicial">Bié Okutuala</a>
                 <div class="footer-links">
-                    <a href="#">Sobre Nós</a>
-                    <a href="#">Ajuda</a>
-                    <a href="#">Termos de Uso</a>
+                    <a href="#" aria-label="Sobre Nós">Sobre Nós</a>
+                    <a href="#" aria-label="Ajuda">Ajuda</a>
+                    <a href="#" aria-label="Termos de Uso">Termos de Uso</a>
                 </div>
                 <div class="footer-socials">
                     <a href="#" aria-label="Facebook"
@@ -408,6 +412,8 @@
 
         <script src="assets/js/geral.js"></script>
         <script type="module" src="assets/js/services/api.js"></script>
+        <script src="assets/js/notifications.js"></script>
         <script type="module" src="assets/js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     </body>
 </html>

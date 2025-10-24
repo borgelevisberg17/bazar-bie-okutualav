@@ -80,7 +80,8 @@ export const api = {
 // 📦 Entity-specific functions
 // =============================================================
 export const getCategories = () => api.get("/categories");
-export const getProducts = () => api.get("/products");
+export const getProducts = () =>
+    api.get("/products?page=1&limit=12&status=approved");
 export const getSellers = () => api.get("/users/sellers?role=seller");
 
 // =============================================================

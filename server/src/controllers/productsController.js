@@ -13,8 +13,8 @@ exports.list = [
     validate(listProductsSchema, "query"),
     async (req, res, next) => {
         try {
-            const { page, limit, q, status } = req.query;
-            const data = await productService.list({ page, limit, q, status });
+            const { page, limit,  status } = req.query;
+            const data = await productService.list({ page, limit, status });
             res.json(ok(data));
         } catch (err) {
             next(err);

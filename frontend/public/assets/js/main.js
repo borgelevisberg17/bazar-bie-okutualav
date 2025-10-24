@@ -30,13 +30,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadPageData();
     async function loadPageData() {
         try {
-            const [categoriesData, productsData, sellersData] =
-                await Promise.all([
-                    getCategories(),
-                    getProducts(),
-                    getSellers()
-                ]);
-
+            const [
+                categoriesData,  productsData,
+                sellersData
+            ] = await Promise.all([
+                getCategories(),
+                 getProducts(),
+                getSellers()
+            ]);
+            
             const categories = categoriesData?.data || [];
             const products = productsData?.data || [];
             const sellers = sellersData?.data || [];

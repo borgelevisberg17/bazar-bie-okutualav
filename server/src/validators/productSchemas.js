@@ -27,8 +27,8 @@ const listProductsSchema = z.object({
   limit: z.string()
           .optional()
           .transform(val => val ? parseInt(val, 10) : 24)
-          .refine(val => val > 0, { message: "O limite deve ser um número positivo." }),
-  q: z.string().optional().transform(val => val ? sanitize(val) : val)
+          .refine(val => val > 0, { message: "O limite deve ser um número positivo." })
+  // q: z.string().optional().transform(val => val ? sanitize(val) : val)
 });
 
 // Schema para pegar produto por ID

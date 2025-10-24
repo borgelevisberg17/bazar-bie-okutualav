@@ -2,8 +2,8 @@ const repo = require("../repositories/productsRepo");
 const search = require("./searchService");
 
 // 📜 Listar com paginação e busca
-exports.list = async ({ page, limit, q, status }) => {
-  if (q) return search.searchProducts(q, { page, limit });
+exports.list = async ({ page, limit,  status }) => {
+  // if (q) return search.searchProducts(q, { page, limit });
   return repo.list({ page, limit, status });
 };
 

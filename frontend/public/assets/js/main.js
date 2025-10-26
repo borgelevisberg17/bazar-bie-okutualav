@@ -1,4 +1,4 @@
-import { getCategories, getProducts, getSellers } from "./services/api.js";
+import { getCategories, getProducts, getSellers, api } from "./services/api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const sellersGrid = document.getElementById("sellersGrid");
@@ -165,9 +165,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         const wishlistButton = productCard.querySelector(".btn-wishlist");
-        wishlistButton.addEventListener("click", (event) => {
+        wishlistButton.addEventListener("click", async (event) => {
             event.preventDefault();
-            showToast("Produto adicionado aos favoritos!");
+            try {
+                await api.post("/wishlist", { productId: product.id });
+                showToast("Produto adicionado aos favoritos!");
+            } catch (error) {
+                showToast("Erro ao adicionar aos favoritos.", "error");
+            }
         });
         return productCard;
     }

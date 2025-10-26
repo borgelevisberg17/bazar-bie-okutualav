@@ -1,6 +1,14 @@
 const { db, mode } = require('../config/db');
 
-// 📜 Listar reviews de um produto
+/**
+ * Retrieves all reviews for a specific product.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.productId - The ID of the product.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.getProductReviews = async (req, res, next) => {
   try {
     const { productId } = req.params;
@@ -24,7 +32,19 @@ exports.getProductReviews = async (req, res, next) => {
   }
 };
 
-// ➕ Criar review
+/**
+ * Creates a new review for a product.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.productId - The ID of the product to review.
+ * @param {number} req.body.rating - The rating given to the product (1-5).
+ * @param {string} [req.body.comment] - The review comment.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.createReview = async (req, res, next) => {
   try {
     const { productId, rating, comment } = req.body;
@@ -59,7 +79,20 @@ exports.createReview = async (req, res, next) => {
   }
 };
 
-// ✏️ Atualizar review
+/**
+ * Updates an existing review.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the review to update.
+ * @param {Object} req.body - The request body.
+ * @param {number} [req.body.rating] - The updated rating (1-5).
+ * @param {string} [req.body.comment] - The updated comment.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.updateReview = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -100,7 +133,18 @@ exports.updateReview = async (req, res, next) => {
   }
 };
 
-// ❌ Remover review
+/**
+ * Deletes a review.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the review to delete.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {string} req.user.role - The user's role.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.deleteReview = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -129,7 +173,15 @@ exports.deleteReview = async (req, res, next) => {
   }
 };
 
-// ⭐ Calcular nota média de um produto
+/**
+ * Calculates the average rating for a product.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.productId - The ID of the product.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.getAverageRating = async (req, res, next) => {
   try {
     const { productId } = req.params;

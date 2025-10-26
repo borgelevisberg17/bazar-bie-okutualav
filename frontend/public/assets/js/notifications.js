@@ -1,3 +1,8 @@
+/**
+ * Displays a toast notification.
+ * @param {string} message - The message to display.
+ * @param {'success' | 'error'} [type='success'] - The type of toast.
+ */
 function showToast(message, type = 'success') {
   Toastify({
     text: message,

@@ -11,7 +11,12 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Função para criar storage dinâmico
+/**
+ * Creates a dynamic Cloudinary storage engine.
+ * @param {string} folder - The folder in Cloudinary to store the files.
+ * @param {Function} publicIdFn - A function to generate the public ID for the file.
+ * @returns {CloudinaryStorage} A CloudinaryStorage instance.
+ */
 const createStorage = (folder, publicIdFn) =>
   new CloudinaryStorage({
     cloudinary,
@@ -22,14 +27,31 @@ const createStorage = (folder, publicIdFn) =>
     },
   });
 
-// Middleware de upload genérico
+/**
+ * Creates a generic Multer upload middleware.
+ * @param {string} folder - The Cloudinary folder.
+ * @param {Function} publicIdFn - The function to generate the public ID.
+ * @param {boolean} [single=true] - Whether to upload a single file or an array.
+ * @param {string} [fieldName='file'] - The name of the form field for the file.
+ * @returns {Function} A Multer middleware instance.
+ */
 const createUploadMiddleware = (folder, publicIdFn, single = true, fieldName = 'file') => {
   const storage = createStorage(folder, publicIdFn);
   const upload = multer({ storage });
   return single ? upload.single(fieldName) : upload.array(fieldName);
 };
 
-// Função genérica para salvar URL no banco
+/**
+ * Saves a file URL to the database.
+ * @param {Object} options - The options for saving the file URL.
+ * @param {string} options.table - The database table to update.
+ * @param {string} options.idField - The name of the ID field in the table.
+ * @param {*} options.idValue - The value of the ID to match.
+ * @param {string} options.column - The name of the column to store the URL in.
+ * @param {string} options.fileUrl - The URL of the uploaded file.
+ * @param {boolean} [options.array=false] - Whether to append the URL to an array.
+ * @returns {Promise<void>}
+ */
 const saveFileUrlToDB = async ({ table, idField, idValue, column, fileUrl, array = false }) => {
   if (mode === 'pg') {
     if (array) {
@@ -49,7 +71,15 @@ const saveFileUrlToDB = async ({ table, idField, idValue, column, fileUrl, array
   }
 };
 
-// Função genérica de upload
+/**
+ * Handles the entire file upload process.
+ * @param {string} folder - The Cloudinary folder.
+ * @param {string} idField - The name of the ID field in the request body.
+ * @param {string} table - The database table to update.
+ * @param {string} column - The column to store the URL in.
+ * @param {boolean} [array=false] - Whether to append to an array.
+ * @returns {Array<Function>} An array of Express middleware functions.
+ */
 const handleUpload = (folder, idField, table, column, array = false) => [
   createUploadMiddleware(folder, (req) => `${folder}-${req.user.uid}-${Date.now()}`),
   async (req, res, next) => {
@@ -66,7 +96,23 @@ const handleUpload = (folder, idField, table, column, array = false) => [
   },
 ];
 
-// ✨ Exports
+/**
+ * Uploads a user avatar.
+ * @function
+ * @returns {Array<Function>} An array of Express middleware functions.
+ */
 exports.uploadAvatar = handleUpload('avatars', 'id', 'users', 'avatar_url');
+
+/**
+ * Uploads a product image.
+ * @function
+ * @returns {Array<Function>} An array of Express middleware functions.
+ */
 exports.uploadProductImage = handleUpload('products', 'productId', 'products', 'images', true);
+
+/**
+ * Uploads a store document.
+ * @function
+ * @returns {Array<Function>} An array of Express middleware functions.
+ */
 exports.uploadStoreDocument = handleUpload('store-docs', 'storeId', 'stores', 'documents', true);

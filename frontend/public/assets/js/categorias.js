@@ -7,9 +7,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("erro ao carregar: ", e);
     }
 
-        let categories = [];
+    let categories = [];
     let allProducts = [];
 
+    /**
+     * Fetches data from a given API endpoint.
+     * @param {string} endpoint - The API endpoint to fetch data from.
+     * @returns {Promise<any>} A promise that resolves to the JSON response.
+     * @throws {Error} If the fetch request fails.
+     */
     async function fetchData(endpoint) {
         try {
             const response = await fetch(`${API_URL}${endpoint}`);
@@ -33,10 +39,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let state = { page: 1, perPage: 12, isLoading: false, filter: "all" };
 
+    /**
+     * Formats a number as an AOA currency string.
+     * @param {number} n - The number to format.
+     * @returns {string} The formatted currency string.
+     */
     function formatAOA(n) {
         return `AOA${n.toLocaleString("pt-AO")}Kz`;
     }
 
+    /**
+     * Creates a product card element.
+     * @param {Object} p - The product object.
+     * @returns {HTMLElement} The product card element.
+     */
     function productCard(p) {
         const card = document.createElement("article");
         card.className = "card";
@@ -82,6 +98,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
+    /**
+     * Renders the category filter chips.
+     */
     function renderCategories() {
         categoryShelf.innerHTML = categories
             .map(
@@ -103,6 +122,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             .classList.add("active");
     }
 
+    /**
+     * Handles the category filter selection.
+     * @param {Event} e - The click event.
+     */
     function handleCategoryFilter(e) {
         const chip = e.target.closest(".category-chip");
         if (!chip) return;
@@ -122,6 +145,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         loadProducts();
     }
 
+    /**
+     * Loads products from the API and renders them in the grid.
+     * @returns {Promise<void>}
+     */
     async function loadProducts() {
         if (state.isLoading) return;
         state.isLoading = true;
@@ -176,17 +203,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         { rootMargin: "400px" }
     );
+
+    /**
+     * Sets up the scroll behavior for the main header.
+     */
     function setupHeaderScroll() {
         const header = document.getElementById("mainHeader");
         window.addEventListener("scroll", () => {
             header.classList.toggle("scrolled", window.scrollY > 50);
         });
     }
-    //menu
+
     const menuToggle = document.getElementById("menu-toggle");
     const sideMenu = document.getElementById("side-menu");
     const overlay = document.getElementById("mobile-overlay");
 
+    /**
+     * Opens the side menu.
+     */
     function openMenu() {
         menuToggle.classList.add("is-active");
         sideMenu.classList.add("is-active");
@@ -194,6 +228,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.body.classList.add("menu-open");
     }
 
+    /**
+     * Closes the side menu.
+     */
     function closeMenu() {
         menuToggle.classList.remove("is-active");
         sideMenu.classList.remove("is-active");

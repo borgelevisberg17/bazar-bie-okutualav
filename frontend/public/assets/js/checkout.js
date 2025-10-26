@@ -50,8 +50,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
     };
 
-    // --- Carregar Dados ---
-
+    /**
+     * Loads product data from the API.
+     * @returns {Promise<void>}
+     */
     const loadData = async () => {
         try {
             const productsData = await fetch(`${API_URL}/products?limit=1000`).then(res => res.json());
@@ -62,7 +64,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // --- Funções Auxiliares ---
+    /**
+     * Shows a toast notification.
+     * @param {string} message - The message to display.
+     * @param {'success' | 'info' | 'error'} [type='success'] - The type of toast.
+     */
     const showToast = (message, type = 'success') => {
         if (!dom.toast) return;
         dom.toast.textContent = message;
@@ -71,6 +77,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         speak(message);
     };
 
+    /**
+     * Speaks a given text using the browser's speech synthesis API.
+     * @param {string} text - The text to speak.
+     */
     const speak = (text) => {
         if (!state.isVoiceEnabled || !window.speechSynthesis) return;
         const utterance = new SpeechSynthesisUtterance(text);
@@ -79,6 +89,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.speechSynthesis.speak(utterance);
     };
 
+    /**
+     * Creates a debounced version of a function.
+     * @param {Function} func - The function to debounce.
+     * @param {number} wait - The debounce delay in milliseconds.
+     * @returns {Function} The debounced function.
+     */
     const debounce = (func, wait) => {
         let timeout;
         return (...args) => {
@@ -87,6 +103,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     };
 
+    /**
+     * Updates the progress indicator and shows the current step.
+     * @param {string} step - The current step ('cart', 'delivery', 'payment', 'review').
+     */
     const updateProgress = (step) => {
         if (!dom.progressSteps.length || !dom.sections[step]) return;
         dom.progressSteps.forEach((s) => {
@@ -115,6 +135,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         speak(`Você está na etapa: ${step === 'cart' ? 'Carrinho' : step === 'delivery' ? 'Entrega' : step === 'payment' ? 'Pagamento' : 'Revisão'}`);
     };
 
+    /**
+     * Calculates the subtotal, discount, and total for the cart.
+     * @returns {{subtotal: number, discountAmount: number, total: number}} The calculated totals.
+     */
     const calculateTotal = () => {
         let subtotal = 0;
         state.cart.forEach((item) => {
@@ -129,6 +153,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         return { subtotal, discountAmount, total: subtotal - discountAmount };
     };
 
+    /**
+     * Renders the cart items and summary.
+     * @returns {boolean} True if the cart has items, false otherwise.
+     */
     const renderCart = () => {
         if (!dom.cartItemsEl || !dom.summaryItemsEl) return false;
         if (state.cart.length === 0) {
@@ -184,7 +212,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return true;
     };
 
-    // --- Limpar Carrinho (Novo) ---
+    /**
+     * Clears all items from the cart.
+     */
     const clearCart = () => {
         if (confirm('Tem certeza que deseja remover todos os itens do carrinho?')) {
             state.cart = [];
@@ -194,12 +224,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // --- Validações ---
+    /**
+     * Validates a name.
+     * @param {string} name - The name to validate.
+     * @returns {string} An error message if invalid, otherwise an empty string.
+     */
     const validateName = (name) => name.trim().length >= 2 ? '' : 'Nome deve ter pelo menos 2 caracteres';
+
+    /**
+     * Validates a phone number.
+     * @param {string} phone - The phone number to validate.
+     * @returns {string} An error message if invalid, otherwise an empty string.
+     */
     const validatePhone = (phone) => /^\+?\d{9,}$/.test(phone.replace(/\s/g, '')) ? '' : 'Telefone inválido (ex.: +244 923 456 789)';
+
+    /**
+     * Validates an address.
+     * @param {string} address - The address to validate.
+     * @returns {string} An error message if invalid, otherwise an empty string.
+     */
     const validateAddress = (address) => address.trim().length >= 10 ? '' : 'Endereço deve ter pelo menos 10 caracteres';
 
-    // --- Estimativa de Entrega ---
+    /**
+     * Estimates the delivery time based on the address.
+     * @param {string} address - The delivery address.
+     */
     const estimateDelivery = debounce((address) => {
         if (!dom.deliveryEstimateEl) return;
         const isLuanda = address.toLowerCase().includes('luanda');
@@ -208,7 +257,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         speak(`Entrega estimada em ${days}`);
     }, 500);
 
-    // --- Carregar Detalhes de Entrega ---
+    /**
+     * Loads saved delivery details from localStorage.
+     */
     const loadDeliveryDetails = () => {
         const saved = JSON.parse(localStorage.getItem('deliveryDetails')) || {};
         const elements = ['fullName', 'phone', 'address', 'deliveryNotes'].map(id => document.getElementById(id));
@@ -219,7 +270,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (saved.address) estimateDelivery(saved.address);
     };
 
-    // --- Tema ---
+    /**
+     * Applies a color theme to the page.
+     * @param {'light' | 'dark'} theme - The theme to apply.
+     */
     const applyTheme = (theme) => {
         document.body.classList.toggle('dark-theme', theme === 'dark');
         const sunIcon = document.querySelector('#themeToggle [data-lucide="sun"]');
@@ -363,7 +417,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 try{
                 lucide.createIcons();
                 gsap.from(dom.paymentDetails, { opacity: 0, y: 20, duration: 0.5 });
-            
+
                 }catch(e){
             console.error("erro ao carregar ",e);
           }
@@ -414,7 +468,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Finalizar Pedido
+    /**
+     * Finalizes the order.
+     */
     const placeOrder = () => {
         if (!renderCart()) {
             showToast('Carrinho vazio', 'error');

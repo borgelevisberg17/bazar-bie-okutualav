@@ -2,12 +2,20 @@
 const { z } = require('zod');
 const sanitizeHtml = require('sanitize-html');
 
+/**
+ * Sanitizes a string by removing all HTML tags.
+ * @param {string} str - The string to sanitize.
+ * @returns {string} The sanitized string.
+ */
 const sanitize = (str) => sanitizeHtml(str, {
   allowedTags: [],
   allowedAttributes: {}
 });
 
-// Schema para criar produto
+/**
+ * Zod schema for creating a product.
+ * @type {import('zod').ZodObject}
+ */
 const createProductSchema = z.object({
   name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }).transform(sanitize),
   description: z.string().optional().transform(val => val ? sanitize(val) : val),
@@ -18,7 +26,10 @@ const createProductSchema = z.object({
   tag: z.string().optional().transform(val => val ? sanitize(val) : val)
 });
 
-// Schema para listar produtos (query params)
+/**
+ * Zod schema for listing products (validating query parameters).
+ * @type {import('zod').ZodObject}
+ */
 const listProductsSchema = z.object({
   page: z.string()
          .optional()
@@ -31,12 +42,20 @@ const listProductsSchema = z.object({
   // q: z.string().optional().transform(val => val ? sanitize(val) : val)
 });
 
-// Schema para pegar produto por ID
+/**
+ * Zod schema for getting a product by ID (validating route parameters).
+ * @type {import('zod').ZodObject}
+ */
 const getProductSchema = z.object({
   id: z.string().uuid({ message: "ID inválido." })
 });
 
-// Middleware para validação de schemas
+/**
+ * Middleware to validate request data against a Zod schema.
+ * @param {import('zod').ZodSchema} schema - The Zod schema to validate against.
+ * @param {'body' | 'query' | 'params'} [property='body'] - The property of the request object to validate.
+ * @returns {Function} An Express middleware function.
+ */
 const validateSchema = (schema, property = 'body') => (req, res, next) => {
   try {
     const validated = schema.parse(req[property]);

@@ -1,7 +1,9 @@
 const { db, mode } = require("../config/db");
 
 /**
- * Fetch categories from DB
+ * Fetches all categories from the database.
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of category objects.
+ * @throws {Error} If an error occurs while fetching the categories, or if the database mode is unsupported.
  */
 exports.list = async () => {
   try {

@@ -1,4 +1,9 @@
 const { createLogger, transports, format } = require('winston');
+
+/**
+ * Winston logger instance.
+ * @type {import('winston').Logger}
+ */
 module.exports = createLogger({
   level: 'info',
   format: format.combine(format.timestamp(), format.json()),

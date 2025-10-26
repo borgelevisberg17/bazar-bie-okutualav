@@ -28,6 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (menuToggle && sideMenu && overlay) {
+        /**
+         * Opens the side menu.
+         */
         const openMenu = () => {
             menuToggle.classList.add("is-active");
             sideMenu.classList.add("is-active");
@@ -35,6 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.add("menu-open");
         };
 
+        /**
+         * Closes the side menu.
+         */
         const closeMenu = () => {
             menuToggle.classList.remove("is-active");
             sideMenu.classList.remove("is-active");

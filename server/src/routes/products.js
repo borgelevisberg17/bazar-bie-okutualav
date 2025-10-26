@@ -4,9 +4,67 @@ const upload = require("../middleware/upload");
 const productController = require("../controllers/productsController");
 const authFirebase = require("../middleware/authFirebase");
 
-// Rotas
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: Product management routes
+ */
+
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Get a list of all products.
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: A list of products.
+ */
 router.get("/", productController.list);
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Get a product by ID.
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The requested product.
+ */
 router.get("/:id", productController.get);
+
+/**
+ * @swagger
+ * /products:
+ *   post:
+ *     summary: Create a new product.
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     responses:
+ *       201:
+ *         description: The created product.
+ */
 router.post(
   "/",
   authFirebase,

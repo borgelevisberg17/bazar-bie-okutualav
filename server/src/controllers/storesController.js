@@ -1,7 +1,18 @@
 // server/src/controllers/storeController.js
 const { db, mode } = require('../config/db');
 
-// ➕ Criar nova loja
+/**
+ * Creates a new store.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.name - The name of the store.
+ * @param {string} [req.body.description] - The description of the store.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID, who will be the store owner.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.createStore = async (req, res, next) => {
   try {
     const { name, description } = req.body;
@@ -30,7 +41,15 @@ exports.createStore = async (req, res, next) => {
   }
 };
 
-// 📜 Obter loja do usuário
+/**
+ * Retrieves the store owned by the authenticated user.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.getMyStore = async (req, res, next) => {
   try {
     const owner_id = req.user.uid;
@@ -51,7 +70,15 @@ exports.getMyStore = async (req, res, next) => {
   }
 };
 
-// 📜 Obter loja por slug
+/**
+ * Retrieves a store by its slug.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.slug - The slug of the store to retrieve.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.getStoreBySlug = async (req, res, next) => {
   try {
     const { slug } = req.params;
@@ -72,7 +99,15 @@ exports.getStoreBySlug = async (req, res, next) => {
   }
 };
 
-// 📜 Obter produtos de uma loja
+/**
+ * Retrieves all products belonging to a store.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.slug - The slug of the store.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.getStoreProducts = async (req, res, next) => {
   try {
     const { slug } = req.params;

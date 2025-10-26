@@ -1,10 +1,10 @@
 /**
- * Inicializa a página de detalhes do produto, gerenciando renderização, eventos e estado.
+ * Initializes the product details page, managing rendering, events, and state.
  */
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOM carregado. Iniciando Bié Okutuala...');
+    console.log('DOM loaded. Initializing Bié Okutuala...');
 
-    // --- Cache de Elementos DOM ---
+    // --- Cache of DOM Elements ---
     const dom = {
         mainImage: document.getElementById('mainImage'),
         thumbnails: document.getElementById('thumbnails'),
@@ -43,12 +43,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         copyLinkBtn: document.getElementById('copyLinkBtn')
     };
 
-    // --- Verificações de Dependências Externas ---
+    // --- External Dependency Checks ---
     const isGsapAvailable = typeof gsap !== 'undefined';
     const isLucideAvailable = typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function';
     const isConfettiAvailable = typeof confetti !== 'undefined';
 
-    // --- Estado Global ---
+    // --- Global State ---
     let state = {
         cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
         wishlist: JSON.parse(localStorage.getItem('wishlist')) || [],
@@ -62,14 +62,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         reviews: []
     };
 
-    // --- Funções Auxiliares ---
+    // --- Utility Functions ---
 
     /**
-     * Função auxiliar para executar animações GSAP com fallback.
-     * @param {Element|Element[]} target - Elemento(s) a animar.
-     * @param {Object} from - Propriedades iniciais da animação.
-     * @param {Object} to - Propriedades finais da animação.
-     * @param {Function} [fallback] - Função de fallback se GSAP não estiver disponível.
+     * Helper function to run GSAP animations with a fallback.
+     * @param {Element|Element[]} target - The element(s) to animate.
+     * @param {Object} from - The initial properties of the animation.
+     * @param {Object} to - The final properties of the animation.
+     * @param {Function} [fallback] - The fallback function if GSAP is not available.
      */
     const animateWithGsap = (target, from, to, fallback) => {
         if (!isGsapAvailable) {
@@ -79,19 +79,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             gsap.fromTo(target, from, to);
         } catch (e) {
-            console.error(`Erro na animação GSAP: ${e}`);
+            console.error(`GSAP animation error: ${e}`);
             if (fallback) fallback();
         }
     };
 
     /**
-     * Exibe uma notificação toast.
-     * @param {string} message - Mensagem a ser exibida.
-     * @param {string} [type='success'] - Tipo do toast (success, error, info).
+     * Displays a toast notification.
+     * @param {string} message - The message to display.
+     * @param {string} [type='success'] - The type of toast (success, error, info).
      */
     const showToast = (message, type = 'success') => {
         if (!dom.toast) {
-            console.error('Elemento toast não encontrado');
+            console.error('Toast element not found');
             return;
         }
         dom.toast.textContent = message;
@@ -130,8 +130,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Reproduz texto com síntese de voz, se habilitada.
-     * @param {string} text - Texto a ser falado.
+     * Plays text with speech synthesis, if enabled.
+     * @param {string} text - The text to speak.
      */
     const speak = (text) => {
         if (!state.isVoiceEnabled || !window.speechSynthesis) return;
@@ -141,14 +141,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             utterance.volume = 0.9;
             window.speechSynthesis.speak(utterance);
         } catch (e) {
-            console.error('Falha na síntese de voz:', e);
+            console.error('Speech synthesis failed:', e);
         }
     };
 
     /**
-     * Gera HTML para estrelas de avaliação.
-     * @param {number} rating - Valor da avaliação (0 a 5).
-     * @returns {string} HTML das estrelas.
+     * Generates HTML for rating stars.
+     * @param {number} rating - The rating value (0 to 5).
+     * @returns {string} The HTML for the stars.
      */
     const renderStars = (rating) => {
         let stars = '';
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Inicializa ícones Lucide com fallback.
+     * Initializes Lucide icons with a fallback.
      */
     const initializeIcons = () => {
         if (!isLucideAvailable) {
@@ -176,15 +176,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 svg.style.color = 'var(--color-star)';
             });
         } catch (e) {
-            console.error('Falha ao inicializar ícones:', e);
+            console.error('Failed to initialize icons:', e);
         }
     };
 
     /**
-     * Gera URLs para compartilhamento em redes sociais.
-     * @param {string} url - URL do produto.
-     * @param {string} title - Título do produto.
-     * @returns {Object} URLs para WhatsApp, Facebook e Twitter.
+     * Generates URLs for sharing on social media.
+     * @param {string} url - The product URL.
+     * @param {string} title - The product title.
+     * @returns {Object} URLs for WhatsApp, Facebook, and Twitter.
      */
     const generateShareUrls = (url, title) => {
         return {
@@ -195,11 +195,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Abre o modal de compartilhamento.
+     * Opens the share modal.
      */
     const openShareModal = () => {
         if (!dom.shareModal) {
-            console.error('Elemento shareModal não encontrado');
+            console.error('shareModal element not found');
             return;
         }
         const url = window.location.href;
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Fecha o modal de compartilhamento.
+     * Closes the share modal.
      */
     const closeShareModal = () => {
         if (!dom.shareModal) return;
@@ -232,8 +232,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Animação para adicionar ao carrinho.
-     * @param {Element} button - Botão que disparou a ação.
+     * Animation for adding to cart.
+     * @param {Element} button - The button that triggered the action.
      */
     const animateAddToCart = (button) => {
         if (!dom.mainImage || !button) return;
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 left: dom.mainImage.getBoundingClientRect().left
             });
         } catch (e) {
-            console.error('Falha ao configurar clone da imagem:', e);
+            console.error('Failed to set up image clone:', e);
             return;
         }
         document.body.appendChild(clone);
@@ -279,13 +279,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     origin: { x: dom.mainImage.getBoundingClientRect().left / window.innerWidth, y: dom.mainImage.getBoundingClientRect().top / window.innerHeight }
                 });
             } catch (e) {
-                console.error('Falha no confetti:', e);
+                console.error('Confetti failed:', e);
             }
         }
     };
 
     /**
-     * Atualiza o contador do carrinho.
+     * Updates the cart counter.
      */
     const updateCartCount = () => {
         const cartCountEl = document.querySelector('.cart-badge');
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Carrega dados do JSON.
+     * Loads data from JSON.
      */
     const API_URL = "http://localhost:4000/api";
     const loadData = async () => {
@@ -307,9 +307,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Sanitiza HTML para evitar XSS (exemplo simples; usar DOMPurify em produção).
-     * @param {string} html - HTML a ser sanitizado.
-     * @returns {string} HTML sanitizado.
+     * Sanitizes HTML to prevent XSS (simple example; use DOMPurify in production).
+     * @param {string} html - The HTML to sanitize.
+     * @returns {string} The sanitized HTML.
      */
     const sanitizeHTML = (html) => {
         const div = document.createElement('div');
@@ -318,14 +318,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Renderiza detalhes do produto.
+     * Renders product details.
      */
     const renderProductDetails = async () => {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
         if (!productId) {
-            if (dom.productName) dom.productName.textContent = 'Produto não encontrado';
-            showToast('Produto não encontrado.', 'error');
+            if (dom.productName) dom.productName.textContent = 'Product not found';
+            showToast('Product not found.', 'error');
             return;
         }
 
@@ -334,8 +334,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const product = productData.data;
 
             if (!product) {
-                if (dom.productName) dom.productName.textContent = 'Produto não encontrado';
-                showToast('Produto não encontrado.', 'error');
+                if (dom.productName) dom.productName.textContent = 'Product not found';
+                showToast('Product not found.', 'error');
                 return;
             }
 
@@ -343,11 +343,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (dom.mainImage) {
                 dom.mainImage.src = product.images && product.images.length > 0 ? product.images[0].url : '../assets/background11.jpg';
-                dom.mainImage.alt = product.name || 'Imagem do Produto';
+                dom.mainImage.alt = product.name || 'Product Image';
             }
         } catch (error) {
-            console.error('Erro ao carregar detalhes do produto:', error);
-            showToast('Erro ao carregar detalhes do produto.', 'error');
+            console.error('Error loading product details:', error);
+            showToast('Error loading product details.', 'error');
         }
         const product = state.products[0];
         if (dom.thumbnails) {
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 product.images.forEach((img, index) => {
                     const thumbnail = document.createElement('img');
                     thumbnail.src = img.url || '../assets/background11.jpg';
-                    thumbnail.alt = `${product.name} imagem ${index + 1}`;
+                    thumbnail.alt = `${product.name} image ${index + 1}`;
                     thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
                     thumbnail.loading = 'lazy';
                     dom.thumbnails.appendChild(thumbnail);
@@ -368,13 +368,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 );
             }
         }
-        if (dom.productName) dom.productName.textContent = product.name || 'Produto Indisponível';
+        if (dom.productName) dom.productName.textContent = product.name || 'Product Unavailable';
         if (dom.productStars) dom.productStars.innerHTML = renderStars(product.rating || 0);
-        if (dom.productReviews) dom.productReviews.textContent = `(${product.reviews_count || 0} avaliações)`;
+        if (dom.productReviews) dom.productReviews.textContent = `(${product.reviews_count || 0} reviews)`;
         if (dom.newPrice) dom.newPrice.textContent = `Kz ${(product.price || 0).toLocaleString('pt-AO')}`;
         if (dom.oldPrice) dom.oldPrice.style.display = 'none'; // No old price from backend yet
-        if (dom.productAvailability) dom.productAvailability.textContent = product.stock > 0 ? 'Em stock' : 'Indisponível';
-        if (dom.productDescription) dom.productDescription.textContent = product.description || 'Descrição indisponível';
+        if (dom.productAvailability) dom.productAvailability.textContent = product.stock > 0 ? 'In stock' : 'Unavailable';
+        if (dom.productDescription) dom.productDescription.textContent = product.description || 'Description unavailable';
         if (dom.productSpecs) {
             dom.productSpecs.innerHTML = ''; // No specs from backend yet
         }
@@ -387,9 +387,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const seller = sellerData.data;
                         if (dom.sellerAvatar) {
                             dom.sellerAvatar.src = seller.avatar || '../assets/background11.jpg';
-                            dom.sellerAvatar.alt = `Avatar de ${seller.name || 'Vendedor'}`;
+                            dom.sellerAvatar.alt = `Avatar of ${seller.name || 'Seller'}`;
                         }
-                        if (dom.sellerName) dom.sellerName.textContent = seller.name || 'Vendedor Indisponível';
+                        if (dom.sellerName) dom.sellerName.textContent = seller.name || 'Seller Unavailable';
                         if (dom.sellerStars) dom.sellerStars.innerHTML = renderStars(seller.rating || 0);
                     }
                 });
@@ -410,11 +410,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     `).join('');
                     initializeIcons();
                 } else {
-                    dom.customerReviews.textContent = 'Sem avaliações ainda. Seja o primeiro!';
+                    dom.customerReviews.textContent = 'No reviews yet. Be the first!';
                 }
             } catch (error) {
                 console.error('Error fetching reviews:', error);
-                dom.customerReviews.textContent = 'Erro ao carregar avaliações.';
+                dom.customerReviews.textContent = 'Error loading reviews.';
             }
 
         }
@@ -436,7 +436,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     });
             } else {
-                dom.breadcrumbCategory.textContent = 'Categoria Indisponível';
+                dom.breadcrumbCategory.textContent = 'Category Unavailable';
             }
         }
 
@@ -452,16 +452,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         );
 
-        speak(`Detalhes do produto: ${product.name}, por ${dom.newPrice?.textContent || 'preço indisponível'}`);
+        speak(`Product details: ${product.name}, for ${dom.newPrice?.textContent || 'price unavailable'}`);
         initializeIcons();
     };
 
     /**
-     * Renderiza filtros de categoria.
+     * Renders category filters.
      */
     const renderCategoryFilters = () => {
         if (!dom.categoryFilters) {
-            console.error('Elemento categoryFilters não encontrado');
+            console.error('categoryFilters element not found');
             return;
         }
         const categories = ['all', ...new Set(state.products.map(p => p.category))];
@@ -470,7 +470,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const button = document.createElement('button');
             button.className = `filter-btn ${cat === state.selectedCategory ? 'active' : ''}`;
             button.dataset.category = cat;
-            button.textContent = cat === 'all' ? 'Todos' : cat;
+            button.textContent = cat === 'all' ? 'All' : cat;
             dom.categoryFilters.appendChild(button);
         });
         animateWithGsap(
@@ -481,20 +481,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Renderiza produtos relacionados.
-     * @param {number} [page=1] - Página atual.
-     * @param {string} [category='all'] - Categoria selecionada.
+     * Renders related products.
+     * @param {number} [page=1] - The current page.
+     * @param {string} [category='all'] - The selected category.
      */
     const renderRelatedProducts = async (page = 1, category = state.selectedCategory) => {
         if (!dom.relatedProducts) {
-            console.error('Elemento relatedProducts não encontrado');
+            console.error('relatedProducts element not found');
             return;
         }
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
         if (!productId) {
-            console.error('ID do produto inválido na URL');
-            dom.relatedProducts.textContent = 'Erro ao carregar produtos relacionados.';
+            console.error('Invalid product ID in URL');
+            dom.relatedProducts.textContent = 'Error loading related products.';
             return;
         }
 
@@ -508,7 +508,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             let related = productsData.data.filter(p => p.id !== productId);
 
             if (related.length === 0) {
-                dom.relatedProducts.textContent = 'Nenhum produto relacionado encontrado.';
+                dom.relatedProducts.textContent = 'No related products found.';
                 return;
             }
 
@@ -522,7 +522,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="media">
                         <img src="${imageUrl}" alt="${sanitizeHTML(p.name)}" loading="lazy" onerror="this.src='../assets/background11.jpg';">
                         <div class="option-card">
-                            <button class="add-to-cart-btn" data-id="${p.id}" aria-label="Adicionar ${sanitizeHTML(p.name)} ao Carrinho">
+                            <button class="add-to-cart-btn" data-id="${p.id}" aria-label="Add ${sanitizeHTML(p.name)} to Cart">
                                 <i data-lucide="shopping-cart" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -546,16 +546,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             );
             initializeIcons();
         } catch (error) {
-            console.error('Erro ao carregar produtos relacionados:', error);
-            dom.relatedProducts.textContent = 'Erro ao carregar produtos relacionados.';
+            console.error('Error loading related products:', error);
+            dom.relatedProducts.textContent = 'Error loading related products.';
         }
     };
 
     /**
-     * Função de debounce para eventos.
-     * @param {Function} func - Função a ser debounced.
-     * @param {number} wait - Tempo de espera em milissegundos.
-     * @returns {Function} Função debounced.
+     * Debounce function for events.
+     * @param {Function} func - The function to be debounced.
+     * @param {number} wait - The waiting time in milliseconds.
+     * @returns {Function} The debounced function.
      */
     const debounce = (func, wait) => {
         let timeout;
@@ -566,7 +566,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Manipula o evento de scroll para carregamento infinito.
+     * Handles the scroll event for infinite loading.
      */
     const handleScroll = () => {
         if (state.isLoading) return;
@@ -584,22 +584,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     const debouncedHandleScroll = debounce(handleScroll, 100);
 
     /**
-     * Renderiza ações do usuário.
+     * Renders user actions.
      */
     const renderUserActions = () => {
         if (!dom.userActionsContainer) {
-            console.error('Elemento userActionsContainer não encontrado');
+            console.error('userActionsContainer element not found');
             return;
         }
         dom.userActionsContainer.innerHTML = `
-            <button id="themeToggle" class="action-btn" title="Alternar Tema" aria-label="Alternar entre tema claro e escuro">
+            <button id="themeToggle" class="action-btn" title="Toggle Theme" aria-label="Toggle between light and dark theme">
                 <i data-lucide="sun" aria-hidden="true"></i>
                 <i data-lucide="moon" style="display: none;" aria-hidden="true"></i>
             </button>
-            <button id="voiceToggle" class="action-btn" title="Ativar/Desativar Voz" aria-label="Ativar ou Desligar Assistente de Voz">
+            <button id="voiceToggle" class="action-btn" title="Enable/Disable Voice" aria-label="Enable or Disable Voice Assistant">
                 <i data-lucide="${state.isVoiceEnabled ? 'mic' : 'mic-off'}" aria-hidden="true"></i>
             </button>
-            <a href="../cart.html" class="action-btn" title="Carrinho" aria-label="Ver Carrinho">
+            <a href="../cart.html" class="action-btn" title="Cart" aria-label="View Cart">
                 <i data-lucide="shopping-cart" aria-hidden="true"></i>
                 ${state.cartItems.length ? `<span class="cart-badge">${state.cartItems.reduce((sum, item) => sum + item.quantity, 0)}</span>` : ''}
             </a>
@@ -615,8 +615,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     /**
-     * Aplica o tema claro ou escuro.
-     * @param {string} theme - Tema a ser aplicado ('light' ou 'dark').
+     * Applies the light or dark theme.
+     * @param {string} theme - The theme to be applied ('light' or 'dark').
      */
     const applyTheme = (theme) => {
         document.body.classList.toggle('dark-theme', theme === 'dark');
@@ -691,7 +691,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
             updateCartCount();
             animateAddToCart(button);
-            showToast('Adicionado ao carrinho!', 'success');
+            showToast('Added to cart!', 'success');
         });
     }
 
@@ -710,7 +710,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             localStorage.setItem('cartItems', JSON.stringify(cart));
             updateCartCount();
             animateAddToCart(dom.addToCartBtn);
-            showToast('Adicionado ao carrinho!', 'success');
+            showToast('Added to cart!', 'success');
             renderUserActions();
         });
     }
@@ -724,7 +724,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (item) item.quantity += quantity;
             else state.cartItems.push({ id: productId, quantity });
             localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
-            showToast('Indo para checkout!', 'success');
+            showToast('Going to checkout!', 'success');
             setTimeout(() => window.location.href = ' ../checkout.html', 1000);
         });
     }
@@ -739,13 +739,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 dom.wishlistBtn.classList.remove('active');
                 const icon = dom.wishlistBtn.querySelector('i');
                 if (icon) icon.style.fill = 'none';
-                showToast('Removido da lista de desejos', 'info');
+                showToast('Removed from wishlist', 'info');
             } else {
                 state.wishlist.push(productId);
                 dom.wishlistBtn.classList.add('active');
                 const icon = dom.wishlistBtn.querySelector('i');
                 if (icon) icon.style.fill = 'var(--color-brand-primary)';
-                showToast('Adicionado à lista de desejos!', 'success');
+                showToast('Added to wishlist!', 'success');
             }
             localStorage.setItem('wishlist', JSON.stringify(state.wishlist));
             animateWithGsap(
@@ -762,8 +762,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const url = window.location.href;
                 const title = dom.productName?.textContent || 'Produto Bié Okutuala';
                 navigator.share({ title, url })
-                    .then(() => showToast('Compartilhado!', 'success'))
-                    .catch(() => showToast('Erro ao compartilhar', 'error'));
+                    .then(() => showToast('Shared!', 'success'))
+                    .catch(() => showToast('Error sharing', 'error'));
             } else {
                 openShareModal();
             }
@@ -778,8 +778,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         dom.copyLinkBtn.addEventListener('click', () => {
             const url = window.location.href;
             navigator.clipboard.writeText(url)
-                .then(() => showToast('Link copiado!', 'success'))
-                .catch(() => showToast('Erro ao copiar link', 'error'));
+                .then(() => showToast('Link copied!', 'success'))
+                .catch(() => showToast('Error copying link', 'error'));
             closeShareModal();
         });
     }
@@ -862,7 +862,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const newTheme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
             localStorage.setItem('theme', newTheme);
             applyTheme(newTheme);
-            showToast(`Tema ${newTheme === 'dark' ? 'escuro' : 'claro'} ativado!`, 'success');
+            showToast(`Theme ${newTheme === 'dark' ? 'dark' : 'light'} enabled!`, 'success');
             animateWithGsap(
                 'body',
                 { opacity: 1 },
@@ -878,8 +878,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const icon = dom.voiceToggle.querySelector('i');
             if (icon) icon.setAttribute('data-lucide', state.isVoiceEnabled ? 'mic' : 'mic-off');
             initializeIcons();
-            showToast(`Assistente de voz ${state.isVoiceEnabled ? 'ativado' : 'desativado'}!`, 'info');
-            speak(state.isVoiceEnabled ? 'Assistente de voz ativado.' : 'Assistente de voz desativado.');
+            showToast(`Voice assistant ${state.isVoiceEnabled ? 'enabled' : 'disabled'}!`, 'info');
+            speak(state.isVoiceEnabled ? 'Voice assistant enabled.' : 'Voice assistant disabled.');
         });
     }
 
@@ -894,7 +894,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // --- Inicialização ---
+    // --- Initialization ---
     await loadData();
     renderProductDetails();
     renderCategoryFilters();

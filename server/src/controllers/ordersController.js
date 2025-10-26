@@ -1,9 +1,14 @@
 // server/src/controllers/orderController.js
 const { db, mode } = require('../config/db');
 
-// =======================
-// Validar produtos (existe + estoque)
-// =======================
+/**
+ * Validates a list of products, checking for existence and sufficient stock.
+ * @param {Array<Object>} products - An array of product objects to validate.
+ * @param {string} products[].id - The ID of the product.
+ * @param {number} products[].quantity - The quantity of the product.
+ * @throws {Error} If products are invalid, not found, or have insufficient stock.
+ * @returns {Promise<void>}
+ */
 async function validateProducts(products) {
   // Aqui você pode adaptar dependendo de como armazena produtos
   if (!Array.isArray(products) || products.length === 0) {
@@ -28,9 +33,20 @@ async function validateProducts(products) {
   }
 }
 
-// =======================
-// Criar pedido + suporte a pagamentos múltiplos
-// =======================
+/**
+ * Creates a new order.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {Array<Object>} req.body.products - An array of product objects in the order.
+ * @param {number} req.body.total - The total amount of the order.
+ * @param {Object} req.body.shipping_address - The shipping address for the order.
+ * @param {Array<Object>} [req.body.payments=[]] - An array of payment objects for the order.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.createOrder = async (req, res, next) => {
   const { products, total, shipping_address, payments = [] } = req.body;
   const userId = req.user.uid;
@@ -91,9 +107,15 @@ exports.createOrder = async (req, res, next) => {
   }
 };
 
-// =======================
-// Listar pedidos de um usuário + histórico de pagamentos
-// =======================
+/**
+ * Retrieves all orders for the authenticated user.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.getUserOrders = async (req, res, next) => {
   try {
     const userId = req.user.uid;
@@ -121,9 +143,15 @@ exports.getUserOrders = async (req, res, next) => {
   }
 };
 
-// =======================
-// Buscar pedido por ID + histórico de pagamentos
-// =======================
+/**
+ * Retrieves a single order by its ID.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the order to retrieve.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.getOrderById = async (req, res, next) => {
   try {
     const { id } = req.params;

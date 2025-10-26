@@ -1,5 +1,12 @@
 const { db, mode } = require("../config/db");
 
+/**
+ * Middleware to authenticate requests and verify that the user is an admin.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 module.exports = async (req, res, next) => {
     try {
         const userId = req.user?.uid;

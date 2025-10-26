@@ -1,5 +1,13 @@
 const wishlistRepository = require('../repositories/wishlistRepository');
 
+/**
+ * Retrieves the wishlist of the authenticated user.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.id - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @returns {Promise<void>}
+ */
 async function getWishlist(req, res) {
   try {
     const wishlist = await wishlistRepository.getByUserId(req.user.id);
@@ -9,6 +17,16 @@ async function getWishlist(req, res) {
   }
 }
 
+/**
+ * Adds a product to the authenticated user's wishlist.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.productId - The ID of the product to add.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.id - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @returns {Promise<void>}
+ */
 async function addToWishlist(req, res) {
   try {
     const { productId } = req.body;
@@ -19,6 +37,16 @@ async function addToWishlist(req, res) {
   }
 }
 
+/**
+ * Removes a product from the authenticated user's wishlist.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.productId - The ID of the product to remove.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.id - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @returns {Promise<void>}
+ */
 async function removeFromWishlist(req, res) {
   try {
     const { productId } = req.params;

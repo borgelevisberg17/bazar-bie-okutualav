@@ -1,5 +1,7 @@
 
-        // Vanilla JS for interactivity: Menu toggle (basic, expandable)
+        /**
+         * Toggles the mobile menu.
+         */
         const menuToggle = document.querySelector('.menu-toggle');
         const menuExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
         menuToggle.addEventListener('click', () => {
@@ -9,11 +11,19 @@
             console.log('Menu toggled'); // Placeholder for menu logic
         });
 
-        // Smooth animations on scroll for steps (non-trivial: Intersection Observer)
+        /**
+         * Options for the Intersection Observer.
+         * @type {IntersectionObserverInit}
+         */
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
+
+        /**
+         * Intersection Observer for the step animations.
+         * @type {IntersectionObserver}
+         */
         const stepObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {

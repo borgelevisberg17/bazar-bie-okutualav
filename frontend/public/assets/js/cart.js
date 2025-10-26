@@ -2,10 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartItemsContainer = document.querySelector('.cart-items');
     const subtotalEl = document.getElementById('subtotal');
     const shippingEl = document.getElementById('shipping');
-     const totalEl = document.getElementById('total');
+    const totalEl = document.getElementById('total');
 
-let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-let products = [];
+    let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+    let products = [];
+
+    /**
+     * Loads the product data for the items in the cart.
+     * @returns {Promise<void>}
+     */
     async function loadCartProducts() {
         if (cart.length === 0) {
             renderCart();
@@ -19,10 +24,18 @@ let products = [];
         renderCart();
     }
 
+    /**
+     * Formats a number as an AOA currency string.
+     * @param {number} n - The number to format.
+     * @returns {string} The formatted currency string.
+     */
     function formatAOA(n) {
         return `AOA ${n.toLocaleString("pt-AO")}`;
     }
 
+    /**
+     * Renders the cart items in the UI.
+     */
     function renderCart() {
         if (cartItemsContainer) {
             if (cart.length === 0) {
@@ -54,6 +67,9 @@ let products = [];
         updateSummary();
     }
 
+    /**
+     * Updates the cart summary (subtotal, shipping, and total).
+     */
     function updateSummary() {
         const subtotal = cart.reduce((acc, item) => {
             const product = products.find(p => p.id === item.id);

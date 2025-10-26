@@ -1,4 +1,11 @@
-// middleware/errorHandler.js
+/**
+ * Global error handling middleware.
+ * @param {Error} err - The error object.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {void}
+ */
 module.exports = (err, req, res, next) => {
   console.error('[Error Handler]', err.stack);
 

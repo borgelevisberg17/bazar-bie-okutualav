@@ -1,7 +1,11 @@
 const categoriesService = require('../services/categoriesService');
 
 /**
- * List all categories
+ * Lists all categories.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
  */
 exports.list = async (req, res, next) => {
   try {

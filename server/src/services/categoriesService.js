@@ -1,7 +1,9 @@
 const repo = require('../repositories/categoriesRepository');
 
 /**
- * Business logic for categories
+ * Retrieves a list of all categories.
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of category objects.
+ * @throws {Error} If an error occurs while fetching the categories.
  */
 exports.list = async () => {
   try {

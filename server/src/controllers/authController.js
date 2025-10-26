@@ -5,7 +5,12 @@ const { db, mode } = require('../config/db');
 const speakeasy = require('speakeasy');
 const qrcode = require('qrcode');
 
-// Função auxiliar para buscar usuário por campo
+/**
+ * Finds a user in the database by a specific field.
+ * @param {string} field - The database field to search by (e.g., 'id', 'email').
+ * @param {*} value - The value to match.
+ * @returns {Promise<Object|null>} A promise that resolves to the user object or null if not found.
+ */
 const findUser = async (field, value) => {
   if (mode === 'pg') {
     return db.oneOrNone(`SELECT * FROM users WHERE ${field}=$1`, [value]);
@@ -16,7 +21,16 @@ const findUser = async (field, value) => {
   }
 };
 
-// Função auxiliar para criar usuário
+/**
+ * Creates a new user in the database.
+ * @param {Object} userData - The user data.
+ * @param {string} [userData.firebase_uid] - The user's Firebase UID.
+ * @param {string} userData.name - The user's name.
+ * @param {string} userData.email - The user's email.
+ * @param {string} [userData.password_hash] - The user's hashed password.
+ * @param {string} [userData.role='user'] - The user's role.
+ * @returns {Promise<Object>} A promise that resolves to the newly created user object.
+ */
 const createUser = async ({ firebase_uid, name, email, password_hash, role = 'user' }) => {
   if (mode === 'pg') {
     return db.one(
@@ -32,7 +46,16 @@ const createUser = async ({ firebase_uid, name, email, password_hash, role = 'us
   }
 };
 
-// Troca idToken do Firebase por tokens internos
+/**
+ * Exchanges a Firebase ID token for internal access and refresh tokens.
+ * If the user doesn't exist, a new user is created.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.idToken - The Firebase ID token.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.exchangeToken = async (req, res, next) => {
   try {
     const { idToken } = req.body;
@@ -60,7 +83,15 @@ exports.exchangeToken = async (req, res, next) => {
   }
 };
 
-// Disable 2FA
+/**
+ * Disables Two-Factor Authentication (2FA) for the authenticated user.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.disable2FA = async (req, res, next) => {
   try {
     const { uid } = req.user;
@@ -76,7 +107,17 @@ exports.disable2FA = async (req, res, next) => {
   }
 };
 
-// Verify 2FA
+/**
+ * Verifies a 2FA token for the authenticated user.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.token - The 2FA token.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.verify2FA = async (req, res, next) => {
   try {
     const { uid } = req.user;
@@ -109,7 +150,15 @@ exports.verify2FA = async (req, res, next) => {
   }
 };
 
-// Setup 2FA
+/**
+ * Sets up 2FA for the authenticated user, generating a secret and a QR code.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.setup2FA = async (req, res, next) => {
   try {
     const { uid } = req.user;
@@ -138,7 +187,17 @@ exports.setup2FA = async (req, res, next) => {
   }
 };
 
-// Registro tradicional com email/senha
+/**
+ * Registers a new user with email and password.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.name - The user's name.
+ * @param {string} req.body.email - The user's email.
+ * @param {string} req.body.password - The user's password.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -161,7 +220,17 @@ exports.register = async (req, res, next) => {
   }
 };
 
-// Login com email/senha
+/**
+ * Logs in a user with email and password.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.email - The user's email.
+ * @param {string} req.body.password - The user's password.
+ * @param {string} [req.body.token] - The 2FA token, if enabled.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.login = async (req, res, next) => {
   try {
     const { email, password, token } = req.body;
@@ -199,7 +268,15 @@ exports.login = async (req, res, next) => {
   }
 };
 
-// Refresh token
+/**
+ * Refreshes an access token using a refresh token.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.refreshToken - The refresh token.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {void}
+ */
 exports.refreshToken = (req, res, next) => {
   try {
     const { refreshToken } = req.body;

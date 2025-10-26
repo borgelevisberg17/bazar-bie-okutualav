@@ -1,7 +1,11 @@
 const { db, mode } = require("../config/db");
 const { paginate } = require("../utils/pagination");
 
-// Helper para adicionar image_url a partir do JSON de imagens
+/**
+ * Adds an `image_url` property to a product object from its `images` JSON field.
+ * @param {Object} product - The product object.
+ * @returns {Object} The product object with the `image_url` property added.
+ */
 const addImageUrl = product => {
     if (product && product.images && typeof product.images === "string") {
         try {
@@ -17,7 +21,14 @@ const addImageUrl = product => {
     return product;
 };
 
-// 📜 Listar produtos com paginação
+/**
+ * Lists products with pagination.
+ * @param {Object} options - The options for listing products.
+ * @param {number} [options.page=1] - The page number.
+ * @param {number} [options.limit=10] - The number of items per page.
+ * @param {string} [options.status] - The product status to filter by.
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of product objects.
+ */
 exports.list = async ({ page, limit, status }) => {
     const { limit: pageLimit, offset } = paginate(page, limit);
 
@@ -75,7 +86,11 @@ exports.list = async ({ page, limit, status }) => {
     }
 };
 
-// 📜 Buscar produto por ID
+/**
+ * Retrieves a single product by its ID.
+ * @param {string} id - The ID of the product to retrieve.
+ * @returns {Promise<Object|null>} A promise that resolves to the product object, or null if not found.
+ */
 exports.get = async id => {
     if (mode === "pg") {
         return db.oneOrNone(
@@ -99,7 +114,12 @@ exports.get = async id => {
     }
 };
 
-// ➕ Criar produto
+/**
+ * Creates a new product in the database.
+ * @param {string} sellerUid - The Firebase UID of the seller.
+ * @param {Object} p - The product data.
+ * @returns {Promise<Object>} A promise that resolves to the newly created product object.
+ */
 exports.create = async (sellerUid, p) => {
     if (mode === "pg") {
         return db.one(
@@ -146,7 +166,12 @@ exports.create = async (sellerUid, p) => {
     }
 };
 
-// ✏️ Atualizar produto
+/**
+ * Updates an existing product in the database.
+ * @param {string} id - The ID of the product to update.
+ * @param {Object} p - The updated product data.
+ * @returns {Promise<Object>} A promise that resolves to the updated product object.
+ */
 exports.update = async (id, p) => {
     if (mode === "pg") {
         return db.one(
@@ -195,7 +220,11 @@ exports.update = async (id, p) => {
     }
 };
 
-// ❌ Remover produto
+/**
+ * Removes a product from the database.
+ * @param {string} id - The ID of the product to remove.
+ * @returns {Promise<void>}
+ */
 exports.remove = async id => {
     if (mode === "pg") {
         return db.none("DELETE FROM products WHERE id=$1", [id]);

@@ -15,24 +15,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let secret = '';
 
-    // Check 2FA status
-    try {
-        const res = await fetch('/api/users/me', {
-            headers: { 'Authorization': `Bearer ${accessToken}` }
-        });
-        const user = await res.json();
-        if (user.two_factor_enabled) {
-            statusDiv.textContent = '2FA is currently enabled on your account.';
-            setupBtn.style.display = 'none';
-            disableBtn.style.display = 'block';
-        } else {
-            statusDiv.textContent = '2FA is currently disabled on your account.';
+    /**
+     * Fetches the user's 2FA status and updates the UI accordingly.
+     */
+    async function check2FAStatus() {
+        try {
+            const res = await fetch('/api/users/me', {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            const user = await res.json();
+            if (user.two_factor_enabled) {
+                statusDiv.textContent = '2FA is currently enabled on your account.';
+                setupBtn.style.display = 'none';
+                disableBtn.style.display = 'block';
+            } else {
+                statusDiv.textContent = '2FA is currently disabled on your account.';
+            }
+        } catch (err) {
+            console.error('Error fetching user status:', err);
         }
-    } catch (err) {
-        console.error('Error fetching user status:', err);
     }
 
-    setupBtn.addEventListener('click', async () => {
+    /**
+     * Sets up 2FA by fetching a QR code and secret from the server.
+     */
+    async function setup2FA() {
         try {
             const res = await fetch('/api/auth/setup-2fa', {
                 method: 'POST',
@@ -46,9 +53,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (err) {
             console.error('Error setting up 2FA:', err);
         }
-    });
+    }
 
-    verifyBtn.addEventListener('click', async () => {
+    /**
+     * Verifies the OTP token entered by the user.
+     */
+    async function verify2FA() {
         const token = otpInput.value;
         try {
             const res = await fetch('/api/auth/verify-2fa', {
@@ -69,9 +79,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (err) {
             console.error('Error verifying 2FA:', err);
         }
-    });
+    }
 
-    disableBtn.addEventListener('click', async () => {
+    /**
+     * Disables 2FA for the user.
+     */
+    async function disable2FA() {
         try {
             const res = await fetch('/api/auth/disable-2fa', {
                 method: 'POST',
@@ -87,5 +100,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (err) {
             console.error('Error disabling 2FA:', err);
         }
-    });
+    }
+
+    check2FAStatus();
+    setupBtn.addEventListener('click', setup2FA);
+    verifyBtn.addEventListener('click', verify2FA);
+    disableBtn.addEventListener('click', disable2FA);
 });

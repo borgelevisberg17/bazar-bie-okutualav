@@ -52,7 +52,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         { id: 1, from: 'Ana P.', avatar: 'https://getavataaars.com/?avatarStyle=Circle&topType=LongHairMiaWallace&hairColor=Blonde&clotheType=BlazerShirt&clotheColor=Black&eyeType=Happy&mouthType=Smile&skinColor=Light', preview: 'O iPhone está disponível?', date: '2025-06-09' },
     ];
 
-    // Helpers
+    /**
+     * Shows a toast notification.
+     * @param {string} message - The message to display.
+     * @param {'success' | 'info' | 'error'} [type='success'] - The type of toast.
+     */
     const showToast = (message, type = 'success') => {
         toast.textContent = message;
         toast.className = `toast show ${type}`;
@@ -60,6 +64,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (isVoiceEnabled) speak(message);
     };
 
+    /**
+     * Speaks a given text using the browser's speech synthesis API.
+     * @param {string} text - The text to speak.
+     */
     const speak = (text) => {
         if (!window.speechSynthesis) return;
         const utterance = new SpeechSynthesisUtterance(text);
@@ -68,12 +76,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.speechSynthesis.speak(utterance);
     };
 
+    /**
+     * Generates HTML for rating stars.
+     * @param {number} rating - The rating value (0 to 5).
+     * @returns {string} The HTML for the stars.
+     */
     const renderStars = (rating) => {
         return Array(5).fill().map((_, i) => `
             <i data-lucide="star" style="fill: ${i < Math.round(rating) ? 'var(--star-color)' : 'none'}; color: var(--star-color);"></i>
         `).join('');
     };
 
+    /**
+     * Initializes Lucide icons.
+     */
     const initializeIcons = () => {
         try {
             lucide.createIcons();
@@ -82,6 +98,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    /**
+     * Updates the cart counter in the UI.
+     */
     const updateCartCount = () => {
         const cartCountEl = document.querySelector('.cart-badge');
         if (cartCountEl) {
@@ -89,7 +108,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // Render Functions
+    /**
+     * Renders the user's profile information.
+     * @returns {Promise<void>}
+     */
     const renderUserInfo = async () => {
         try {
             const accessToken = localStorage.getItem('accessToken');
@@ -114,6 +136,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    /**
+     * Renders the user's order history.
+     */
     const renderOrders = () => {
         ordersList.innerHTML = orders.map(order => {
             const product = products.find(p => p.id === order.productId);
@@ -136,6 +161,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         gsap.from('.order-item', { opacity: 0, y: 20, stagger: 0.1, duration: 0.6 });
     };
 
+    /**
+     * Renders the user's wishlist.
+     */
     const renderWishlist = () => {
         wishlistItems.innerHTML = wishlist.map(id => {
             const product = products.find(p => p.id === id);
@@ -155,6 +183,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         gsap.from('.product-card', { opacity: 0, y: 20, stagger: 0.1, duration: 0.6 });
     };
 
+    /**
+     * Renders the user's product listings.
+     */
     const renderListings = () => {
         listingsItems.innerHTML = listings.map(listing => `
             <div class="product-card">
@@ -171,6 +202,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         gsap.from('.product-card', { opacity: 0, y: 20, stagger: 0.1, duration: 0.6 });
     };
 
+    /**
+     * Renders the user's messages.
+     */
     const renderMessages = () => {
         messagesList.innerHTML = messages.map(message => `
             <div class="message-item" data-id="${message.id}">
@@ -186,6 +220,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         gsap.from('.message-item', { opacity: 0, y: 20, stagger: 0.1, duration: 0.6 });
     };
 
+    /**
+     * Renders the user's settings.
+     */
     const renderSettings = () => {
         themeToggle.checked = localStorage.getItem('theme') === 'dark';
         voiceToggle.checked = isVoiceEnabled;
@@ -193,6 +230,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         deliveryAddress.value = localStorage.getItem('deliveryAddress') || '';
     };
 
+    /**
+     * Renders the user action buttons.
+     */
     const renderUserActions = () => {
         userActionsContainer.innerHTML = `
             <button class="action-btn" title="Alternar Tema" data-action="theme-toggle">

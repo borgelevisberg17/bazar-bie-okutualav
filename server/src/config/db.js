@@ -5,6 +5,13 @@ require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 const chalk = require("chalk"); // 🔹 Melhor visual para logs
 let db, mode, pgp;
 
+/**
+ * A simple logger for database-related messages.
+ * @property {Function} info - Logs an informational message.
+ * @property {Function} success - Logs a success message.
+ * @property {Function} warn - Logs a warning message.
+ * @property {Function} error - Logs an error message.
+ */
 const log = {
     info: msg => console.log(chalk.blueBright(`[INFO] ${msg}`)),
     success: msg => console.log(chalk.greenBright(`[OK] ${msg}`)),
@@ -90,7 +97,13 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
 // 🔸 MÉTODOS UTILITÁRIOS
 // ======================================================
 
-// Query com log, cache e fallback automático
+/**
+ * Executes a raw SQL query with logging, caching, and a simple fallback mechanism.
+ * @param {string} sql - The SQL query to execute.
+ * @param {Array} [params=[]] - The parameters for the query.
+ * @returns {Promise<any>} A promise that resolves to the query result.
+ * @throws {Error} If the query fails, or if the database mode is not 'pg'.
+ */
 db.runQuery = async (sql, params = []) => {
     if (mode !== "pg")
         throw new Error("⚠️ Query raw não suportada neste modo.");
@@ -128,7 +141,12 @@ db.runQuery = async (sql, params = []) => {
     }
 };
 
-// Transações seguras
+/**
+ * Executes a callback function within a database transaction.
+ * @param {Function} callback - The function to execute within the transaction.
+ * @returns {Promise<any>} A promise that resolves to the result of the callback.
+ * @throws {Error} If the transaction fails.
+ */
 db.safeTransaction = async callback => {
     if (mode === "pg") {
         return db.tx(async t => {
@@ -147,6 +165,9 @@ db.safeTransaction = async callback => {
     }
 };
 
+/**
+ * Closes the database connection pool.
+ */
 const close = () => {
     if (pgp) {
         pgp.end();

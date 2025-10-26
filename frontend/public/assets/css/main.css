@@ -1,8 +1,18 @@
 @import url("style.css");
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
 .btn-primary {
     display: inline-block;
     background-color: var(--primary-color);
-    color: white;
+    color: var(--light-color);
     margin: 1rem;
     padding: 0.6rem 2rem;
     border-radius: 50px;
@@ -40,12 +50,12 @@ a {
     text-align: center;
 }
 .hero-content h1 {
-    font-family: var(--font-display);
+    font-family: var(--font-family-sans-serif);
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1rem;
-    color: white;
+    color: var(--light-color);
     text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
 }
 .search-container {
@@ -67,11 +77,11 @@ a {
     font-size: 1rem;
 }
 .search-container input::placeholder {
-    color: var(--color-brand-primary);
+    color: var(--primary-color);
 }
 .search-container .btn-search {
-    background-color: var(--color-brand-primary);
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--light-color);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
     height: 30px;
@@ -88,7 +98,7 @@ a {
     padding: 5rem 0;
 }
 .section-title {
-    font-family: var(--font-display);
+    font-family: var(--font-family-sans-serif);
     font-size: 2.5rem;
     font-weight: 700;
     text-align: center;
@@ -185,9 +195,9 @@ a {
     color: var(--color-text-primary);
 }
 .filter-btn.active {
-    background-color: var(--color-brand-secondary);
-    color: white;
-    border-color: var(--color-brand-secondary);
+    background-color: var(--secondary-color);
+    color: var(--light-color);
+    border-color: var(--secondary-color);
 }
 .products-grid {
     display: flex;
@@ -272,16 +282,16 @@ a {
     color: white;
 }
 .product-tag.novo {
-    background-color: var(--color-tag-new);
+    background-color: var(--info-color);
 }
 .product-tag.promocao {
-    background-color: var(--color-tag-promo);
+    background-color: var(--warning-color);
 }
 .product-info {
     padding: 0.4rem;
 }
 .product-info h3 {
-    font-family: var(--font-display);
+    font-family: var(--font-family-sans-serif);
     font-size: 0.7rem;
     font-weight: 500;
     color: var(--color-text-primary);
@@ -302,9 +312,24 @@ a {
     padding: 0.2rem;
 }
 
+.btn-wishlist {
+    background-color: transparent;
+    color: var(--danger-color);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.btn-wishlist:hover {
+    color: #a80000;
+}
+
 .btn-cart {
-    background-color: var(--color-brand-primary);
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--light-color);
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -372,7 +397,7 @@ a {
     padding: 1rem;
 }
 .tops-container h2 {
-    font-family: var(--font-display);
+    font-family: var(--font-family-sans-serif);
     font-size: 1.3rem;
     font-weight: 500;
     color: var(--color-text-primary);
@@ -381,7 +406,7 @@ a {
 }
 
 .tops-container .products-section h2 {
-    font-family: var(--font-display);
+    font-family: var(--font-family-sans-serif);
     font-size: 1.3rem;
     font-weight: 500;
     margin-bottom: 1.5rem;
@@ -406,8 +431,8 @@ a {
 
 /* --- FOOTER --- */
 .main-footer {
-    background-color: #2c261f;
-    color: #e9e2d6;
+    background-color: var(--dark-color);
+    color: var(--light-color);
     padding: 4rem 0;
     text-align: center;
 }
@@ -418,17 +443,17 @@ a {
     gap: 1.5rem;
 }
 .footer-logo {
-    font-family: var(--font-display);
+    font-family: var(--font-family-sans-serif);
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--color-brand-primary);
+    color: var(--primary-color);
 }
 .footer-links {
     display: flex;
     gap: 2rem;
 }
 .footer-links a {
-    color: #e9e2d6;
+    color: var(--light-color);
     font-weight: 500;
 }
 .footer-socials {

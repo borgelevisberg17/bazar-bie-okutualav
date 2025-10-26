@@ -20,6 +20,8 @@
             href="https://unpkg.com/aos@2.3.1/dist/aos.css"
             rel="stylesheet"
         />
+        <link rel="stylesheet" href="./assets/css/design-system.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" href="./assets/css/components/navbar.css" />
         <link rel="stylesheet" href="./assets/css/categorias.css" />
     </head>
@@ -264,9 +266,10 @@
         </nav>
         
         <div class="hero-search">
-            <div class="hero-searchbar">
-                <input type="text" placeholder="Estou procurando por..." />
-                <button class="btn-search">
+            <form class="hero-searchbar" role="search">
+                <label for="search-input" class="sr-only">Procurar por...</label>
+                <input type="text" id="search-input" placeholder="Estou procurando por..." />
+                <button class="btn-search" aria-label="Procurar">
                     <span class="search-icon">
                         <svg
                             width="18"
@@ -313,6 +316,8 @@
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <script src="assets/js/config.js"></script>
         <script src="assets/js/geral.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script src="assets/js/notifications.js"></script>
         <script src="assets/js/categorias.js"></script>
     </body>
 </html>

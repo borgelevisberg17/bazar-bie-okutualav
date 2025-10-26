@@ -1,6 +1,22 @@
 const { db, mode } = require("../config/db");
 const { paginate } = require("../utils/pagination");
 
+// Helper para adicionar image_url a partir do JSON de imagens
+const addImageUrl = product => {
+    if (product && product.images && typeof product.images === "string") {
+        try {
+            const images = JSON.parse(product.images);
+            if (Array.isArray(images) && images.length > 0) {
+                product.image_url = images[0].url;
+            }
+        } catch (e) {
+            console.error("Erro ao parsear JSON de imagens:", e);
+            product.image_url = null;
+        }
+    }
+    return product;
+};
+
 // 📜 Listar produtos com paginação
 exports.list = async ({ page, limit, status }) => {
     const { limit: pageLimit, offset } = paginate(page, limit);
@@ -8,8 +24,9 @@ exports.list = async ({ page, limit, status }) => {
     if (mode === "pg") {
         let query = `
       SELECT p.*,
+             (p.images->0->>'url') as image_url,
              u.name as seller_name,
-             u.avatar_url as seller_avatar
+             u.avatar_url as seller_avatar_url
       FROM products p
       JOIN users u ON u.id = p.seller_id
     `;
@@ -23,7 +40,7 @@ exports.list = async ({ page, limit, status }) => {
 
         return db.any(query, params);
     } else {
-        // Supabase query with join and pagination
+        // Supabase query com join e paginação
         const { data, error } = await db
             .from("products")
             .select(
@@ -31,7 +48,7 @@ exports.list = async ({ page, limit, status }) => {
         *,
         users (
           name,
-          avatar
+          avatar_url
         )
       `
             )
@@ -46,10 +63,13 @@ exports.list = async ({ page, limit, status }) => {
         // Flatten the response to match frontend expectations
         return data.map(p => {
             const { users, ...productData } = p;
+            const image_url =
+                p.images && p.images.length > 0 ? p.images[0].url : null;
             return {
                 ...productData,
+                image_url,
                 seller_name: users ? users.name : "Vendedor Anônimo",
-                seller_avatar: users ? users.avatar : null
+                seller_avatar_url: users ? users.avatar_url : null
             };
         });
     }
@@ -60,7 +80,11 @@ exports.get = async id => {
     if (mode === "pg") {
         return db.oneOrNone(
             `
-      SELECT p.*, u.name as seller_name, u.email as seller_email
+      SELECT p.*,
+             (p.images->0->>'url') as image_url,
+             u.name as seller_name,
+             u.avatar_url as seller_avatar_url,
+             u.email as seller_email
       FROM products p
       JOIN users u ON u.id = p.seller_id
       WHERE p.id=$1
@@ -68,9 +92,10 @@ exports.get = async id => {
             [id]
         );
     } else {
-        const { data, error } = await db.select("products");
+        const { data, error } = await db.select("products"); // Simplificado
         if (error) throw error;
-        return data.find(p => p.id === id);
+        const product = data.find(p => p.id === id);
+        return addImageUrl(product); // Adiciona image_url
     }
 };
 
@@ -111,7 +136,7 @@ exports.create = async (sellerUid, p) => {
                 description: p.description,
                 price: p.price,
                 currency: p.currency || "AOA",
-                images: p.images,
+                images: p.images, // Deve ser um JSON
                 stock: p.stock || 0,
                 tag: p.tag
             }
@@ -131,7 +156,7 @@ exports.update = async (id, p) => {
           description=COALESCE($3, description),
           price=COALESCE($4, price),
           currency=COALESCE($5, currency),
-          image_url=COALESCE($6, image_url),
+          images=COALESCE($6, images),
           stock=COALESCE($7, stock),
           tag=COALESCE($8, tag),
           status=COALESCE($9, status),
@@ -145,7 +170,7 @@ exports.update = async (id, p) => {
                 p.description,
                 p.price,
                 p.currency,
-                p.image_url,
+                p.images, // Corrigido para images
                 p.stock,
                 p.tag,
                 p.status
@@ -159,7 +184,7 @@ exports.update = async (id, p) => {
                 description: p.description,
                 price: p.price,
                 currency: p.currency,
-                image_url: p.image_url,
+                images: p.images, // Corrigido para images
                 stock: p.stock,
                 tag: p.tag
             },

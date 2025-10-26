@@ -31,6 +31,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         });
     }
+
+    /**
+     * Loads all the necessary data for the page (categories, products, sellers).
+     * @returns {Promise<void>}
+     */
     await loadPageData();
     async function loadPageData() {
         try {
@@ -57,6 +62,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    /**
+     * Renders the category list.
+     * @param {Array<Object>} categories - The array of category objects.
+     */
     function renderCategories(categories) {
         if (!categoryShelf) return;
         if (categories.length === 0) {
@@ -87,6 +96,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    /**
+     * Renders the filter buttons.
+     * @param {Array<Object>} categories - The array of category objects.
+     */
     function renderFilters(categories) {
         if (!filtersContainer) return;
         filtersContainer.innerHTML = "";
@@ -105,6 +118,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    /**
+     * Creates a product card element.
+     * @param {Object} product - The product object.
+     * @returns {HTMLElement} The product card element.
+     */
     function renderProductCard(product) {
         const productCard = document.createElement("article");
         productCard.className = "product-card";
@@ -139,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <p class="product-price">
             ${parseFloat(product.price).toLocaleString("pt-AO")}Kz
         </p></div>
-          
+
             <div class="card-actions">
                 <button class="btn-wishlist" aria-label="Adicionar aos favoritos">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -158,7 +176,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </button>
             </div>
         </div>
-    
+
 </a>
 `;
         const cartButton = productCard.querySelector(".btn-cart");
@@ -180,6 +198,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         return productCard;
     }
 
+    /**
+     * Renders a list of products in a given container.
+     * @param {HTMLElement} container - The container element to render the products in.
+     * @param {Array<Object>} productsToRender - The array of product objects to render.
+     * @param {boolean} [append=false] - Whether to append the products to the container or replace its content.
+     */
     function renderProducts(container, productsToRender, append = false) {
         if (!container) return;
         if (productsToRender.length === 0) {
@@ -202,6 +226,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    /**
+     * Renders the list of sellers.
+     * @param {Array<Object>} sellersToRender - The array of seller objects.
+     */
     function renderSellers(sellersToRender) {
         if (!sellersGrid) return;
         if (sellersToRender.length === 0) {
@@ -230,6 +258,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Erro ao criar ícones Lucide:", e);
     }
 
+    /**
+     * Sets up the event listeners for the filter buttons.
+     */
     function setupFiltering() {
         const filterButtons = document.querySelectorAll(".filter-btn");
         const productCards = document.querySelectorAll(".product-card");
@@ -263,6 +294,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         });
     }
+
+    /**
+     * Handles the "Load More" button click event.
+     * @returns {Promise<void>}
+     */
     async function handleLoadMore() {
         currentPage++;
         try {
@@ -279,6 +315,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         loadMoreBtn.addEventListener("click", handleLoadMore);
     }
 
+    /**
+     * Sets up the scroll behavior for the main header.
+     */
     function setupHeaderScroll() {
         const header = document.getElementById("mainHeader");
         if (header) {

@@ -10,9 +10,20 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// =======================
-// Criar pagamento
-// =======================
+/**
+ * Creates a new payment for an order.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.orderId - The ID of the order.
+ * @param {number} req.body.amount - The payment amount.
+ * @param {string} req.body.userEmail - The user's email address.
+ * @param {string} req.body.method - The payment method.
+ * @param {string} [req.body.receiptFileBase64] - The base64 encoded receipt file.
+ * @param {string} [req.body.receiptFileType] - The MIME type of the receipt file.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.createPayment = async (req, res, next) => {
   const client = mode === "pg" ? await db.client() : null; // para transação PG
   try {
@@ -127,9 +138,16 @@ exports.createPayment = async (req, res, next) => {
   }
 };
 
-// =======================
-// Atualizar status do pagamento
-// =======================
+/**
+ * Updates the status of a payment.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.paymentId - The ID of the payment to update.
+ * @param {string} req.body.status - The new status for the payment.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.updatePaymentStatus = async (req, res, next) => {
   try {
     const { paymentId, status } = req.body;
@@ -158,9 +176,15 @@ exports.updatePaymentStatus = async (req, res, next) => {
   }
 };
 
-// =======================
-// Listar pagamentos (admin)
-// =======================
+/**
+ * Lists all payments (admin only).
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.role - The user's role.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.listPayments = async (req, res, next) => {
   try {
     if (!req.user || req.user.role !== 'admin') return res.status(403).json({ error: 'Apenas admin pode acessar.' });
@@ -180,9 +204,15 @@ exports.listPayments = async (req, res, next) => {
   }
 };
 
-// =======================
-// Listar pagamentos pendentes (admin)
-// =======================
+/**
+ * Lists all pending payments (admin only).
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.role - The user's role.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.listPendingPayments = async (req, res, next) => {
   try {
     if (!req.user || req.user.role !== 'admin') return res.status(403).json({ error: 'Apenas admin pode acessar.' });
@@ -207,9 +237,17 @@ exports.listPendingPayments = async (req, res, next) => {
   }
 };
 
-// =======================
-// Aprovar pagamento (admin)
-// =======================
+/**
+ * Approves a payment (admin only).
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.paymentId - The ID of the payment to approve.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.role - The user's role.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.approvePayment = async (req, res, next) => {
   try {
     const { paymentId } = req.body;
@@ -246,9 +284,18 @@ exports.approvePayment = async (req, res, next) => {
   }
 };
 
-// =======================
-// Rejeitar pagamento (admin)
-// =======================
+/**
+ * Rejects a payment (admin only).
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.paymentId - The ID of the payment to reject.
+ * @param {string} [req.body.reason] - The reason for rejecting the payment.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.role - The user's role.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.rejectPayment = async (req, res, next) => {
   try {
     const { paymentId, reason } = req.body;

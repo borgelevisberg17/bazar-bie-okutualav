@@ -14,9 +14,10 @@ const db = pgp(DATABASE_URL);
 const meili = new MeiliSearch({ host: MEILI_HOST, apiKey: MEILI_MASTER_KEY });
 
 /**
- * Atualiza o índice do Meilisearch
- * @param {string} indexName - nome do índice
- * @param {object} payload - dados do evento do PostgreSQL
+ * Updates a MeiliSearch index with a given payload.
+ * @param {string} indexName - The name of the index to update.
+ * @param {object} payload - The data from the PostgreSQL event.
+ * @returns {Promise<void>}
  */
 async function updateIndex(indexName, payload) {
   try {
@@ -28,6 +29,10 @@ async function updateIndex(indexName, payload) {
   }
 }
 
+/**
+ * IIFE to connect to the PostgreSQL database and listen for notifications on the 'meili' channel.
+ * When a notification is received, it parses the payload and updates the corresponding MeiliSearch index.
+ */
 (async () => {
   const client = await db.connect();
 

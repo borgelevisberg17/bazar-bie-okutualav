@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('seller-application-form');
 
+  /**
+   * Handles the submission of the seller application form.
+   * @param {Event} e - The form submission event.
+   */
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 

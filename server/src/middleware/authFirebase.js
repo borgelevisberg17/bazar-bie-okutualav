@@ -1,5 +1,12 @@
 const admin = require('../config/firebaseAdmin');
 
+/**
+ * Middleware to authenticate requests using a Firebase ID token.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 module.exports = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization || '';

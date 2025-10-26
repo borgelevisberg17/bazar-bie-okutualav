@@ -1,6 +1,17 @@
 const { db } = require('../config/db');
 const { processPayment } = require('../utils/paymentGateway');
 
+/**
+ * Creates a new seller application.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {Object} req.body.paymentInfo - Payment information for the application fee.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.createSellerApplication = async (req, res, next) => {
   try {
     const { paymentInfo } = req.body;
@@ -26,6 +37,13 @@ exports.createSellerApplication = async (req, res, next) => {
   }
 };
 
+/**
+ * Retrieves all pending seller applications.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.getSellerApplications = async (req, res, next) => {
   try {
     const applications = await db.any(
@@ -40,6 +58,17 @@ exports.getSellerApplications = async (req, res, next) => {
   }
 };
 
+/**
+ * Updates the status of a seller application.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the application to update.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.status - The new status for the application ('approved' or 'rejected').
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.updateSellerApplication = async (req, res, next) => {
   try {
     const { id } = req.params;

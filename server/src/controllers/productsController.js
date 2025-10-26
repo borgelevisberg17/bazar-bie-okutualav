@@ -7,13 +7,25 @@ const {
     getProductSchema
 } = require("../validators/productSchemas");
 const validate = require("../middleware/validate");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
-// 📜 Listar produtos
+/**
+ * Lists all products with optional pagination and status filtering.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.query - The query parameters.
+ * @param {number} [req.query.page=1] - The page number.
+ * @param {number} [req.query.limit=10] - The number of items per page.
+ * @param {string} [req.query.status] - The product status to filter by.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.list = [
     validate(listProductsSchema, "query"),
     async (req, res, next) => {
         try {
-            const { page, limit,  status } = req.query;
+            const { page, limit, status } = req.query;
             const data = await productService.list({ page, limit, status });
             res.json(ok(data));
         } catch (err) {
@@ -22,7 +34,15 @@ exports.list = [
     }
 ];
 
-// 📜 Buscar produto por ID
+/**
+ * Retrieves a single product by its ID.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the product to retrieve.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.get = [
     validate(getProductSchema, "params"),
     async (req, res, next) => {
@@ -37,10 +57,18 @@ exports.get = [
     }
 ];
 
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
-
-// ➕ Criar produto (upload + indexação Meili)
+/**
+ * Creates a new product.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {Array<Object>} [req.files] - An array of uploaded image files.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.role - The user's role.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.create = [
     upload.array("images", 10),
     validate(createProductSchema),
@@ -72,7 +100,16 @@ exports.create = [
     }
 ];
 
-// ✏️ Atualizar produto
+/**
+ * Updates an existing product.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the product to update.
+ * @param {Object} req.body - The updated product data.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.update = [
     validate(getProductSchema, "params"),
     async (req, res, next) => {
@@ -88,7 +125,15 @@ exports.update = [
     }
 ];
 
-// ❌ Remover produto
+/**
+ * Removes a product.
+ * @param {Object} req - The Express request object.
+_@param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the product to remove.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.remove = [
     validate(getProductSchema, "params"),
     async (req, res, next) => {

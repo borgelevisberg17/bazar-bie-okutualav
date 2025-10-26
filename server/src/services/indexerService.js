@@ -1,9 +1,10 @@
 import meiliClient from './meiliClient.js'; // seu arquivo acima
 
 /**
- * Index a single product
- * @param {object} product
- * @param {string} indexName
+ * Indexes a single product in MeiliSearch.
+ * @param {object} product - The product object to index.
+ * @param {string} [indexName='products'] - The name of the MeiliSearch index.
+ * @returns {Promise<void>}
  */
 export async function indexProduct(product, indexName = 'products') {
   try {
@@ -16,9 +17,10 @@ export async function indexProduct(product, indexName = 'products') {
 }
 
 /**
- * Index multiple products
- * @param {Array} products
- * @param {string} indexName
+ * Indexes multiple products in MeiliSearch in bulk.
+ * @param {Array<object>} products - An array of product objects to index.
+ * @param {string} [indexName='products'] - The name of the MeiliSearch index.
+ * @returns {Promise<void>}
  */
 export async function indexProductsBulk(products, indexName = 'products') {
   if (!Array.isArray(products) || products.length === 0) return;
@@ -26,7 +28,8 @@ export async function indexProductsBulk(products, indexName = 'products') {
     const index = meiliClient.index(indexName);
     await index.addDocuments(products);
     console.log(`✅ Bulk indexed ${products.length} products in '${indexName}'`);
-  } catch (err) {
+  } catch (err)
+ {
     console.error(`❌ Failed bulk indexing:`, err);
   }
 }

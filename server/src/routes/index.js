@@ -1,5 +1,11 @@
 const { Router } = require('express');
 const router = Router();
+
+/**
+ * Main router for the application.
+ * @module routes/index
+ */
+
 router.use('/auth', require('./auth'));
 router.use('/users', require('./users'));
 router.use('/products', require('./products'));

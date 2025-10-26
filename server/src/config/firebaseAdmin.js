@@ -1,5 +1,9 @@
 const admin = require("firebase-admin");
 
+/**
+ * Indicates whether the Firebase credentials are present in the environment variables.
+ * @type {boolean}
+ */
 const hasCredentials =
     process.env.FIREBASE_PROJECT_ID &&
     process.env.FIREBASE_CLIENT_EMAIL &&
@@ -32,4 +36,8 @@ if (process.env.NODE_ENV !== "test" && hasCredentials) {
     );
 }
 
+/**
+ * The initialized Firebase Admin SDK instance.
+ * @type {import('firebase-admin')}
+ */
 module.exports = admin;

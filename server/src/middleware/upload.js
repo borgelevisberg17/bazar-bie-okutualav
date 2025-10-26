@@ -8,6 +8,10 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/**
+ * Multer storage engine for Cloudinary.
+ * @type {CloudinaryStorage}
+ */
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
@@ -17,6 +21,10 @@ const storage = new CloudinaryStorage({
     },
 });
 
+/**
+ * Multer middleware for handling file uploads to Cloudinary.
+ * @type {import('multer').Multer}
+ */
 const upload = multer({ storage: storage });
 
 module.exports = upload;

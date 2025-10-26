@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const ordersListContainer = document.getElementById('orders-list');
 
+    /**
+     * Loads and displays the user's orders.
+     * @returns {Promise<void>}
+     */
     async function loadOrders() {
         try {
             const accessToken = localStorage.getItem('accessToken');

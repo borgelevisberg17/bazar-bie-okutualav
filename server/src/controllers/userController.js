@@ -1,7 +1,15 @@
 // controllers/userController.js
 const { db, mode } = require('../config/db');
 
-// Perfil do usuário autenticado
+/**
+ * Retrieves the profile of the authenticated user.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.getProfile = async (req, res, next) => {
   try {
     const userId = req.user?.uid;
@@ -27,7 +35,18 @@ exports.getProfile = async (req, res, next) => {
   }
 };
 
-// (Admin) Atualizar um usuário
+/**
+ * Updates a user's role or status (Admin only).
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the user to update.
+ * @param {Object} req.body - The request body.
+ * @param {string} [req.body.role] - The new role for the user.
+ * @param {string} [req.body.status] - The new status for the user.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -43,7 +62,7 @@ exports.updateUser = async (req, res, next) => {
     if (mode === 'pg') {
       const updatedUser = await db.one(
         `UPDATE users SET
-          role = COALESce($1, role),
+          role = COALESCE($1, role),
           status = COALESCE($2, status),
           updated_at = NOW()
          WHERE id = $3
@@ -74,7 +93,15 @@ exports.updateUser = async (req, res, next) => {
   }
 };
 
-// (Admin) Deletar um usuário
+/**
+ * Deletes a user (Admin only).
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the user to delete.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -97,7 +124,20 @@ exports.deleteUser = async (req, res, next) => {
   }
 };
 
-// Atualizar perfil
+/**
+ * Updates the profile of the authenticated user.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} req.body - The request body.
+ * @param {string} [req.body.name] - The user's new name.
+ * @param {string} [req.body.phone] - The user's new phone number.
+ * @param {string} [req.body.avatar_url] - The URL of the user's new avatar.
+ * @param {Object} [req.body.metadata] - The user's new metadata.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.updateProfile = async (req, res, next) => {
   try {
     const userId = req.user?.uid;
@@ -107,7 +147,7 @@ exports.updateProfile = async (req, res, next) => {
 
     if (mode === 'pg') {
       const updated = await db.one(
-        `UPDATE users SET 
+        `UPDATE users SET
           name = COALESCE($1, name),
           phone = COALESCE($2, phone),
           avatar_url = COALESCE($3, avatar_url),
@@ -142,7 +182,15 @@ exports.updateProfile = async (req, res, next) => {
   }
 };
 
-// Listar todos os usuários (apenas admin)
+/**
+ * Lists all users (Admin only).
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.query - The query parameters.
+ * @param {string} [req.query.role] - The role to filter users by.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
 exports.listUsers = async (req, res, next) => {
   try {
     const { role } = req.query;

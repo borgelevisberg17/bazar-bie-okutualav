@@ -6,9 +6,36 @@ const authFirebase = require('../middleware/authFirebase');
 const router = Router();
 
 /**
- * Upload genérico
- * type: avatar | product | storeDoc
- * Para product e storeDoc, enviar productId/storeId no body
+ * @swagger
+ * tags:
+ *   name: Uploads
+ *   description: File upload routes
+ */
+
+/**
+ * @swagger
+ * /uploads:
+ *   post:
+ *     summary: Upload a file.
+ *     tags: [Uploads]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 enum: [avatar, product, storeDoc]
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: The uploaded file URL.
  */
 router.post('/', authFirebase, async (req, res, next) => {
   try {

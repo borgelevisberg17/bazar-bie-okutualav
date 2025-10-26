@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sidebarBtns = document.querySelectorAll('.sidebar-btn');
     const sections = document.querySelectorAll('.dashboard-section');
 
+    /**
+     * Fetches and displays the seller's store data, including products and store settings.
+     * @returns {Promise<void>}
+     */
     async function getStoreData() {
         const accessToken = localStorage.getItem('accessToken');
         try {
@@ -44,6 +48,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    /**
+     * Renders the list of products for the seller.
+     * @param {Array<Object>} products - The array of product objects to render.
+     */
     function renderProducts(products) {
         if (products.length === 0) {
             productList.innerHTML = '<p>Você ainda não adicionou nenhum produto.</p>';

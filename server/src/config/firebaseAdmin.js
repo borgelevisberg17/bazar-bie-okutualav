@@ -1,22 +1,35 @@
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
 
-// Verifica variáveis obrigatórias
-if (!process.env.FIREBASE_PROJECT_ID ||
-    !process.env.FIREBASE_CLIENT_EMAIL ||
-    !process.env.FIREBASE_PRIVATE_KEY) {
-    if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test') {
-        throw new Error('Missing Firebase environment variables');
-    } else {
-        console.warn("Firebase credentials not found, skipping initialization.");
+const hasCredentials =
+    process.env.FIREBASE_PROJECT_ID &&
+    process.env.FIREBASE_CLIENT_EMAIL &&
+    process.env.FIREBASE_PRIVATE_KEY;
+
+// Inicializa o Firebase Admin SDK apenas se não estiver no modo de teste
+// e se as credenciais estiverem presentes.
+if (process.env.NODE_ENV !== "test" && hasCredentials) {
+    try {
+        admin.initializeApp({
+            credential: admin.credential.cert({
+                projectId: process.env.FIREBASE_PROJECT_ID,
+                clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+                privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(
+                    /\\n/g,
+                    "\n"
+                )
+            })
+        });
+        console.log("Firebase Admin SDK inicializado com sucesso.");
+    } catch (error) {
+        console.error(
+            "Falha ao inicializar o Firebase Admin SDK:",
+            error.message
+        );
     }
-} else if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    }),
-  });
+} else if (process.env.NODE_ENV !== "test") {
+    console.warn(
+        "Credenciais do Firebase não encontradas. O Admin SDK não foi inicializado."
+    );
 }
 
 module.exports = admin;

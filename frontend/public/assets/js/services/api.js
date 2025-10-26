@@ -80,8 +80,10 @@ export const api = {
 // 📦 Entity-specific functions
 // =============================================================
 export const getCategories = () => api.get("/categories");
-export const getProducts = () =>
-    api.get("/products?page=1&limit=12&status=approved");
+export const getProducts = (page = 1, limit = 12, status = "approved") => {
+    const params = new URLSearchParams({ page, limit, status });
+    return api.get(`/products?${params.toString()}`);
+};
 export const getSellers = () => api.get("/users/sellers?role=seller");
 
 // =============================================================

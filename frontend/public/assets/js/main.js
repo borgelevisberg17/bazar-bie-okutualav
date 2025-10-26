@@ -7,8 +7,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const recentArrived = document.getElementById("recently-arrived");
     const topFinds = document.getElementById("top-finds");
     const categoryShelf = document.getElementById("categorieList");
+    const loadMoreBtn = document.getElementById("load-more-btn");
     const track = document.querySelector(".carousel-track");
     const dots = document.querySelectorAll(".dot");
+
+    let currentPage = 1;
+    const productsPerPage = 12;
 
     if (track && dots.length > 0) {
         track.addEventListener("scroll", () => {
@@ -30,22 +34,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadPageData();
     async function loadPageData() {
         try {
-            const [
-                categoriesData,  productsData,
-                sellersData
-            ] = await Promise.all([
-                getCategories(),
-                 getProducts(),
-                getSellers()
-            ]);
-            
+            const [categoriesData, productsData, sellersData] =
+                await Promise.all([
+                    getCategories(),
+                    getProducts(currentPage, productsPerPage),
+                    getSellers()
+                ]);
+
             const categories = categoriesData?.data || [];
             const products = productsData?.data || [];
             const sellers = sellersData?.data || [];
 
             renderCategories(categories);
             renderFilters(categories);
-            renderProducts(productsGrid, products);
+            renderProducts(productsGrid, products, true); // Append products
             renderProducts(recentArrived, products.slice(0, 4));
             renderProducts(topFinds, products.slice(4, 8));
             renderSellers(sellers);
@@ -117,7 +119,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const imageUrl =
             product.image_url || "assets/images/placeholders/product.png";
         const sellerAvatar =
-            product.seller_avatar || "assets/images/placeholders/avatar.png";
+            product.seller_avatar_url ||
+            "assets/images/placeholders/avatar.png";
         const description = product.description || "";
         const rating = Math.round(product.rating || 0);
         const reviews_count = product.reviews_count || 0;
@@ -159,13 +162,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 </a>
 `;
         const cartButton = productCard.querySelector(".btn-cart");
-        cartButton.addEventListener("click", (event) => {
+        cartButton.addEventListener("click", event => {
             event.preventDefault();
             showToast("Produto adicionado ao carrinho!");
         });
 
         const wishlistButton = productCard.querySelector(".btn-wishlist");
-        wishlistButton.addEventListener("click", async (event) => {
+        wishlistButton.addEventListener("click", async event => {
             event.preventDefault();
             try {
                 await api.post("/wishlist", { productId: product.id });
@@ -177,13 +180,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         return productCard;
     }
 
-    function renderProducts(container, productsToRender) {
+    function renderProducts(container, productsToRender, append = false) {
         if (!container) return;
         if (productsToRender.length === 0) {
-            container.innerHTML = "<p>Nenhum produto encontrado.</p>";
+            if (!append)
+                container.innerHTML = "<p>Nenhum produto encontrado.</p>";
+            loadMoreBtn.style.display = "none"; // Esconder botão se não há mais produtos
             return;
         }
-        container.innerHTML = "";
+        if (!append) {
+            container.innerHTML = "";
+        }
         productsToRender.forEach(product => {
             const productCard = renderProductCard(product);
             container.appendChild(productCard);
@@ -255,6 +262,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
             });
         });
+    }
+    async function handleLoadMore() {
+        currentPage++;
+        try {
+            const productsData = await getProducts(currentPage, productsPerPage);
+            const products = productsData?.data || [];
+            renderProducts(productsGrid, products, true);
+        } catch (error) {
+            console.error("Erro ao carregar mais produtos:", error);
+            loadMoreBtn.style.display = "none";
+        }
+    }
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener("click", handleLoadMore);
     }
 
     function setupHeaderScroll() {

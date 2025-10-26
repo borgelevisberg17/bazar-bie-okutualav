@@ -1,4 +1,5 @@
 // frontend/public/assets/js/services/api.js
+import { getSession, logout } from "../auth.js";
 
 /**
  * @file api.js
@@ -24,17 +25,30 @@ async function fetchFromAPI(endpoint, options = {}) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000); // 8s timeout
 
+    const session = getSession();
+    const headers = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        ...options.headers
+    };
+
+    if (session && session.accessToken) {
+        headers["Authorization"] = `Bearer ${session.accessToken}`;
+    }
+
     try {
         const response = await fetch(`${API_URL}${endpoint}`, {
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json"
-            },
             ...options,
+            headers,
             signal: controller.signal
         });
 
         clearTimeout(timeout);
+
+        if (response.status === 401) {
+            logout();
+            return;
+        }
 
         if (!response.ok) {
             const errText = await response.text();

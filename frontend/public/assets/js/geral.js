@@ -1,33 +1,55 @@
-document.addEventListener("DOMContentLoaded", async () => {
-const menuToggle = document.getElementById("menu-toggle");
+import { updateUserUI, logout } from "./auth.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateUserUI(); // Atualiza a UI com base no status de login do usuário
+
+    const menuToggle = document.getElementById("menu-toggle");
     const sideMenu = document.getElementById("side-menu");
     const overlay = document.getElementById("mobile-overlay");
 
-    if(menuToggle && sideMenu && overlay) {
-        function openMenu() {
+    // Adiciona o botão de logout ao menu
+    const menuNav = document.querySelector(".menu-nav ul");
+    if (menuNav) {
+        const logoutButton = document.createElement("li");
+        logoutButton.innerHTML = `
+            <a href="#" id="logout-button">
+                <span class="nav-icon"><i data-lucide="log-out"></i></span>
+                Sair
+            </a>
+        `;
+        menuNav.appendChild(logoutButton);
+
+        document
+            .getElementById("logout-button")
+            .addEventListener("click", event => {
+                event.preventDefault();
+                logout();
+            });
+    }
+
+    if (menuToggle && sideMenu && overlay) {
+        const openMenu = () => {
             menuToggle.classList.add("is-active");
             sideMenu.classList.add("is-active");
             overlay.classList.add("is-active");
             document.body.classList.add("menu-open");
-        }
+        };
 
-        function closeMenu() {
+        const closeMenu = () => {
             menuToggle.classList.remove("is-active");
             sideMenu.classList.remove("is-active");
             overlay.classList.remove("is-active");
             document.body.classList.remove("menu-open");
-            document.querySelectorAll(".has-submenu.is-open").forEach(submenu => {
-                submenu.classList.remove("is-open");
-                submenu.querySelector(".submenu").style.maxHeight = null;
-            });
-        }
+            document
+                .querySelectorAll(".has-submenu.is-open")
+                .forEach(submenu => {
+                    submenu.classList.remove("is-open");
+                    submenu.querySelector(".submenu").style.maxHeight = null;
+                });
+        };
 
         menuToggle.addEventListener("click", () => {
-            if (sideMenu.classList.contains("is-active")) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
+            sideMenu.classList.contains("is-active") ? closeMenu() : openMenu();
         });
 
         overlay.addEventListener("click", closeMenu);
@@ -43,13 +65,16 @@ const menuToggle = document.getElementById("menu-toggle");
                 parentLi.classList.remove("is-open");
                 submenu.style.maxHeight = null;
             } else {
-                // Close other open submenus
-                document.querySelectorAll(".has-submenu.is-open").forEach(openSubmenu => {
-                    if(openSubmenu !== parentLi) {
-                        openSubmenu.classList.remove("is-open");
-                        openSubmenu.querySelector(".submenu").style.maxHeight = null;
-                    }
-                });
+                document
+                    .querySelectorAll(".has-submenu.is-open")
+                    .forEach(openSubmenu => {
+                        if (openSubmenu !== parentLi) {
+                            openSubmenu.classList.remove("is-open");
+                            openSubmenu.querySelector(
+                                ".submenu"
+                            ).style.maxHeight = null;
+                        }
+                    });
                 parentLi.classList.add("is-open");
                 submenu.style.maxHeight = submenu.scrollHeight + "px";
             }

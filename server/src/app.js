@@ -65,6 +65,10 @@ if (process.env.NODE_ENV === 'production') {
 // ======================
 // Rotas
 // ======================
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swaggerConfig');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/', (req, res) => res.json({ status: 'ok', message: 'API running' }));
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: Date.now() }));
 app.use('/api', routes);

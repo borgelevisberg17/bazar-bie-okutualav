@@ -1,277 +1,72 @@
+import { getProducts } from "./services/api.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        lucide.createIcons();
+    const productsGrid = document.getElementById("products-grid");
+    const loadMoreBtn = document.getElementById("load-more-btn");
+    const filtersSidebar = document.querySelector(".filters-sidebar");
 
-        AOS.init({ duration: 800, once: true, offset: 50 });
-    } catch (e) {
-        console.error("erro ao carregar: ", e);
-    }
+    let currentPage = 1;
+    const productsPerPage = 12;
+    let currentFilter = {};
 
-    let categories = [];
-    let allProducts = [];
-
-    /**
-     * Fetches data from a given API endpoint.
-     * @param {string} endpoint - The API endpoint to fetch data from.
-     * @returns {Promise<any>} A promise that resolves to the JSON response.
-     * @throws {Error} If the fetch request fails.
-     */
-    async function fetchData(endpoint) {
-        try {
-            const response = await fetch(`${API_URL}${endpoint}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error(`Could not fetch data from ${endpoint}:`, error);
-            throw error;
-        }
-    }
-
-    const categoriesData = await fetchData("/categories");
-    categories = categoriesData?.data || [];
-
-    const productsGrid = document.getElementById("productsGrid");
-    const loader = document.getElementById("loader");
-    const categoryShelf = document.getElementById("categoryShelf");
-    const feedTitle = document.getElementById("feedTitle");
-
-    let state = { page: 1, perPage: 12, isLoading: false, filter: "all" };
-
-    /**
-     * Formats a number as an AOA currency string.
-     * @param {number} n - The number to format.
-     * @returns {string} The formatted currency string.
-     */
-    function formatAOA(n) {
-        return `AOA${n.toLocaleString("pt-AO")}Kz`;
-    }
-
-    /**
-     * Creates a product card element.
-     * @param {Object} p - The product object.
-     * @returns {HTMLElement} The product card element.
-     */
-    function productCard(p) {
-        const card = document.createElement("article");
+    function createProductCard(product) {
+        const card = document.createElement("div");
         card.className = "card";
-        card.setAttribute("data-aos", "fade-up");
-        const imageUrl = p.images && p.images.length > 0 ? p.images[0].url : 'assets/images/placeholders/product.png';
-        const rating = Math.round(p.rating || 0);
         card.innerHTML = `
-            <div class="media">
-              <img src="${imageUrl}" alt="${p.name}" loading="lazy">
-              <div class="option-card">
-              <button class="fav-btn" aria-label="Adicionar aos favoritos" title="Favoritar"><i data-lucide="heart"></i></button>
-               </div>
-            </div>
-            <div class="meta">
-              <div class="price-action">
-                <span class="price">${formatAOA(p.price)}</span>
-              </div>
-              <div class="p-info">
-                <div class="product-rating">
-                ${"★".repeat(rating)}${"☆".repeat(5 - rating)}
-                <span class="rating-count">(${p.reviews_count || 0})</span>
-                    </div></div>
-              <h3 class="title">${p.name}</h3>
-            </div>
-            <button class="btn-add-to-cart" data-id="${p.id}"><i data-lucide="shopping-cart"></i></button>
-          `;
+            <a href="product.html?id=${product.id}">
+                <img src="${product.image_url || 'https://via.placeholder.com/220'}" alt="${product.name}">
+                <div class="card-content">
+                    <h3>${product.name}</h3>
+                    <p class="price">${parseFloat(product.price).toLocaleString("pt-AO")} AOA</p>
+                </div>
+            </a>
+        `;
         return card;
     }
 
-    productsGrid.addEventListener('click', (e) => {
-        if (e.target.closest('.btn-add-to-cart')) {
-            const button = e.target.closest('.btn-add-to-cart');
-            const productId = button.dataset.id;
-            let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-            const item = cart.find(item => item.id == productId);
-            if (item) {
-                item.quantity++;
-            } else {
-                cart.push({ id: productId, quantity: 1 });
-            }
-            localStorage.setItem('cartItems', JSON.stringify(cart));
-            // You can add a visual feedback here, like a toast notification
+    function renderProducts(products, append = false) {
+        if (!productsGrid) return;
+        if (!append) {
+            productsGrid.innerHTML = "";
         }
-    });
-
-    /**
-     * Renders the category filter chips.
-     */
-    function renderCategories() {
-        categoryShelf.innerHTML = categories
-            .map(
-                c => `
-                <button class="category-chip" data-cat="${c.slug}">
-                    <i data-lucide="${c.icon}"></i>
-                    <span>${c.name}</span>
-                </button>
-            `
-            )
-            .join("");
-        try {
-            lucide.createIcons();
-        } catch (e) {
-            console.error("erro: ", e);
-        }
-        document
-            .querySelector('.category-chip[data-cat="all"]')
-            .classList.add("active");
+        products.forEach(product => {
+            productsGrid.appendChild(createProductCard(product));
+        });
     }
 
-    /**
-     * Handles the category filter selection.
-     * @param {Event} e - The click event.
-     */
-    function handleCategoryFilter(e) {
-        const chip = e.target.closest(".category-chip");
-        if (!chip) return;
-
-        document
-            .querySelectorAll(".category-chip")
-            .forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-
-        state.filter = chip.dataset.cat;
-        const categoryName = categories.find(c => c.slug === state.filter).name;
-        feedTitle.textContent =
-            categoryName === "Tudo" ? "Para Si" : categoryName;
-
-        productsGrid.innerHTML = "";
-        state.page = 1;
-        loadProducts();
-    }
-
-    /**
-     * Loads products from the API and renders them in the grid.
-     * @returns {Promise<void>}
-     */
-    async function loadProducts() {
-        if (state.isLoading) return;
-        state.isLoading = true;
-        loader.innerHTML = `<div class="spinner"></div>`;
-
+    async function loadProducts(page = 1, filters = {}, append = false) {
         try {
-            let endpoint = `/products?page=${state.page}&limit=${state.perPage}`;
-            if (state.filter !== "all") {
-                endpoint += `&category=${state.filter}`;
-            }
-            const productsData = await fetchData(endpoint);
+            const productsData = await getProducts(page, productsPerPage, filters);
             const products = productsData.data || [];
-
-            if (products.length) {
-                products.forEach(p => productsGrid.appendChild(productCard(p)));
-                state.page++;
-                try {
-                    lucide.createIcons();
-                    AOS.refresh();
-                } catch (e) {
-                    console.error("erro: ", e);
-                }
+            renderProducts(products, append);
+            if (products.length < productsPerPage) {
+                if (loadMoreBtn) loadMoreBtn.style.display = "none";
             } else {
-                if (productsGrid.children.length === 0) {
-                    loader.innerHTML =
-                        '<p style="color:var(--muted)">Nenhum produto encontrado nesta categoria.</p>';
-                }
+                if (loadMoreBtn) loadMoreBtn.style.display = "block";
             }
         } catch (error) {
-            loader.innerHTML =
-                '<p style="color:var(--muted)">Ocorreu um erro ao carregar os produtos.</p>';
-        } finally {
-            state.isLoading = false;
-            loader.innerHTML = "";
+            console.error("Failed to load products:", error);
         }
     }
 
-    const io = new IntersectionObserver(
-        entries => {
-            if (entries[0].isIntersecting && !state.isLoading) {
-                const filteredProducts =
-                    state.filter === "all"
-                        ? allProducts
-                        : allProducts.filter(p => p.category === state.filter);
-                if (productsGrid.children.length < filteredProducts.length) {
-                    loadProducts();
-                } else if (productsGrid.children.length > 0) {
-                    loader.innerHTML =
-                        '<p style="color:var(--muted)">Você chegou ao fim!</p>';
-                }
-            }
-        },
-        { rootMargin: "400px" }
-    );
-
-    /**
-     * Sets up the scroll behavior for the main header.
-     */
-    function setupHeaderScroll() {
-        const header = document.getElementById("mainHeader");
-        window.addEventListener("scroll", () => {
-            header.classList.toggle("scrolled", window.scrollY > 50);
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener("click", () => {
+            currentPage++;
+            loadProducts(currentPage, currentFilter, true);
         });
     }
 
-    const menuToggle = document.getElementById("menu-toggle");
-    const sideMenu = document.getElementById("side-menu");
-    const overlay = document.getElementById("mobile-overlay");
-
-    /**
-     * Opens the side menu.
-     */
-    function openMenu() {
-        menuToggle.classList.add("is-active");
-        sideMenu.classList.add("is-active");
-        overlay.classList.add("is-active");
-        document.body.classList.add("menu-open");
-    }
-
-    /**
-     * Closes the side menu.
-     */
-    function closeMenu() {
-        menuToggle.classList.remove("is-active");
-        sideMenu.classList.remove("is-active");
-        overlay.classList.remove("is-active");
-        document.body.classList.remove("menu-open");
-        // Fecha todos os submenus ao fechar o menu principal
-        document.querySelectorAll(".has-submenu.is-open").forEach(submenu => {
-            submenu.classList.remove("is-open");
-            submenu.querySelector(".submenu").style.maxHeight = null;
+    if (filtersSidebar) {
+        filtersSidebar.addEventListener("change", () => {
+            currentPage = 1;
+            // This is a simplified filter logic. A real implementation would
+            // gather all filter values from the sidebar.
+            currentFilter = {
+                // Example: brand: document.querySelector('input[name="brand"]:checked').value
+            };
+            loadProducts(currentPage, currentFilter, false);
         });
     }
 
-    menuToggle.addEventListener("click", () => {
-        if (sideMenu.classList.contains("is-active")) {
-            closeMenu();
-        } else {
-            openMenu();
-        }
-    });
-
-    overlay.addEventListener("click", closeMenu);
-
-    // Lógica para Submenus
-    document.querySelectorAll(".has-submenu > a").forEach(link => {
-        link.addEventListener("click", e => {
-            e.preventDefault();
-            const parentLi = link.parentElement;
-            const submenu = parentLi.querySelector(".submenu");
-
-            if (parentLi.classList.contains("is-open")) {
-                parentLi.classList.remove("is-open");
-                submenu.style.maxHeight = null;
-            } else {
-                parentLi.classList.add("is-open");
-                submenu.style.maxHeight = submenu.scrollHeight + "px";
-            }
-        });
-    });
-    categoryShelf.addEventListener("click", handleCategoryFilter);
-
-    renderCategories();
     loadProducts();
-    io.observe(loader);
 });

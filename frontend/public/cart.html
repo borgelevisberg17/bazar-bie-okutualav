@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Revise os itens no seu carrinho de compras e prepare-se para finalizar sua compra no Bazar Bié Okutuala." />
+    <title>Carrinho de Compras - Bazar Bié Okutuala</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/design-system.css">
+    <link rel="stylesheet" href="assets/css/cart.css">
+</head>
+<body>
+
+    <header class="main-header" id="mainHeader"></header>
+
+    <main class="container">
+        <h1>Meu Carrinho</h1>
+        <div class="cart-layout">
+            <!-- Cart Items -->
+            <section class="cart-items">
+                <!-- Example Cart Item -->
+                <div class="cart-item">
+                    <img src="https://via.placeholder.com/100" alt="Produto" class="item-image">
+                    <div class="item-details">
+                        <p class="item-name">Nome do Produto</p>
+                        <p class="item-price">AOA 15,000.00</p>
+                    </div>
+                    <div class="item-quantity">
+                        <button>-</button>
+                        <input type="text" value="1">
+                        <button>+</button>
+                    </div>
+                    <p class="item-total">AOA 15,000.00</p>
+                    <button class="item-remove"><i class="fas fa-trash"></i></button>
+                </div>
+            </section>
+
+            <!-- Cart Summary -->
+            <aside class="cart-summary">
+                <h3>Resumo do Pedido</h3>
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>AOA 15,000.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Frete</span>
+                    <span>AOA 2,000.00</span>
+                </div>
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span>AOA 17,000.00</span>
+                </div>
+                <a href="checkout.html" class="btn btn-primary btn-block">Finalizar Compra</a>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="main-footer"></footer>
+
+    <script src="assets/js/geral.js"></script>
+    <script src="assets/js/cart.js"></script>
+</body>
+</html>

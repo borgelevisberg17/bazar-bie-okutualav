@@ -1,149 +1,84 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-AO">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Bié Okutuala</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Acesse sua conta ou registre-se no Bazar Bié Okutuala para começar a comprar e vender." />
+    <title>Login & Registro - Bazar Bié Okutuala</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/design-system.css">
     <link rel="stylesheet" href="../assets/css/login.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body>
-    <div class="auth-wrapper">
-        <!-- Promotional Side -->
+    <div class="auth-container">
+        <!-- Thematic side -->
         <div class="auth-promo">
             <div class="promo-content">
-                <h1>Explore o Bié Okutuala</h1>
-                <p>Compre e venda com confiança no maior mercado online de Angola!</p>
-                <div class="promo-stats">
-                    <div><span>10k+</span> Produtos</div>
-                    <div><span>5k+</span> Vendedores</div>
-                    <div><span>50k+</span> Clientes</div>
-                </div>
+                <h2>O Coração de Angola, a um Clique de Distância</h2>
+                <p>Junte-se à nossa comunidade e descubra o melhor do comércio local.</p>
             </div>
         </div>
 
-        <!-- Form Side -->
-        <div class="auth-form-container">
-            <header class="auth-header">
-                <a href="index.html" class="logo">Bié Okutuala</a>
-                <button class="action-btn" id="themeToggle" aria-label="Alternar Tema">
-                    <i data-lucide="sun"></i>
-                    <i data-lucide="moon" style="display: none;"></i>
-                </button>
-            </header>
-
+        <!-- Form side -->
+        <div class="auth-form-wrapper">
             <!-- Login Form -->
-            <div class="auth-form login-form active">
-                <h2>Entrar</h2>
-                <p>Acesse sua conta e comece a negociar.</p>
+            <div class="auth-form" id="login-form">
+                <h3>Bem-vindo de Volta!</h3>
                 <form id="loginForm">
                     <div class="form-group">
-                        <div class="input-wrapper">
-                            <i data-lucide="mail"></i>
-                            <input type="email" id="loginEmail" name="email" placeholder="E-mail" required aria-label="E-mail">
-                        </div>
-                        <span class="error-message" id="loginEmailError"></span>
+                        <label for="login-email">E-mail</label>
+                        <input type="email" id="login-email" class="form-control" placeholder="seuemail@exemplo.com" required>
                     </div>
                     <div class="form-group">
-                        <div class="input-wrapper">
-                            <i data-lucide="lock"></i>
-                            <input type="password" id="loginPassword" name="password" placeholder="Senha" required aria-label="Senha">
-                            <button type="button" class="toggle-password" aria-label="Mostrar/Esconder Senha">
-                                <i data-lucide="eye"></i>
-                            </button>
-                        </div>
-                        <span class="error-message" id="loginPasswordError"></span>
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" class="form-control" placeholder="Sua senha" required>
                     </div>
-                    <div class="form-options">
-                        <a href="#" class="forgot-password">Esqueceu sua senha?</a>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Entrar</button>
-                    <div class="social-login">
-                        <p>Ou entre com</p>
-                        <div class="social-buttons">
-                            <button type="button" class="btn btn-social" aria-label="Entrar com Google"><i data-lucide="chrome"></i> Google</button>
-                            <button type="button" class="btn btn-social" aria-label="Entrar com Facebook"><i data-lucide="facebook"></i> Facebook</button>
-                        </div>
-                    </div>
-                    <p class="auth-switch">Não tem conta? <a href="" id="showRegister">Cadastre-se</a></p>
+                    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
                 </form>
+                <div class="social-login">
+                    <span>Ou entre com</span>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" id="google-signin"><i class="fab fa-google"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <p class="auth-switch">Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a></p>
             </div>
 
-            <!-- Register Form -->
-            <div class="auth-form register-form">
-                <h2>Cadastre-se</h2>
-                <p>Crie sua conta e junte-se ao mercado!</p>
+            <!-- Register Form (hidden by default) -->
+            <div class="auth-form" id="register-form" style="display: none;">
+                <h3>Crie a Sua Conta</h3>
                 <form id="registerForm">
                     <div class="form-group">
-                        <div class="input-wrapper">
-                            <i data-lucide="user"></i>
-                            <input type="text" id="registerName" name="name" placeholder="Nome" required aria-label="Nome">
-                        </div>
-                        <span class="error-message" id="registerNameError"></span>
+                        <label for="register-name">Nome Completo</label>
+                        <input type="text" id="register-name" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <div class="input-wrapper">
-                            <i data-lucide="mail"></i>
-                            <input type="email" id="registerEmail" name="email" placeholder="E-mail" required aria-label="E-mail">
-                        </div>
-                        <span class="error-message" id="registerEmailError"></span>
+                        <label for="register-email">E-mail</label>
+                        <input type="email" id="register-email" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <div class="input-wrapper">
-                            <i data-lucide="lock"></i>
-                            <input type="password" id="registerPassword" name="password" placeholder="Senha" required aria-label="Senha">
-                            <button type="button" class="toggle-password" aria-label="Mostrar/Esconder Senha">
-                                <i data-lucide="eye"></i>
-                            </button>
-                        </div>
-                        <span class="error-message" id="registerPasswordError"></span>
-                        <div class="password-strength" id="passwordStrength">
-                            <span class="strength-bar"></span>
-                            <span class="strength-bar"></span>
-                            <span class="strength-bar"></span>
-                            <span class="strength-text">Fraca</span>
-                        </div>
+                        <label for="register-password">Senha</label>
+                        <input type="password" id="register-password" class="form-control" required>
                     </div>
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <i data-lucide="lock"></i>
-                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar Senha" required aria-label="Confirmar Senha">
-                            <button type="button" class="toggle-password" aria-label="Mostrar/Esconder Senha">
-                                <i data-lucide="eye"></i>
-                            </button>
-                        </div>
-                        <span class="error-message" id="confirmPasswordError"></span>
-                    </div>
-                    <div class="form-group terms-checkbox">
-                        <label>
-                            <input type="checkbox" id="terms" required aria-label="Aceitar Termos">
-                            Concordo com os <a href="#" class="terms-link">Termos de Uso</a> e <a href="#" class="terms-link">Política de Privacidade</a>
-                        </label>
-                        <span class="error-message" id="termsError"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Cadastrar</button>
-                    <div class="social-login">
-                        <p>Ou cadastre-se com</p>
-                        <div class="social-buttons">
-                            <button type="button" class="btn btn-social" aria-label="Cadastrar com Google"><i data-lucide="chrome"></i> Google</button>
-                            <button type="button" class="btn btn-social" aria-label="Cadastrar com Facebook"><i data-lucide="facebook"></i> Facebook</button>
-                        </div>
-                    </div>
-                    <p class="auth-switch">Já tem conta? <a href="#" id="showLogin">Entrar</a></p>
+                    <button type="submit" class="btn btn-primary btn-block">Criar Conta</button>
                 </form>
+                <p class="auth-switch">Já tem uma conta? <a href="#" id="show-login">Faça login</a></p>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toastNotification" aria-live="polite"></div>
-
-    <script src="../assets/js/config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="../assets/js/firebase-config.js"></script>
     <script src="../assets/js/login.js"></script>
 </body>

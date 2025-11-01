@@ -1,23 +1,27 @@
 @import url("../fonts/Roboto-Regular.ttf?family=Roboto:wght@400;500;600;700");
 :root {
-    --color-brand-primary: #8c5b48; /* Tom terroso mais quente */
-    --color-brand-secondary: #3d5a4b; /* Verde profundo e elegante */
-    --color-background: #f9f6f1;
-    --primary-color: #2a4031;
-    --secondary-color: #a75d34;
+    --color-primary: #8c5b48; /* Tom terroso mais quente */
+    --color-background: #E8F5F4;
     --bg-icone: #f9ead3;
-    --bg-color: #f5f0e8;
+    --bg-light: #E8F5F4;
     --category-color: #f5efe4;
-    --text-color: #211b12;
-    --text-light: #6b645b;
+            --bg-dark: #1a1a2e;
+            --card-light: #ffffff;
+            --card-dark: #252541;
+            --text-light: #2d3436;
+            --text-dark: #ffffff;
+            --text-gray-light: #636e72;
+            --text-gray-dark: #b2bec3;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-dark: rgba(0, 0, 0, 0.4);
     --color-surface: #ffffff;
-    --color-text-primary: #2c261f;
-    --color-text-secondary: #7a7268;
+    --color-text-primary: #252541;
+    --color-text-secondary: #636e72;
     --color-tag-new: #ff4d4d;
     --color-tag-promo: linear-gradient(
         135deg,
-        var(--color-brand-primary),
-        var(--color-brand-primary)
+        var(--color-primary),
+        var(--color-tag-new)
     );
     --new-price: #ff4d4d;
     --border-color: #e2e8f0;
@@ -59,11 +63,10 @@ html {
     scroll-padding-top: 6rem;
 }
 body {
-    font-family: var(--font-body);
-    background-color: var(--color-background);
-    color: var(--color-text-primary);
-    line-height: 1.6;
-    overflow-x: hidden;
+    font-family: var(--font-body);font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--card-light);
+            color: var(--text-light);
+    
 }
 
 /* Dark Theme Variables */
@@ -87,7 +90,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: var(--text-color);
+    color: var(--text-light);
     font-weight: 600;
 }
 
@@ -101,7 +104,7 @@ h2 {
 
 p {
     font-size: 14px;
-    color: #666;
+    color: var(--text-light);
 }
 
 .dark-theme p {
@@ -110,11 +113,11 @@ p {
 
 a {
     text-decoration: none;
-    color: var(--primary-color);
+    color: var(--text-light);
 }
 
 a:hover {
-    color: var(--secondary-color);
+    color: var(--text-dark);
 }
 
 /* Container */
@@ -144,16 +147,16 @@ a:hover {
 }
 
 .btn-primary {
-    background: var(--primary-color);
+    background: var(--color-primary);
     color: #fff;
 }
 
 .btn-primary:hover {
-    background: #0056b3;
+    background: var(--color-primary);
 }
 
 .btn-secondary {
-    background: var(--secondary-color);
+    background: var(--color-primary);
     color: #fff;
 }
 
@@ -202,7 +205,7 @@ a:hover {
 }
 
 .input-wrapper i {
-    color: #666;
+    color: var(--text-light);
     margin-right: 10px;
 }
 
@@ -211,7 +214,7 @@ a:hover {
     background: none;
     flex: 1;
     font-size: 14px;
-    color: var(--text-color);
+    color: var(--text-light);
     outline: none;
 }
 
@@ -280,7 +283,7 @@ a:hover {
 .logo {
     font-size: 24px;
     font-weight: 700;
-    color: var(--color-text-primary);
+    color: var(--color-primary);
     text-decoration: none;
 }
 

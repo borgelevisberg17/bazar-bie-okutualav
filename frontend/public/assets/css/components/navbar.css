@@ -7,21 +7,55 @@
     width: 100%;
     z-index: 1000;
     height: 60px;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     transition: var(--transition-fast);
-    background-color: var(--color-background);
+    background: var(--card-light);
 }
 
 .header-content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+            justify-content: space-between;
+            align-items: center;
 }
+        .header-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--card-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 
+                6px 6px 12px rgba(78, 205, 196, 0.1),
+                -6px -6px 12px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .header-icon {
+            background: var(--card-dark);
+            box-shadow: 
+                6px 6px 12px rgba(0, 0, 0, 0.3),
+                -6px -6px 12px rgba(255, 255, 255, 0.02);
+        }
+
+        .header-icon:hover {
+            transform: scale(1.05);
+        }
+
+        .header-icon i {
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        body.dark-mode .header-icon i {
+            color: var(--text-dark);
+        }
 .logo {
     font-family: var(--font-display);
     font-size: 1.3rem;
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: var(--color-primary);
     text-decoration: none;
 }
 .desktop-nav {
@@ -50,7 +84,7 @@
 .hamburger-inner::after {
     width: 20px;
     height: 2px;
-    background-color: var(--color-brand-primary);
+    background-color: var(--color-primary);
     border-radius: 4px;
     position: absolute;
     transition:
@@ -110,7 +144,7 @@ body.menu-open {
     width: 85%;
     max-width: 320px;
     height: 100vh;
-    background-color: var(--color-background);
+    background: var(--card-light);
     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
@@ -143,7 +177,7 @@ body.menu-open {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-text-secondary);
+    color: var(--text-gray-light);
 }
 .menu-profile-info h3 {
     font-size: 1.1rem;
@@ -151,7 +185,7 @@ body.menu-open {
 }
 .menu-profile-info a {
     font-size: 0.9rem;
-    color: var(--color-brand-primary);
+    color: var(--color-primary);
     font-weight: 500;
 }
 
@@ -173,7 +207,7 @@ body.menu-open {
     top: 50%;
     left: 0.8rem;
     transform: translateY(-50%);
-    color: var(--color-text-secondary);
+    color: var(--text-gray-light);
 }
 
 /* Navegação Principal */
@@ -192,14 +226,14 @@ body.menu-open {
     padding: 1rem 0;
     font-size: 1rem;
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: var(--color-primary);
     transition: color 0.2s;
 }
 .menu-nav a:hover {
-    color: var(--color-brand-primary);
+    color: var(--color-primary);
 }
 .menu-nav .nav-icon {
-    color: var(--color-text-secondary);
+    color: var(--text-gray-light);
 }
 
 /* Submenus */
@@ -226,7 +260,7 @@ body.menu-open {
     font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
-    color: var(--color-text-secondary);
+    color: var(--color-primary);
     padding: 2rem 0 0.5rem;
     border-bottom: none;
 }
@@ -237,7 +271,7 @@ body.menu-open {
 .menu-cta-button {
     display: block;
     width: 100%;
-    background-color: var(--color-brand-secondary);
+    background-color: var(--color-primary);
     color: white;
     padding: 1rem;
     border-radius: 8px;
@@ -245,9 +279,7 @@ body.menu-open {
     font-weight: 600;
     transition: background-color 0.2s;
 }
-.menu-cta-button:hover {
-    background-color: #223838;
-}
+
 
 /* --- RESPONSIVIDADE --- */
 @media (max-width: 768px) {

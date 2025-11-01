@@ -24,6 +24,7 @@
             rel="stylesheet"
         />
         <script src="https://unpkg.com/lucide@latest"></script>
+        <link rel="stylesheet" href="./assets/fontawesome/css/all.min.css">
         <link rel="stylesheet" href="./assets/css/design-system.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" href="./assets/css/main.css" />
@@ -32,11 +33,7 @@
     <body>
         <header class="main-header" id="mainHeader">
             <div class="container header-content">
-                <a href="#" class="logo">Bié Okutuala</a>
-                <nav class="desktop-nav">
-                    <!-- Conteúdo do desktop nav aqui -->
-                </nav>
-                <button
+                  <button
                     class="mobile-menu-toggle"
                     id="menu-toggle"
                     aria-label="Abrir menu"
@@ -44,7 +41,16 @@
                     <div class="hamburger-box">
                         <div class="hamburger-inner"></div>
                     </div>
+
                 </button>
+                <a href="#" class="logo">Bié Okutuala</a>
+                <nav class="desktop-nav">
+                    <!-- Conteúdo do desktop nav aqui -->
+                </nav>
+
+                            <div class="header-icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
             </div>
         </header>
 
@@ -83,8 +89,8 @@
                                 </svg>
                             </span>
                         </button>
+                        </form>
                     </div>
-                </div>
             </section>
 
             <section class="categories-section">
@@ -94,18 +100,27 @@
             </section>
             <div class="tops-container">
                 <section class="products-section">
-                    <h2>Acabou de Chegar</h2>
+                                      <div class="section-header">
+                        <h2 class="section-title">Acabou de Chegar</h2>
+                        <span class="see-all">Ver Tudo</span>
+                    </div>
                     <div class="products-grid" id="recently-arrived"></div>
                 </section>
                 <section class="products-section">
-                    <h2>Achados Top</h2>
+<div class="section-header">
+                        <h2 class="section-title">Promoções de Outubro</h2>
+                        <span class="see-all">Ver Tudo</span>
+                    </div>
                     <div class="products-grid" id="top-finds"></div>
                 </section>
             </div>
 
             <section id="products" class="products-section tops-container">
                 <div class="container">
-                    <h2>Todos os Produtos</h2>
+<div class="section-header">
+                        <h2 class="section-title">Todas as Categorias</h2>
+                        <span class="see-all">Ver Tudo</span>
+                    </div>
                     <div class="filters" id="filters">
                         <!-- Filtros serão inseridos aqui -->
                     </div>

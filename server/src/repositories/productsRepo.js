@@ -29,30 +29,43 @@ const addImageUrl = product => {
  * @param {string} [options.status] - The product status to filter by.
  * @returns {Promise<Array<Object>>} A promise that resolves to an array of product objects.
  */
-exports.list = async ({ page, limit, status }) => {
+exports.list = async ({ page = 1, limit = 10, mode = "pg", ...filters }) => {
     const { limit: pageLimit, offset } = paginate(page, limit);
 
     if (mode === "pg") {
+        // 🔹 Montagem dinâmica de filtros
+        const filterKeys = Object.keys(filters).filter(
+            key => filters[key] !== undefined
+        );
+        const whereClauses = filterKeys.map(
+            (key, index) => `p.${key} = $${index + 1}`
+        );
+        const params = filterKeys.map(key => filters[key]);
+
         let query = `
       SELECT p.*,
-             (p.images->0->>'url') as image_url,
-             u.name as seller_name,
-             u.avatar_url as seller_avatar_url
+             (p.images->0->>'url') AS image_url,
+             u.name AS seller_name,
+             u.avatar_url AS seller_avatar_url
       FROM products p
       JOIN users u ON u.id = p.seller_id
     `;
-        const params = [];
-        if (status) {
-            query += " WHERE p.status = $1";
-            params.push(status);
+
+        // 🔹 Adiciona dinamicamente WHERE se houver filtros
+        if (whereClauses.length > 0) {
+            query += " WHERE " + whereClauses.join(" AND ");
         }
-        query += " ORDER BY p.created_at DESC LIMIT $2 OFFSET $3";
+
+        // 🔹 Adiciona paginação
+        query += ` ORDER BY p.created_at DESC LIMIT $${
+            params.length + 1
+        } OFFSET $${params.length + 2}`;
         params.push(pageLimit, offset);
 
         return db.any(query, params);
     } else {
-        // Supabase query com join e paginação
-        const { data, error } = await db
+        // 🔹 Supabase (filtros dinâmicos)
+        let supabaseQuery = db
             .from("products")
             .select(
                 `
@@ -66,26 +79,32 @@ exports.list = async ({ page, limit, status }) => {
             .range(offset, offset + pageLimit - 1)
             .order("created_at", { ascending: false });
 
+        // Aplica dinamicamente filtros (status, category, etc)
+        for (const [key, value] of Object.entries(filters)) {
+            if (value !== undefined)
+                supabaseQuery = supabaseQuery.eq(key, value);
+        }
+
+        const { data, error } = await supabaseQuery;
+
         if (error) {
             console.error("Supabase error fetching products:", error);
             throw error;
         }
 
-        // Flatten the response to match frontend expectations
+        // 🔹 Formata resultado
         return data.map(p => {
             const { users, ...productData } = p;
-            const image_url =
-                p.images && p.images.length > 0 ? p.images[0].url : null;
+            const image_url = p.images?.[0]?.url ?? null;
             return {
                 ...productData,
                 image_url,
-                seller_name: users ? users.name : "Vendedor Anônimo",
-                seller_avatar_url: users ? users.avatar_url : null
+                seller_name: users?.name ?? "Vendedor Anônimo",
+                seller_avatar_url: users?.avatar_url ?? null
             };
         });
     }
 };
-
 /**
  * Retrieves a single product by its ID.
  * @param {string} id - The ID of the product to retrieve.

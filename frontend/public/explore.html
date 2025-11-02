@@ -3,14 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore - Bié Okutuala</title>
+    <title>Explore Produtos Incríveis - Bazar Bié Okutuala</title>
+    <meta name="description" content="Encontre tudo o que precisa no Bazar Bié Okutuala. Pesquise, filtre e descubra milhares de produtos de vendedores locais em Angola.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./assets/css/design-system.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/components/navbar.css">
+    <link rel="stylesheet" href="./assets/css/explore.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <h1>explore</h1>
+    <header class="main-header" id="mainHeader">
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="Bazar Bié Okutuala Logo" class="logo-img">
+            </a>
+
+            <div class="search-container-header" role="search">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input-header" placeholder="Busque por produtos, marcas e muito mais..."/>
+                <button class="btn btn-primary btn-search-header" aria-label="Procurar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <div class="header-actions">
+                <a href="profile.html" class="header-action-item user-profile">
+                    <i class="fa-regular fa-user"></i>
+                    <div class="action-text">
+                        <span>Olá, faça seu login</span>
+                        <strong>Minha conta</strong>
+                    </div>
+                </a>
+                <a href="#" class="header-action-item">
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+                <a href="checkout.html" class="header-action-item">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-badge">3</span>
+                </a>
+            </div>
+
+            <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <nav class="main-nav container">
+            <ul class="nav-list">
+                <li class="nav-item dropdown">
+                    <a href="categories.html" class="nav-link"><i class="fa-solid fa-bars"></i> Todas as Categorias</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Eletrônicos</a>
+                        <a href="#" class="dropdown-item">Moda Feminina</a>
+                        <a href="#" class="dropdown-item">Moda Masculina</a>
+                        <a href="#" class="dropdown-item">Casa e Cozinha</a>
+                        <a href="#" class="dropdown-item">Beleza e Cuidados</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a href="explore.html" class="nav-link">Lançamentos</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Mais Vendidos</a></li>
+                <li class="nav-item"><a href="seller.html" class="nav-link">Venda Conosco</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Atendimento ao Cliente</a></li>
+            </ul>
+            <div class="nav-contact">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>(244) 999 999 999</span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="explore-container container">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar">
+            <div class="filter-group">
+                <h3 class="filter-title">Categorias</h3>
+                <ul class="filter-list">
+                    <li><a href="#" class="filter-link">Eletrônicos</a></li>
+                    <li><a href="#" class="filter-link active">Moda Feminina</a></li>
+                    <li><a href="#" class="filter-link">Moda Masculina</a></li>
+                    <li><a href="#" class="filter-link">Casa e Cozinha</a></li>
+                    <li><a href="#" class="filter-link">Beleza e Cuidados</a></li>
+                </ul>
+            </div>
+             <div class="filter-group">
+                <h3 class="filter-title">Preço</h3>
+                <div class="price-range">
+                    <input type="range" min="0" max="100000" value="25000" class="price-slider" id="price-range">
+                    <div class="price-values">
+                        <span>Kz 0</span>
+                        <span id="price-value">Kz 25,000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h3 class="filter-title">Avaliação</h3>
+                 <div class="rating-filter">
+                    <button class="rating-stars" data-rating="4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        <span>& Acima</span>
+                    </button>
+                     <button class="rating-stars" data-rating="3">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                        <span>& Acima</span>
+                    </button>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-block">Aplicar Filtros</button>
+        </aside>
+
+        <!-- Product Listing -->
+        <section class="product-listing">
+            <div class="listing-header">
+                <h1 class="listing-title">Moda Feminina</h1>
+                <div class="sorting-options">
+                    <label for="sort-by">Ordenar por:</label>
+                    <select id="sort-by" class="form-control">
+                        <option value="relevance">Relevância</option>
+                        <option value="price-asc">Preço: Baixo para Alto</option>
+                        <option value="price-desc">Preço: Alto para Baixo</option>
+                        <option value="newest">Mais Recentes</option>
+                    </select>
+                </div>
+            </div>
+            <div class="products-grid" id="explore-products-grid">
+                <!-- Product cards will be injected here -->
+            </div>
+            <div class="pagination">
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link">Próximo <i data-lucide="arrow-right"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <!-- Footer content remains the same -->
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="assets/js/notifications.js"></script>
+    <script>
+        lucide.createIcons();
+        // Script to update price range value display
+        const priceRange = document.getElementById('price-range');
+        const priceValue = document.getElementById('price-value');
+        priceRange.addEventListener('input', (e) => {
+            priceValue.textContent = `Kz ${parseInt(e.target.value).toLocaleString()}`;
+        });
+    </script>
 </body>
 </html>

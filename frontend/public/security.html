@@ -1,42 +1,181 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-AO">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Security - Bazar Universal</title>
+    <title>Segurança da Conta - Bazar Bié Okutuala</title>
     <link rel="stylesheet" href="assets/css/design-system.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components/navbar.css">
+    <link rel="stylesheet" href="assets/css/profile.css"> <!-- Re-use profile styles for layout -->
     <link rel="stylesheet" href="assets/css/security.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <div id="header-placeholder"></div>
+    <header class="main-header" id="mainHeader">
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="Bazar Bié Okutuala Logo" class="logo-img">
+            </a>
 
-    <main class="container">
-        <h1>Security Settings</h1>
-        <div id="2fa-setup">
-            <h2>Two-Factor Authentication (2FA)</h2>
-            <p>Add an extra layer of security to your account.</p>
-            <div id="2fa-status"></div>
-            <button id="setup-2fa-btn">Enable 2FA</button>
-            <div id="qr-code-container" style="display: none;">
-                <p>Scan this QR code with your authenticator app:</p>
-                <img id="qr-code" src="" alt="QR Code">
-                <p>Then, enter the 6-digit code from your app to verify and enable 2FA.</p>
-                <input type="text" id="otp-input" placeholder="Enter OTP">
-                <button id="verify-2fa-btn">Verify & Enable</button>
+            <div class="search-container-header" role="search">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input-header" placeholder="Busque por produtos, marcas e muito mais..."/>
+                <button class="btn btn-primary btn-search-header" aria-label="Procurar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
             </div>
-            <button id="disable-2fa-btn" style="display: none;">Disable 2FA</button>
+
+            <div class="header-actions">
+                <a href="profile.html" class="header-action-item user-profile">
+                    <i class="fa-regular fa-user"></i>
+                    <div class="action-text">
+                        <span>Olá, faça seu login</span>
+                        <strong>Minha conta</strong>
+                    </div>
+                </a>
+                <a href="#" class="header-action-item">
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+                <a href="checkout.html" class="header-action-item">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-badge">3</span>
+                </a>
+            </div>
+
+            <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
+
+        <nav class="main-nav container">
+            <ul class="nav-list">
+                <li class="nav-item dropdown">
+                    <a href="categories.html" class="nav-link"><i class="fa-solid fa-bars"></i> Todas as Categorias</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Eletrônicos</a>
+                        <a href="#" class="dropdown-item">Moda Feminina</a>
+                        <a href="#" class="dropdown-item">Moda Masculina</a>
+                        <a href="#" class="dropdown-item">Casa e Cozinha</a>
+                        <a href="#" class="dropdown-item">Beleza e Cuidados</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a href="explore.html" class="nav-link">Lançamentos</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Mais Vendidos</a></li>
+                <li class="nav-item"><a href="seller.html" class="nav-link">Venda Conosco</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Atendimento ao Cliente</a></li>
+            </ul>
+            <div class="nav-contact">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>(244) 999 999 999</span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-container container">
+        <!-- Sidebar -->
+        <aside class="profile-sidebar">
+             <div class="user-card">
+                <div class="user-avatar-container">
+                    <img src="./assets/images/placeholders/user-avatar.png" alt="Avatar do Usuário" class="user-avatar">
+                    <button class="avatar-edit-btn"><i data-lucide="camera"></i></button>
+                </div>
+                <h2 class="user-name">Afonso Kimbamba</h2>
+                <p class="user-email">afonso.kimbamba@email.com</p>
+            </div>
+            <nav class="profile-nav">
+                <a href="profile.html#account" class="profile-nav-link">
+                    <i data-lucide="user"></i>
+                    <span>Minha Conta</span>
+                </a>
+                <a href="profile.html#orders" class="profile-nav-link">
+                    <i data-lucide="package"></i>
+                    <span>Meus Pedidos</span>
+                </a>
+                <a href="profile.html#wishlist" class="profile-nav-link">
+                    <i data-lucide="heart"></i>
+                    <span>Lista de Desejos</span>
+                </a>
+                 <a href="profile.html#listings" class="profile-nav-link">
+                    <i data-lucide="store"></i>
+                    <span>Meus Anúncios</span>
+                </a>
+                <a href="security.html" class="profile-nav-link active">
+                    <i data-lucide="shield"></i>
+                    <span>Segurança</span>
+                </a>
+                <a href="#" class="profile-nav-link" id="logoutBtn">
+                    <i data-lucide="log-out"></i>
+                    <span>Sair</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Content Area -->
+        <section class="profile-content">
+            <div class="card">
+                <h2 class="card-title">Alterar Senha</h2>
+                <form id="changePasswordForm" class="form-grid">
+                    <div class="form-group span-2">
+                        <label for="currentPassword" class="form-label">Senha Atual</label>
+                        <input type="password" id="currentPassword" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword" class="form-label">Nova Senha</label>
+                        <input type="password" id="newPassword" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                        <input type="password" id="confirmPassword" class="form-control" required>
+                    </div>
+                    <div class="form-group span-2 form-actions">
+                        <button type="submit" class="btn btn-primary">Alterar Senha</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Autenticação de Dois Fatores (2FA)</h2>
+                    <div class="status-badge" id="2fa-status-badge">
+                        <!-- Status injected by JS -->
+                    </div>
+                </div>
+                <p class="card-subtitle">Adicione uma camada extra de segurança à sua conta. Com o 2FA ativado, você precisará do seu celular para fazer login.</p>
+                <div id="2fa-enabled" style="display: none;">
+                     <button class="btn btn-danger" id="disable-2fa-btn">Desativar 2FA</button>
+                </div>
+                <div id="2fa-disabled">
+                    <button class="btn btn-primary" id="setup-2fa-btn">Ativar 2FA</button>
+                    <div id="qr-code-container" style="display: none; margin-top: 1.5rem;">
+                        <p>1. Escaneie este QR Code com seu aplicativo de autenticação (Ex: Google Authenticator):</p>
+                        <img id="qr-code" src="" alt="QR Code para 2FA" class="qr-code-image">
+                        <p>2. Digite o código de 6 dígitos gerado pelo aplicativo para verificar:</p>
+                        <div class="otp-input-group">
+                            <input type="text" id="otp-input" class="form-control" placeholder="123456">
+                            <button id="verify-2fa-btn" class="btn btn-primary">Verificar e Ativar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-top">
+                <!-- Footer content remains the same -->
+            </div>
+        </div>
+    </footer>
 
-    <script src="common/auth.js"></script>
-    <script src="common/header.js"></script>
-    <script src="common/footer.js"></script>
+    <script src="assets/js/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="assets/js/notifications.js"></script>
     <script src="assets/js/security.js"></script>
+     <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

@@ -1,62 +1,85 @@
 .product-details-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    margin-top: 4rem;
-    margin-bottom: 4rem;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    padding: 2rem 0;
 }
 
+.product-gallery .main-image {
+    border-radius: var(--border-radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
 .product-gallery .main-image img {
     width: 100%;
-    border-radius: var(--border-radius-2xl);
-    box-shadow: var(--shadow-lg);
+    display: block;
 }
 
 .thumbnail-images {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 1rem;
     margin-top: 1rem;
 }
 
 .thumbnail-images img {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: auto;
     object-fit: cover;
     border-radius: var(--border-radius-lg);
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 2px solid var(--border-color);
     transition: all 0.3s ease;
 }
 
 .thumbnail-images img:hover, .thumbnail-images img.active {
     border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+}
+
+.product-info-details {
+    background-color: var(--white-color);
+    padding: 2rem;
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow);
+}
+
+.product-category-details {
+    font-size: 0.9rem;
+    color: var(--text-light-color);
+    margin-bottom: 0.5rem;
 }
 
 .product-title-details {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 700;
+    line-height: 1.3;
     margin-bottom: 1rem;
 }
 
 .product-rating-details {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
 .product-price-details {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--primary-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .product-description-details {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .product-actions {
     display: flex;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    align-items: center;
 }
 
 .quantity-selector {
@@ -69,49 +92,82 @@
 .btn-quantity {
     background: none;
     border: none;
-    padding: 0.75rem;
+    padding: 0.75rem 1rem;
     cursor: pointer;
+    font-size: 1.2rem;
 }
 
 .quantity-input {
-    width: 50px;
+    width: 40px;
     text-align: center;
     border: none;
     outline: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.btn-add-to-cart {
+    flex-grow: 1;
+    justify-content: center;
 }
 
 .btn-wishlist-details {
     background: none;
-    border: none;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 0.75rem 1rem;
     cursor: pointer;
-    color: var(--primary-color);
+    color: var(--text-color);
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    transition: all 0.3s ease;
 }
-.product-reviews {
-    margin-top: 4rem;
+.btn-wishlist-details:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-color: var(--primary-color);
 }
 
 .social-share {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
 .social-icon {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--text-light-color);
+    transition: color 0.3s ease;
+}
+.social-icon:hover {
+    color: var(--primary-color);
+}
+
+.product-reviews {
+    margin-top: 3rem;
+    background-color: var(--white-color);
+    padding: 2rem;
+    border-radius: var(--border-radius-xl);
+}
+
+@media (max-width: 992px) {
+    .product-details-layout {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
-    .product-details-layout {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
     .product-title-details {
+        font-size: 1.8rem;
+    }
+    .product-price-details {
         font-size: 2rem;
+    }
+    .product-actions {
+        flex-direction: column;
+        align-items: stretch;
     }
 }

@@ -1,0 +1,314 @@
+/* ==========================================================================
+   Checkout Page Layout
+   ========================================================================== */
+
+.checkout-container {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+.checkout-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--dark-color);
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+.checkout-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* ==========================================================================
+   Checkout Progress Bar
+   ========================================================================== */
+
+.checkout-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.step-circle {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--background-color);
+    border: 2px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    color: var(--text-light-color);
+    transition: all 0.3s ease;
+}
+
+.step-label {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-light-color);
+    transition: all 0.3s ease;
+}
+
+.progress-line {
+    flex-grow: 1;
+    height: 2px;
+    background-color: var(--border-color);
+}
+
+.progress-step.active .step-circle {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.progress-step.active .step-label {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+
+/* ==========================================================================
+   Checkout Step Content
+   ========================================================================== */
+
+.checkout-step-content {
+    display: none;
+}
+
+.checkout-step-content.active {
+    display: block;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Cart Items */
+.cart-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.promo-code-section {
+    margin-top: 1.5rem;
+}
+
+/* Forms */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.form-group.span-2 {
+    grid-column: span 2;
+}
+
+/* ==========================================================================
+   Payment Options
+   ========================================================================== */
+
+.payment-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.payment-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.payment-option:hover {
+    border-color: var(--primary-color-light);
+    background-color: var(--background-color);
+}
+
+.payment-option input[type="radio"] {
+    display: none;
+}
+
+.payment-option input[type="radio"]:checked + img,
+.payment-option input[type="radio"]:checked + .payment-icon,
+.payment-option input[type="radio"]:checked + span {
+    /* Add visual indication for selection, handled via parent border */
+}
+
+.payment-option input[type="radio"]:checked ~ span {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.payment-option img {
+    height: 2.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.payment-option .payment-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--secondary-color);
+}
+
+.payment-option span {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Active State */
+.payment-option.active {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color-light);
+}
+
+
+/* ==========================================================================
+   Review Details
+   ========================================================================== */
+.review-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.review-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+/* ==========================================================================
+   Order Summary (Aside)
+   ========================================================================== */
+
+.order-summary {
+    position: sticky;
+    top: 140px;
+}
+
+.order-summary .card {
+    padding: 1.5rem;
+}
+
+.summary-line-item, .summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.summary-line-item span, .summary-total span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.summary-line-item span:last-child, .summary-total span:last-child {
+    font-weight: 600;
+}
+
+.summary-line-item.discount span:last-child {
+    color: var(--secondary-color);
+}
+
+.summary-total {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.summary-total span {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.btn-block {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.security-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    color: var(--text-light-color);
+    font-size: 0.9rem;
+}
+
+.security-info i {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 992px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .order-summary {
+        position: static;
+    }
+}
+
+@media (max-width: 576px) {
+    .checkout-title {
+        font-size: 2rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.span-2 {
+        grid-column: span 1;
+    }
+
+    .step-label {
+        display: none; /* Hide labels on very small screens */
+    }
+    .payment-options {
+        grid-template-columns: 1fr;
+    }
+}

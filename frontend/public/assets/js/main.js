@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadPageData();
 
     async function loadPageData() {
+        productsGrid.innerHTML = '<div class="loading-spinner"></div>';
         try {
             const [categoriesData, productsData, sellersData] = await Promise.all([
                 getCategories(),
@@ -28,13 +29,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             renderCategories(categories);
             renderFilters(categories);
-            renderProducts(productsGrid, products, true);
+            renderProducts(productsGrid, products, false);
             renderProducts(recentArrived, products.slice(0, 4));
             renderProducts(topFinds, products.slice(4, 8));
             renderSellers(sellers);
             setupFiltering();
+
+            if (products.length === productsPerPage) {
+                document.querySelector('.load-more-container').style.display = 'block';
+            }
+
         } catch (error) {
             console.log("erro: ", error);
+            productsGrid.innerHTML = "<p>Ocorreu um erro ao carregar os produtos.</p>";
         }
     }
 
@@ -171,13 +178,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function handleLoadMore() {
         currentPage++;
+        loadMoreBtn.innerHTML = '<div class="loading-spinner" style="margin: 0 auto;"></div>';
+        loadMoreBtn.disabled = true;
+
         try {
             const productsData = await getProducts(currentPage, productsPerPage);
             const products = productsData?.data || [];
             renderProducts(productsGrid, products, true);
+
+            if (products.length < productsPerPage) {
+                loadMoreBtn.style.display = "none";
+            }
         } catch (error) {
             console.error("Erro ao carregar mais produtos:", error);
-            if(loadMoreBtn) loadMoreBtn.style.display = "none";
+            loadMoreBtn.style.display = "none";
+        } finally {
+            loadMoreBtn.innerHTML = 'Carregar Mais';
+            loadMoreBtn.disabled = false;
         }
     }
 

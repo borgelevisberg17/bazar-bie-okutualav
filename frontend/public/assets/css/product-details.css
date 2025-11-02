@@ -153,9 +153,10 @@
     border-radius: var(--border-radius-xl);
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
     .product-details-layout {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
 }
 

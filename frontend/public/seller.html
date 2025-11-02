@@ -3,239 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venda no Bazar Bié Okutuala - A sua Porta de Entrada para o Comércio Angolano</title>
-    <meta name="description" content="Junte-se a milhares de vendedores e alcance clientes em toda Angola. Crie sua loja online no Bazar Bié Okutuala hoje mesmo.">
-    <meta name="keywords" content="vender online, e-commerce angola, marketplace angola, Bié Okutuala, negócio online">
-    <link rel="stylesheet" href="assets/css/design-system.css">
+    <title>Perfil do Vendedor - Bazar Bié Okutuala</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./assets/css/design-system.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/components/navbar.css">
-    <link rel="stylesheet" href="assets/css/seller.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/components/navbar.css" />
+    <link rel="stylesheet" href="./assets/css/profile.css"> <!-- Reusing the profile CSS -->
 </head>
 <body>
-    <header class="main-header" id="mainHeader">
-        <div class="container header-content">
-            <a href="index.html" class="logo">
-                <img src="assets/images/logo.png" alt="Bazar Bié Okutuala Logo" class="logo-img">
-            </a>
+    <header class="main-header" id="mainHeader"></header>
 
-            <div class="search-container-header" role="search">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="search-input-header" placeholder="Busque por produtos, marcas e muito mais..."/>
-                <button class="btn btn-primary btn-search-header" aria-label="Procurar">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+    <main class="profile-page-container">
+        <section class="profile-header-section">
+            <div class="profile-cover-photo">
+                <img src="assets/images/placeholders/seller-cover.png" alt="Foto de Capa do Vendedor">
             </div>
-
-            <div class="header-actions">
-                <a href="profile.html" class="header-action-item user-profile">
-                    <i class="fa-regular fa-user"></i>
-                    <div class="action-text">
-                        <span>Olá, faça seu login</span>
-                        <strong>Minha conta</strong>
-                    </div>
-                </a>
-                <a href="#" class="header-action-item">
-                    <i class="fa-regular fa-heart"></i>
-                </a>
-                <a href="checkout.html" class="header-action-item">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="cart-badge">3</span>
-                </a>
+            <div class="profile-details-container container">
+                <div class="profile-avatar-container">
+                    <img src="assets/images/placeholders/seller-avatar.png" alt="Avatar do Vendedor" class="profile-avatar">
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-name">Nome da Loja do Vendedor</h1>
+                    <p class="profile-bio">Especialistas em produtos locais e artesanato.</p>
+                </div>
+                <div class="profile-header-actions">
+                    <button class="btn btn-primary">Seguir</button>
+                    <button class="btn btn-secondary">Contactar</button>
+                </div>
             </div>
+            <nav class="profile-tabs-nav container">
+                <a href="#products" class="tab-link active">Produtos</a>
+                <a href="#about" class="tab-link">Sobre</a>
+                <a href="#reviews" class="tab-link">Avaliações</a>
+            </nav>
+        </section>
 
-            <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
-                <i class="fas fa-bars"></i>
-            </button>
+        <div class="profile-content-container container">
+            <div id="products" class="tab-content active">
+                <div class="products-grid" id="seller-products-grid">
+                    <!-- Seller's products will be dynamically inserted here -->
+                </div>
+            </div>
+            <div id="about" class="tab-content">
+                <!-- Seller's about information will be here -->
+            </div>
+            <div id="reviews" class="tab-content">
+                <!-- Seller's reviews will be here -->
+            </div>
         </div>
-
-        <nav class="main-nav container">
-            <ul class="nav-list">
-                <li class="nav-item dropdown">
-                    <a href="categories.html" class="nav-link"><i class="fa-solid fa-bars"></i> Todas as Categorias</a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Eletrônicos</a>
-                        <a href="#" class="dropdown-item">Moda Feminina</a>
-                        <a href="#" class="dropdown-item">Moda Masculina</a>
-                        <a href="#" class="dropdown-item">Casa e Cozinha</a>
-                        <a href="#" class="dropdown-item">Beleza e Cuidados</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a href="explore.html" class="nav-link">Lançamentos</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Mais Vendidos</a></li>
-                <li class="nav-item"><a href="seller.html" class="nav-link">Venda Conosco</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Atendimento ao Cliente</a></li>
-            </ul>
-            <div class="nav-contact">
-                <i class="fa-brands fa-whatsapp"></i>
-                <span>(244) 999 999 999</span>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <!-- Hero Section -->
-        <section class="seller-hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1 class="hero-title">Transforme sua Paixão em um Negócio de Sucesso em Angola</h1>
-                    <p class="hero-subtitle">Alcance milhares de clientes e faça parte da maior vitrine online do Bié. Vender no Bazar Okutuala é simples, rápido e seguro.</p>
-                    <a href="seller-application.html" class="btn btn-primary btn-lg hero-cta">Comece a Vender Agora</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Why Sell Here Section -->
-        <section class="why-sell container section-padding">
-            <h2 class="section-title">Porque Vender no Bazar Bié Okutuala?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"><i data-lucide="users"></i></div>
-                    <h3 class="feature-title">Alcance Massivo</h3>
-                    <p class="feature-description">Conecte-se a uma vasta base de clientes em todo o território angolano, expandindo seu negócio para além das fronteiras locais.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i data-lucide="shield-check"></i></div>
-                    <h3 class="feature-title">Pagamentos Seguros</h3>
-                    <p class="feature-description">Oferecemos um sistema de pagamento robusto e seguro, garantindo que você receba seus pagamentos de forma rápida e confiável.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i data-lucide="bar-chart-3"></i></div>
-                    <h3 class="feature-title">Ferramentas de Gestão</h3>
-                    <p class="feature-description">Gerencie seus produtos, pedidos e veja relatórios de vendas detalhados através de um painel de vendedor intuitivo e poderoso.</p>
-                </div>
-                 <div class="feature-card">
-                    <div class="feature-icon"><i data-lucide="truck"></i></div>
-                    <h3 class="feature-title">Logística Simplificada</h3>
-                    <p class="feature-description">Integre-se com as nossas soluções de logística para facilitar a entrega dos seus produtos em qualquer parte de Angola.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- How It Works Section -->
-        <section class="how-it-works section-padding">
-            <div class="container">
-                <h2 class="section-title">Comece em Apenas 3 Passos</h2>
-                <div class="steps-container">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3 class="step-title">Registe-se</h3>
-                            <p>Preencha o nosso formulário de inscrição para vendedor. É rápido e fácil.</p>
-                        </div>
-                    </div>
-                    <div class="step-line"></div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3 class="step-title">Anuncie Seus Produtos</h3>
-                            <p>Tire boas fotos, descreva seus produtos e publique em sua nova loja online.</p>
-                        </div>
-                    </div>
-                     <div class="step-line"></div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3 class="step-title">Comece a Vender</h3>
-                            <p>Receba pedidos, gerencie suas vendas e veja o seu negócio a crescer.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section class="faq-section container section-padding">
-             <h2 class="section-title">Perguntas Frequentes</h2>
-             <div class="faq-container">
-                <div class="faq-item">
-                    <button class="faq-question">
-                        <span>Quais são os custos para vender no Bazar?</span>
-                        <i data-lucide="chevron-down"></i>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Oferecemos planos flexíveis! Você pode começar gratuitamente com uma comissão por venda ou escolher um dos nossos planos mensais com benefícios adicionais. Consulte a nossa página de preços para mais detalhes.</p>
-                    </div>
-                </div>
-                 <div class="faq-item">
-                    <button class="faq-question">
-                        <span>Como recebo os meus pagamentos?</span>
-                        <i data-lucide="chevron-down"></i>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Os pagamentos são processados de forma segura e transferidos para a sua conta bancária ou M-Pesa cadastrada, após a confirmação da entrega do produto ao cliente.</p>
-                    </div>
-                </div>
-                 <div class="faq-item">
-                    <button class="faq-question">
-                        <span>Quem é responsável pela entrega dos produtos?</span>
-                         <i data-lucide="chevron-down"></i>
-                    </button>
-                    <div class="faq-answer">
-                        <p>O vendedor é o principal responsável pela embalagem e envio. No entanto, o Bazar Bié Okutuala oferece parcerias com serviços de logística para facilitar o processo a preços competitivos.</p>
-                    </div>
-                </div>
-             </div>
-        </section>
-
     </main>
 
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-column">
-                    <h3 class="footer-heading">Atendimento ao Cliente</h3>
-                    <ul class="footer-links-list">
-                        <li><a href="#">Central de Ajuda</a></li>
-                        <li><a href="#">Como Comprar</a></li>
-                        <li><a href="#">Métodos de Pagamento</a></li>
-                        <li><a href="#">Garantia</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3 class="footer-heading">Institucional</h3>
-                    <ul class="footer-links-list">
-                        <li><a href="#">Sobre o Bazar</a></li>
-                        <li><a href="seller.html">Venda no Bazar</a></li>
-                        <li><a href="#">Termos e Condições</a></li>
-                        <li><a href="#">Política de Privacidade</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3 class="footer-heading">Siga-nos</h3>
-                    <div class="footer-socials">
-                        <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3 class="footer-heading">Newsletter</h3>
-                    <p>Receba nossas promoções e novidades em primeira mão.</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Seu e-mail" class="newsletter-input">
-                        <button type="submit" class="btn btn-primary">Inscrever</button>
-                    </form>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p class="footer-copyright">© <span id="currentYear"></span> Bazar Bié Okutuala. Criado com paixão em Angola.</p>
-                <div class="footer-payment-methods">
-                    <img src="assets/images/payment/visa.svg" alt="Visa">
-                    <img src="assets/images/payment/mastercard.svg" alt="Mastercard">
-                    <img src="assets/images/payment/paypal.svg" alt="PayPal">
-                </div>
-            </div>
-        </div>
-    </footer>
+    <footer class="main-footer"></footer>
 
-    <script src="assets/js/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="assets/js/services/api.js"></script>
     <script src="assets/js/notifications.js"></script>
-    <script src="assets/js/seller.js"></script>
-    <script>
-        lucide.createIcons();
-    </script>
+    <script type="module" src="assets/js/seller.js"></script>
 </body>
 </html>

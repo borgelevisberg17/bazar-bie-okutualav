@@ -3,270 +3,34 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-            name="description"
-            content="Bazar Bié Okutuala - O seu marketplace moderno para compras e vendas na região do Bié, Angola. Encontre produtos únicos, apoie o comércio local e desfrute de uma experiência de compra elegante e fluida."
-        />
-        <meta
-            name="keywords"
-            content="e-commerce, marketplace, Angola, Bié, compras online, moda, eletrônicos, artesanato, produtos locais"
-        />
-        <meta name="author" content="Bazar Bié Okutuala" />
         <title>Bazar Bié Okutuala - Comércio Moderno, Cultura Local</title>
-
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
         <link rel="stylesheet" href="./assets/css/design-system.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" href="./assets/css/main.css" />
         <link rel="stylesheet" href="./assets/css/components/navbar.css" />
     </head>
     <body>
-        <header class="main-header" id="mainHeader">
-            <div class="container header-content">
-                <a href="index.html" class="logo">
-                    <img src="assets/images/logo.png" alt="Bazar Bié Okutuala Logo" class="logo-img">
-                </a>
+        <header class="main-header" id="mainHeader"></header>
 
-                <div class="search-container-header" role="search">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="search-input-header" placeholder="Busque por produtos, marcas e muito mais..."/>
-                    <button class="btn btn-primary btn-search-header" aria-label="Procurar">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </div>
-
-                <div class="header-actions">
-                    <div class="header-action-item user-profile">
-                        <i class="fa-regular fa-user"></i>
-                        <div class="action-text">
-                            <span>Olá, faça seu login</span>
-                            <strong><a href="/auth/login.html" style="color: inherit; text-decoration: none;">Minha conta</a></strong>
-                        </div>
-                    </div>
-                    <a href="#" class="header-action-item">
-                        <i class="fa-regular fa-heart"></i>
-                    </a>
-                    <a href="checkout.html" class="header-action-item">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span class="cart-badge" style="display: none;">0</span>
-                    </a>
-                </div>
-
-                <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-
-            <nav class="main-nav container">
-                <ul class="nav-list">
-                    <li class="nav-item dropdown">
-                        <a href="categories.html" class="nav-link"><i class="fa-solid fa-bars"></i> Todas as Categorias</a>
-                        <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Eletrônicos</a>
-                            <a href="#" class="dropdown-item">Moda Feminina</a>
-                            <a href="#" class="dropdown-item">Moda Masculina</a>
-                            <a href="#" class="dropdown-item">Casa e Cozinha</a>
-                            <a href="#" class="dropdown-item">Beleza e Cuidados</a>
-                        </div>
-                    </li>
-                    <li class="nav-item"><a href="explore.html" class="nav-link">Lançamentos</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Mais Vendidos</a></li>
-                    <li class="nav-item"><a href="seller.html" class="nav-link">Venda Conosco</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Atendimento ao Cliente</a></li>
-                </ul>
-                <div class="nav-contact">
-                    <i class="fa-brands fa-whatsapp"></i>
-                    <span>(244) 999 999 999</span>
-                </div>
-            </nav>
-        </header>
-
-        <main>
-            <div class="hero-container container">
-                <div class="hero-main-banner">
-                    <img src="assets/images/hero-banner.png" alt="Promoções Incríveis" class="hero-banner-img">
-                    <div class="hero-main-content">
-                        <h1>As Melhores Ofertas da Época</h1>
-                        <p>Qualidade e preço baixo em um só lugar. Aproveite!</p>
-                        <a href="#" class="btn btn-primary">Ver Ofertas</a>
-                    </div>
-                </div>
-                <div class="hero-side-banners">
-                    <div class="side-banner">
-                        <img src="assets/images/side-banner-1.png" alt="Tecnologia">
-                        <div class="side-banner-content">
-                            <h3>Tecnologia</h3>
-                            <a href="#">Ver mais</a>
-                        </div>
-                    </div>
-                    <div class="side-banner">
-                        <img src="assets/images/side-banner-2.png" alt="Moda">
-                        <div class="side-banner-content">
-                            <h3>Moda</h3>
-                            <a href="#">Ver mais</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <section class="info-cards-section container">
-                <div class="info-card">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    <div class="info-card-text">
-                        <h3>Entrega Rápida</h3>
-                        <p>Para toda a província do Bié</p>
-                    </div>
-                </div>
-                <div class="info-card">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <div class="info-card-text">
-                        <h3>Pagamento Seguro</h3>
-                        <p>Suas informações protegidas</p>
-                    </div>
-                </div>
-                <div class="info-card">
-                    <i class="fa-solid fa-headset"></i>
-                    <div class="info-card-text">
-                        <h3>Suporte 24/7</h3>
-                        <p>Atendimento ao cliente</p>
-                    </div>
-                </div>
-                <div class="info-card">
-                    <i class="fa-solid fa-gift"></i>
-                    <div class="info-card-text">
-                        <h3>Ofertas Exclusivas</h3>
-                        <p>Descontos e promoções</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="categories-section container">
+        <main class="container">
+            <section class="products-section" id="product-feed">
                 <div class="section-header">
-                    <h2 class="section-title">Navegue por Categorias</h2>
-                    <a href="categories.html" class="see-all">Ver Todas <i class="fas fa-arrow-right"></i></a>
+                    <h2 class="section-title">Explore o nosso Feed</h2>
                 </div>
-                <div class="categories-grid" id="categorieList">
-                    <!-- Category items will be dynamically inserted here -->
+                <div class="category-filters" id="category-filters">
+                    <!-- Category filters will be dynamically inserted here -->
                 </div>
-            </section>
-
-            <section class="featured-deals-section container">
-                <div class="deal-banner">
-                    <div class="deal-content">
-                        <h2>Ofertas Imperdíveis</h2>
-                        <p>Produtos selecionados com até <strong>40% de desconto</strong>. Não perca!</p>
-                        <a href="#" class="btn btn-secondary">Conferir Agora</a>
-                    </div>
-                    <img src="assets/images/deal-image.png" alt="Featured Deals" class="deal-image">
-                </div>
-            </section>
-
-            <section class="products-section container" id="recently-added-section">
-                <div class="section-header">
-                    <h2 class="section-title">Recém-Adicionados</h2>
-                    <a href="#" class="see-all">Ver Tudo <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="products-grid" id="recently-arrived"></div>
-            </section>
-
-            <section class="products-section container" id="top-finds-section">
-                <div class="section-header">
-                    <h2 class="section-title">Populares</h2>
-                    <a href="#" class="see-all">Ver Tudo <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="products-grid" id="top-finds"></div>
-            </section>
-
-            <section class="brands-section container">
-                <div class="section-header">
-                    <h2 class="section-title">Marcas Parceiras</h2>
-                </div>
-                <div class="brands-grid">
-                    <img src="assets/images/brands/brand1.png" alt="Brand 1" class="brand-logo">
-                    <img src="assets/images/brands/brand2.png" alt="Brand 2" class="brand-logo">
-                    <img src="assets/images/brands/brand3.png" alt="Brand 3" class="brand-logo">
-                    <img src="assets/images/brands/brand4.png" alt="Brand 4" class="brand-logo">
-                    <img src="assets/images/brands/brand5.png" alt="Brand 5" class="brand-logo">
-                </div>
-            </section>
-
-            <section id="products" class="products-section container">
-                <div class="section-header">
-                    <h2 class="section-title">Explore Nossos Produtos</h2>
-                </div>
-                <div class="filters" id="filters"></div>
                 <div class="products-grid" id="products-grid">
-                    <div class="loading-spinner"></div>
+                    <!-- Product cards will be dynamically inserted here -->
                 </div>
                 <div class="load-more-container" style="display: none;">
                     <button id="load-more-btn" class="btn btn-primary">Carregar Mais</button>
                 </div>
             </section>
-
-            <section class="sellers-section container">
-                <div class="section-header">
-                    <h2 class="section-title">Nossos Vendedores</h2>
-                    <a href="seller.html" class="see-all">Ver Todos <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="sellers-grid" id="sellersGrid"></div>
-            </section>
         </main>
 
-        <footer class="main-footer">
-            <div class="container">
-                <div class="footer-top">
-                    <div class="footer-column">
-                        <h3 class="footer-heading">Atendimento ao Cliente</h3>
-                        <ul class="footer-links-list">
-                            <li><a href="#">Central de Ajuda</a></li>
-                            <li><a href="#">Como Comprar</a></li>
-                            <li><a href="#">Métodos de Pagamento</a></li>
-                            <li><a href="#">Garantia</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3 class="footer-heading">Institucional</h3>
-                        <ul class="footer-links-list">
-                            <li><a href="#">Sobre o Bazar</a></li>
-                            <li><a href="seller.html">Venda no Bazar</a></li>
-                            <li><a href="#">Termos e Condições</a></li>
-                            <li><a href="#">Política de Privacidade</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3 class="footer-heading">Siga-nos</h3>
-                        <div class="footer-socials">
-                            <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                        </div>
-                    </div>
-                    <div class="footer-column">
-                        <h3 class="footer-heading">Newsletter</h3>
-                        <p>Receba nossas promoções e novidades em primeira mão.</p>
-                        <form class="newsletter-form">
-                            <input type="email" placeholder="Seu e-mail" class="newsletter-input">
-                            <button type="submit" class="btn btn-primary">Inscrever</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p class="footer-copyright">© <span id="currentYear"></span> Bazar Bié Okutuala. Criado com paixão em Angola.</p>
-                    <div class="footer-payment-methods">
-                        <img src="assets/images/payment/visa.svg" alt="Visa">
-                        <img src="assets/images/payment/mastercard.svg" alt="Mastercard">
-                        <img src="assets/images/payment/paypal.svg" alt="PayPal">
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <footer class="main-footer"></footer>
 
         <script type="module" src="assets/js/services/api.js"></script>
         <script src="assets/js/notifications.js"></script>

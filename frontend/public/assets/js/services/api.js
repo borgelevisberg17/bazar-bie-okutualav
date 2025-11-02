@@ -1,29 +1,16 @@
 // frontend/public/assets/js/services/api.js
 import { getSession, logout } from "../auth.js";
 
-/**
- * @file api.js
- * @description Centralized API service for handling all backend communication.
- * Includes intelligent error handling, environment-based base URLs, and
- * helper methods for RESTful API calls.
- */
-
-// =============================================================
-// 🌐 Environment configuration
-// =============================================================
 const isLocalhost =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1";
 const API_URL = isLocalhost
-    ? "http://localhost:4000/api" // Dev mode
-    : "https://bie-okutuala-server.onrender.com/api"; // Production
+    ? "http://localhost:4000/api"
+    : "https://bie-okutuala-server.onrender.com/api";
 
-// =============================================================
-// 🧩 Generic fetch wrapper
-// =============================================================
 async function fetchFromAPI(endpoint, options = {}) {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000); // 8s timeout
+    const timeout = setTimeout(() => controller.abort(), 8000);
 
     const session = getSession();
     const headers = {
@@ -57,50 +44,31 @@ async function fetchFromAPI(endpoint, options = {}) {
             );
         }
 
-        const data = await response.json();
-        console.log(`✅ [API] ${options.method || "GET"} ${endpoint}`, data);
-        return data;
+        return await response.json();
     } catch (error) {
         clearTimeout(timeout);
         console.error(`❌ [API Error] ${endpoint}:`, error.message);
-
-        // Fallback para ambiente local ou sem rede
-        if (isLocalhost && error.name === "AbortError") {
-            console.warn(`⚠️ Timeout atingido ao acessar ${endpoint}.`);
-        }
         throw error;
     }
 }
 
-// =============================================================
-// 🧠 REST Helpers
-// =============================================================
 export const api = {
     get: endpoint => fetchFromAPI(endpoint),
-    post: (endpoint, body) =>
-        fetchFromAPI(endpoint, {
-            method: "POST",
-            body: JSON.stringify(body)
-        }),
-    put: (endpoint, body) =>
-        fetchFromAPI(endpoint, {
-            method: "PUT",
-            body: JSON.stringify(body)
-        }),
+    post: (endpoint, body) => fetchFromAPI(endpoint, { method: "POST", body: JSON.stringify(body) }),
+    put: (endpoint, body) => fetchFromAPI(endpoint, { method: "PUT", body: JSON.stringify(body) }),
     delete: endpoint => fetchFromAPI(endpoint, { method: "DELETE" })
 };
 
-// =============================================================
-// 📦 Entity-specific functions
-// =============================================================
 export const getCategories = () => api.get("/categories");
-export const getProducts = (page = 1, limit = 12, status = "approved") => {
-    const params = new URLSearchParams({ page, limit, status });
+export const getProducts = (page = 1, limit = 12, category = null) => {
+    const params = new URLSearchParams({ page, limit, status: "approved" });
+    if (category) {
+        params.append('category', category);
+    }
     return api.get(`/products?${params.toString()}`);
 };
-export const getSellers = () => api.get("/users/sellers?role=seller");
-
-// =============================================================
-// 🧰 Example of a POST helper (if needed later)
-// =============================================================
-// export const createProduct = (productData) => api.post("/products", productData);
+export const getProductById = (id) => api.get(`/products/${id}`);
+export const getProductReviews = (productId) => api.get(`/products/${productId}/reviews`);
+export const getSellers = () => api.get("/users?role=seller");
+export const getSellerDetails = (sellerId) => api.get(`/users/${sellerId}`);
+export const getProductsBySeller = (sellerId) => api.get(`/products?sellerId=${sellerId}`);

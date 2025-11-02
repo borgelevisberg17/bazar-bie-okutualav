@@ -1,65 +1,66 @@
-import { getProductsBySeller, getSellerDetails } from './services/api.js';
+import { getProducts, api } from './services/api.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sellerId = urlParams.get('id');
-
-    if (!sellerId) {
-        document.querySelector('.profile-content-container').innerHTML = '<p>Vendedor não encontrado.</p>';
-        return;
-    }
-
     const tabs = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
 
     tabs.forEach(tab => {
         tab.addEventListener('click', (e) => {
             e.preventDefault();
+
             tabs.forEach(item => item.classList.remove('active'));
             tab.classList.add('active');
+
             const target = document.querySelector(tab.getAttribute('href'));
+
             tabContents.forEach(content => content.classList.remove('active'));
             target.classList.add('active');
         });
     });
 
-    loadSellerProfile(sellerId);
+    // Load initial content for the active tab
+    loadTabContent(document.querySelector('.tab-link.active').getAttribute('href'));
 });
 
-async function loadSellerProfile(sellerId) {
-    const productsGrid = document.getElementById('seller-products-grid');
-    const sellerName = document.querySelector('.profile-name');
-    const sellerBio = document.querySelector('.profile-bio');
-    const sellerAvatar = document.querySelector('.profile-avatar');
+async function loadTabContent(tabId) {
+    const container = document.querySelector(`${tabId} .products-grid`);
+    if (!container) return;
 
-    productsGrid.innerHTML = '<div class="loading-spinner"></div>';
+    container.innerHTML = '<div class="loading-spinner"></div>';
 
     try {
-        const [sellerDetails, sellerProducts] = await Promise.all([
-            getSellerDetails(sellerId),
-            getProductsBySeller(sellerId)
-        ]);
+        let products = [];
+        if (tabId === '#products') {
+            // Placeholder for fetching user's own products
+            // const response = await api.get('/user/products');
+            // products = response.data;
+        } else if (tabId === '#favorites') {
+            // Placeholder for fetching user's favorite products
+            // const response = await api.get('/user/favorites');
+            // products = response.data;
+        }
 
-        sellerName.textContent = sellerDetails.data.name;
-        sellerBio.textContent = sellerDetails.data.bio || 'Especialista em produtos locais.';
-        sellerAvatar.src = sellerDetails.data.avatar_url || 'assets/images/placeholders/seller-avatar.png';
+        // Render placeholder products for now
+        const productData = await getProducts();
+        products = productData.data.slice(0, 4); // Dummy data
 
-        renderProducts(productsGrid, sellerProducts.data);
+        renderProducts(container, products);
 
     } catch (error) {
-        productsGrid.innerHTML = '<p>Ocorreu um erro ao carregar os produtos do vendedor.</p>';
-        console.error('Error loading seller profile:', error);
+        container.innerHTML = '<p>Ocorreu um erro ao carregar os produtos.</p>';
+        console.error(`Error loading content for ${tabId}:`, error);
     }
 }
 
 function renderProducts(container, products) {
     if (products.length === 0) {
-        container.innerHTML = '<p>Este vendedor ainda não tem produtos à venda.</p>';
+        container.innerHTML = '<p>Nenhum produto encontrado.</p>';
         return;
     }
 
     container.innerHTML = products.map(product => `
         <article class="product-card">
+            <!-- Using the same product card structure -->
             <a href="product.html?id=${product.id}" class="product-image-container">
                 <img src="${product.image_url || 'assets/images/placeholders/product.png'}" alt="${product.name}" class="product-image" loading="lazy">
             </a>

@@ -1,15 +1,12 @@
-import { getCategories, getProducts, getSellers, api } from "./services/api.js";
+import { getProducts, getCategories, api } from "./services/api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const filtersContainer = document.getElementById("filters");
     const productsGrid = document.getElementById("products-grid");
-    const recentArrived = document.getElementById("recently-arrived");
-    const topFinds = document.getElementById("top-finds");
-    const categoryShelf = document.getElementById("categorieList");
+    const categoryFilters = document.getElementById("category-filters");
     const loadMoreBtn = document.getElementById("load-more-btn");
-    const sellersGrid = document.getElementById("sellersGrid");
 
     let currentPage = 1;
+    let currentCategory = 'all';
     const productsPerPage = 12;
 
     await loadPageData();
@@ -17,23 +14,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function loadPageData() {
         productsGrid.innerHTML = '<div class="loading-spinner"></div>';
         try {
-            const [categoriesData, productsData, sellersData] = await Promise.all([
-                getCategories(),
+            const [productsData, categoriesData] = await Promise.all([
                 getProducts(currentPage, productsPerPage),
-                getSellers(),
+                getCategories()
             ]);
 
-            const categories = categoriesData?.data || [];
             const products = productsData?.data || [];
-            const sellers = sellersData?.data || [];
+            const categories = categoriesData?.data || [];
 
             renderCategories(categories);
-            renderFilters(categories);
             renderProducts(productsGrid, products, false);
-            renderProducts(recentArrived, products.slice(0, 4));
-            renderProducts(topFinds, products.slice(4, 8));
-            renderSellers(sellers);
-            setupFiltering();
 
             if (products.length === productsPerPage) {
                 document.querySelector('.load-more-container').style.display = 'block';
@@ -45,187 +35,84 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    const categoryIcons = {
-        'smartphones': 'fa-mobile-screen-button',
-        'laptops': 'fa-laptop',
-        'fragrances': 'fa-spray-can-sparkles',
-        'skincare': 'fa-spa',
-        'groceries': 'fa-carrot',
-        'home-decoration': 'fa-house-chimney',
-        'default': 'fa-tag'
-    };
-
     function renderCategories(categories) {
-        if (!categoryShelf) return;
-        if (categories.length === 0) {
-            categoryShelf.innerHTML = "";
-            return;
-        }
-        categoryShelf.innerHTML = categories
-            .map(c => `
-                <a class="category-item" data-cat="${c.slug}">
-                    <div class="category-icon">
-                        <i class="fa-solid ${categoryIcons[c.slug] || categoryIcons['default']}"></i>
-                    </div>
-                    <span>${c.name}</span>
-                </a>
-            `)
-            .join("");
-    }
+        categoryFilters.innerHTML = `<button class="filter-btn active" data-category="all">Todos</button>`;
+        categories.forEach(category => {
+            categoryFilters.innerHTML += `<button class="filter-btn" data-category="${category.slug}">${category.name}</button>`;
+        });
 
-    function renderFilters(categories) {
-        if (!filtersContainer) return;
-        filtersContainer.innerHTML = "";
-        const allBtn = document.createElement("button");
-        allBtn.className = "filter-btn active";
-        allBtn.dataset.filter = "all";
-        allBtn.textContent = "Todos";
-        filtersContainer.appendChild(allBtn);
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', async () => {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentCategory = button.dataset.category;
+                currentPage = 1;
 
-        categories.forEach(cat => {
-            const filterBtn = document.createElement("button");
-            filterBtn.className = "filter-btn";
-            filterBtn.dataset.filter = cat.slug;
-            filterBtn.textContent = cat.name;
-            filtersContainer.appendChild(filterBtn);
+                productsGrid.innerHTML = '<div class="loading-spinner"></div>';
+                const productsData = await getProducts(currentPage, productsPerPage, currentCategory === 'all' ? null : currentCategory);
+                renderProducts(productsGrid, productsData.data, false);
+            });
         });
     }
 
     function renderProductCard(product) {
         const productCard = document.createElement("article");
         productCard.className = "product-card";
-        productCard.dataset.category = product.category;
 
         const imageUrl = product.image_url || "assets/images/placeholders/product.png";
+        const sellerAvatarUrl = product.seller?.avatar_url || "assets/images/placeholders/avatar.png";
 
         productCard.innerHTML = `
-            <a href="product.html?id=${product.id}" class="product-link" data-property-id="${product.id}">
-                <div class="product-image">
-                    <img src="${imageUrl}" alt="${product.name}" loading="lazy">
+            <div class="product-card-header">
+                <img src="${sellerAvatarUrl}" alt="${product.seller?.name || 'Vendedor'}" class="seller-avatar">
+                <div class="seller-info">
+                    <a href="seller.html?id=${product.seller?.id}" class="seller-name">${product.seller?.name || 'Vendedor'}</a>
+                    <span class="post-time">Publicado há pouco</span>
                 </div>
-                <div class="product-info">
-                    <h3>${product.name}</h3>
-                    <p class="product-price">${parseFloat(product.price).toLocaleString("pt-AO")} Kz</p>
-                </div>
+            </div>
+            <a href="product.html?id=${product.id}" class="product-image-container">
+                <img src="${imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
             </a>
+            <div class="product-info">
+                <a href="product.html?id=${product.id}" class="product-title">${product.name}</a>
+                <p class="product-price">${parseFloat(product.price).toLocaleString("pt-AO", { style: 'currency', currency: 'AOA' })}</p>
+            </div>
             <div class="product-card-footer">
-                 <button class="btn-wishlist" aria-label="Adicionar aos favoritos">
-                    <i class="fa-regular fa-heart"></i>
-                </button>
-                <button class="btn-cart" aria-label="Adicionar ao carrinho">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </button>
+                <div class="product-actions">
+                     <button class="product-action-btn btn-wishlist" aria-label="Adicionar aos favoritos">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <button class="product-action-btn" aria-label="Comentar">
+                        <i class="fa-regular fa-comment"></i>
+                    </button>
+                </div>
+                <button class="btn btn-primary btn-add-to-cart">Adicionar</button>
             </div>
         `;
-
-        productCard.querySelector(".btn-cart").addEventListener("click", event => {
-            event.preventDefault();
-            const button = event.currentTarget;
-            button.classList.add("adding");
-            setTimeout(() => {
-                button.classList.remove("adding");
-            }, 1000);
-            showToast("Produto adicionado ao carrinho!");
-        });
-
-        productCard.querySelector(".btn-wishlist").addEventListener("click", async event => {
-            event.preventDefault();
-            try {
-                await api.post("/wishlist", { productId: product.id });
-                showToast("Produto adicionado aos favoritos!");
-            } catch (error) {
-                showToast("Erro ao adicionar aos favoritos.", "error");
-            }
-        });
         return productCard;
     }
 
     function renderProducts(container, productsToRender, append = false) {
         if (!container) return;
-        if (productsToRender.length === 0) {
-            if (!append) container.innerHTML = "<p>Nenhum produto encontrado.</p>";
-            if (loadMoreBtn) loadMoreBtn.style.display = "none";
-            return;
+
+        const loadingSpinner = container.querySelector('.loading-spinner');
+        if (loadingSpinner) {
+            loadingSpinner.remove();
         }
+
         if (!append) {
             container.innerHTML = "";
         }
+
+        if (productsToRender.length === 0) {
+            if (!append) container.innerHTML = "<p>Nenhum produto encontrado para esta categoria.</p>";
+            if (loadMoreBtn) loadMoreBtn.style.display = "none";
+            return;
+        }
+
         productsToRender.forEach(product => {
             const productCard = renderProductCard(product);
             container.appendChild(productCard);
-        });
-    }
-
-    function setupFiltering() {
-        const filterButtons = document.querySelectorAll(".filter-btn");
-        const productCards = document.querySelectorAll(".product-card");
-
-        if (filterButtons.length === 0) return;
-
-        filterButtons.forEach(button => {
-            button.addEventListener("click", () => {
-                const filter = button.dataset.filter;
-
-                filterButtons.forEach(btn => btn.classList.remove("active"));
-                button.classList.add("active");
-
-                productCards.forEach(card => {
-                    card.style.display = (filter === "all" || card.dataset.category === filter) ? "block" : "none";
-                });
-            });
-        });
-    }
-
-    async function handleLoadMore() {
-        currentPage++;
-        loadMoreBtn.innerHTML = '<div class="loading-spinner" style="margin: 0 auto;"></div>';
-        loadMoreBtn.disabled = true;
-
-        try {
-            const productsData = await getProducts(currentPage, productsPerPage);
-            const products = productsData?.data || [];
-            renderProducts(productsGrid, products, true);
-
-            if (products.length < productsPerPage) {
-                loadMoreBtn.style.display = "none";
-            }
-        } catch (error) {
-            console.error("Erro ao carregar mais produtos:", error);
-            loadMoreBtn.style.display = "none";
-        } finally {
-            loadMoreBtn.innerHTML = 'Carregar Mais';
-            loadMoreBtn.disabled = false;
-        }
-    }
-
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener("click", handleLoadMore);
-    }
-
-    const currentYear = document.getElementById("currentYear");
-    if (currentYear) {
-        currentYear.textContent = new Date().getFullYear();
-    }
-
-    function renderSellers(sellersToRender) {
-        if (!sellersGrid) return;
-        if (sellersToRender.length === 0) {
-            sellersGrid.innerHTML = "<p>Nenhum vendedor encontrado.</p>";
-            return;
-        }
-        sellersGrid.innerHTML = "";
-        sellersToRender.forEach((seller, index) => {
-            const sellerCard = document.createElement("div");
-            sellerCard.className = "seller-card fade-in";
-            sellerCard.style.transitionDelay = `${index * 0.1}s`;
-            sellerCard.innerHTML = `
-                    <img src="${
-                        seller.avatar || "assets/images/placeholders/avatar.png"
-                    }" alt="${seller.name}" loading="lazy">
-                    <h3>${seller.name}</h3>
-                    <p>${seller.specialty || ""}</p>
-                `;
-            sellersGrid.appendChild(sellerCard);
         });
     }
 });

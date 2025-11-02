@@ -1,53 +1,97 @@
-import { getProducts, api } from "./services/api.js";
+import { getProductById, getProductReviews, api } from "./services/api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const mainImage = document.getElementById("main-product-image");
-    const thumbnailContainer = document.querySelector(".thumbnail-images");
-    const productTitle = document.querySelector(".product-title-details");
-    const productPrice = document.querySelector(".product-price-details");
-    const productDescription = document.querySelector(".product-description-details");
-    const quantityInput = document.querySelector(".quantity-input");
+    const thumbnailGallery = document.getElementById("thumbnail-gallery");
+    const productName = document.getElementById("product-name");
+    const productPrice = document.getElementById("product-price");
+    const productDescription = document.getElementById("product-description");
+    const sellerAvatar = document.getElementById("seller-avatar");
+    const sellerName = document.getElementById("seller-name");
+    const sellerLocation = document.getElementById("seller-location");
+    const quantityInput = document.getElementById("quantity-input");
     const quantityButtons = document.querySelectorAll(".btn-quantity");
-    const addToCartButton = document.querySelector(".btn-add-to-cart");
-    const wishlistButton = document.querySelector(".btn-wishlist-details");
+    const addToCartBtn = document.getElementById("add-to-cart-btn");
+    const wishlistBtn = document.getElementById("wishlist-btn");
+    const commentForm = document.getElementById("comment-form");
+    const commentsList = document.getElementById("comments-list");
 
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
 
     if (!productId) {
-        // Handle error: product ID not found
+        document.querySelector('main').innerHTML = '<p class="container">ID do produto não encontrado.</p>';
         return;
     }
 
     try {
-        const productData = await getProducts(productId);
-        const product = productData.data;
+        const [productData, reviewsData] = await Promise.all([
+            getProductById(productId),
+            getProductReviews(productId)
+        ]);
+
+        const product = productData?.data;
+        const reviews = reviewsData?.data || [];
 
         if (product) {
-            updateProductDetails(product);
+            renderProductDetails(product);
+            renderReviews(reviews);
         } else {
-            // Handle error: product not found
+            document.querySelector('main').innerHTML = '<p class="container">Produto não encontrado.</p>';
         }
     } catch (error) {
-        console.error("Error fetching product:", error);
+        console.error("Erro ao carregar detalhes do produto:", error);
+        document.querySelector('main').innerHTML = '<p class="container">Ocorreu um erro ao carregar o produto.</p>';
     }
 
-    function updateProductDetails(product) {
-        mainImage.src = product.images[0];
-        productTitle.textContent = product.name;
-        productPrice.textContent = `${parseFloat(product.price).toLocaleString("pt-AO")} Kz`;
+    function renderProductDetails(product) {
+        document.title = `${product.name} - Bazar Bié Okutuala`;
+        mainImage.src = product.images?.[0] || 'assets/images/placeholders/product-main.png';
+        productName.textContent = product.name;
+        productPrice.textContent = parseFloat(product.price).toLocaleString("pt-AO", { style: 'currency', currency: 'AOA' });
         productDescription.textContent = product.description;
 
-        thumbnailContainer.innerHTML = product.images.map((img, index) => `
-            <img src="${img}" alt="Thumbnail ${index + 1}" class="${index === 0 ? 'active' : ''}">
+        if (product.seller) {
+            sellerAvatar.src = product.seller.avatar_url || 'assets/images/placeholders/avatar.png';
+            sellerName.textContent = product.seller.name;
+            sellerName.href = `seller.html?id=${product.seller.id}`;
+            sellerLocation.textContent = product.seller.location || 'Bié, Angola';
+        }
+
+        if (product.images && product.images.length > 0) {
+            thumbnailGallery.innerHTML = product.images.map((img, index) => `
+                <div class="thumbnail-item ${index === 0 ? 'active' : ''}" data-image-src="${img}">
+                    <img src="${img}" alt="Thumbnail ${index + 1}">
+                </div>
+            `).join('');
+        }
+    }
+
+    function renderReviews(reviews) {
+        if (reviews.length === 0) {
+            commentsList.innerHTML = '<p>Ainda não há comentários. Seja o primeiro a comentar!</p>';
+            return;
+        }
+        commentsList.innerHTML = reviews.map(review => `
+            <div class="comment">
+                <img src="${review.user.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="${review.user.name}" class="comment-avatar">
+                <div class="comment-content">
+                    <span class="comment-author">${review.user.name}</span>
+                    <p class="comment-text">${review.comment}</p>
+                    <div class="comment-actions">
+                        <span>${new Date(review.created_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            </div>
         `).join('');
     }
 
-    thumbnailContainer.addEventListener("click", e => {
-        if (e.target.tagName === "IMG") {
-            mainImage.src = e.target.src;
-            document.querySelectorAll(".thumbnail-images img").forEach(img => img.classList.remove("active"));
-            e.target.classList.add("active");
+    thumbnailGallery.addEventListener("click", e => {
+        const thumbnail = e.target.closest('.thumbnail-item');
+        if (thumbnail) {
+            mainImage.src = thumbnail.dataset.imageSrc;
+            document.querySelectorAll(".thumbnail-item").forEach(item => item.classList.remove("active"));
+            thumbnail.classList.add("active");
         }
     });
 
@@ -64,17 +108,52 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
-    addToCartButton.addEventListener("click", () => {
+    addToCartBtn.addEventListener("click", () => {
         const quantity = parseInt(quantityInput.value);
         showToast(`Adicionado ${quantity} item(s) ao carrinho!`);
     });
 
-    wishlistButton.addEventListener("click", async () => {
+    wishlistBtn.addEventListener("click", async () => {
         try {
             await api.post("/wishlist", { productId });
             showToast("Produto adicionado aos favoritos!");
         } catch (error) {
             showToast("Erro ao adicionar aos favoritos.", "error");
+        }
+    });
+
+    commentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const commentInput = e.target.querySelector('.comment-input');
+        const commentText = commentInput.value.trim();
+
+        if (commentText) {
+            try {
+                const newReview = await api.post(`/products/${productId}/reviews`, { comment: commentText });
+
+                const newCommentElement = document.createElement('div');
+                newCommentElement.classList.add('comment');
+                newCommentElement.innerHTML = `
+                    <img src="${newReview.data.user.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="${newReview.data.user.name}" class="comment-avatar">
+                    <div class="comment-content">
+                        <span class="comment-author">${newReview.data.user.name}</span>
+                        <p class="comment-text">${newReview.data.comment}</p>
+                         <div class="comment-actions">
+                            <span>Agora mesmo</span>
+                        </div>
+                    </div>
+                `;
+
+                if (commentsList.querySelector('p')) {
+                    commentsList.innerHTML = '';
+                }
+
+                commentsList.prepend(newCommentElement);
+                commentInput.value = '';
+
+            } catch(err) {
+                showToast('Ocorreu um erro ao publicar o seu comentário.', 'error');
+            }
         }
     });
 });

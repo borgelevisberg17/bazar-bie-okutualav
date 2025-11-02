@@ -8,155 +8,273 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/components/navbar.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.min.js"></script>
+    <link rel="stylesheet" href="./assets/css/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <!-- Header -->
     <header class="main-header" id="mainHeader">
-           <div class="container header-content">
-            <a href="index.html" class="logo">Bié Okutuala</a>
-            <div id="userActions" class="user-actions"></div>
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="Bazar Bié Okutuala Logo" class="logo-img">
+            </a>
+
+            <div class="search-container-header" role="search">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input-header" placeholder="Busque por produtos, marcas e muito mais..."/>
+                <button class="btn btn-primary btn-search-header" aria-label="Procurar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <div class="header-actions">
+                <a href="profile.html" class="header-action-item user-profile">
+                    <i class="fa-regular fa-user"></i>
+                    <div class="action-text">
+                        <span>Olá, faça seu login</span>
+                        <strong>Minha conta</strong>
+                    </div>
+                </a>
+                <a href="#" class="header-action-item">
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+                <a href="checkout.html" class="header-action-item">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-badge">3</span>
+                </a>
+            </div>
+
+            <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
+
+        <nav class="main-nav container">
+            <ul class="nav-list">
+                <li class="nav-item dropdown">
+                    <a href="categories.html" class="nav-link"><i class="fa-solid fa-bars"></i> Todas as Categorias</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Eletrônicos</a>
+                        <a href="#" class="dropdown-item">Moda Feminina</a>
+                        <a href="#" class="dropdown-item">Moda Masculina</a>
+                        <a href="#" class="dropdown-item">Casa e Cozinha</a>
+                        <a href="#" class="dropdown-item">Beleza e Cuidados</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a href="explore.html" class="nav-link">Lançamentos</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Mais Vendidos</a></li>
+                <li class="nav-item"><a href="seller.html" class="nav-link">Venda Conosco</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Atendimento ao Cliente</a></li>
+            </ul>
+            <div class="nav-contact">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>(244) 999 999 999</span>
+            </div>
+        </nav>
     </header>
 
-    <!-- Main Content -->
-    <main class="user-profile">
-        <div class="container">
-            <!-- Sidebar -->
-            <nav class="sidebar">
-                <div class="user-info">
-                    <img id="userAvatar" src="" alt="Avatar do Usuário" class="user-avatar">
-                    <h2 id="userName"></h2>
-                    <p id="userLocation"></p>
-                    <div class="user-rating">
-                        <div class="stars" id="userStars"></div>
-                        <span id="userReviews"></span>
-                    </div>
-                    <button class="btn btn-secondary btn-edit-profile" id="editProfileBtn">Editar Perfil</button>
-                    <a href="seller-application.html" class="btn btn-primary" id="becomeSellerBtn">Torne-se um Vendedor</a>
+    <main class="profile-container container">
+        <!-- Sidebar -->
+        <aside class="profile-sidebar">
+            <div class="user-card">
+                <div class="user-avatar-container">
+                    <img src="./assets/images/placeholders/user-avatar.png" alt="Avatar do Usuário" class="user-avatar">
+                    <button class="avatar-edit-btn"><i data-lucide="camera"></i></button>
                 </div>
-                <ul class="sidebar-menu">
-                    <li><button class="sidebar-btn active" data-section="orders">Meus Pedidos</button></li>
-                    <li><button class="sidebar-btn" data-section="wishlist">Lista de Desejos</button></li>
-                    <li><button class="sidebar-btn" data-section="listings">Meus Anúncios</button></li>
-                    <li><button class="sidebar-btn" data-section="messages">Mensagens</button></li>
-                    <li><button class="sidebar-btn" data-section="settings">Configurações</button></li>
-                    <li><a href="security.html" class="sidebar-btn">Segurança</a></li>
-                    <li><button class="sidebar-btn btn-logout" id="logoutBtn">Sair</button></li>
-                </ul>
+                <h2 class="user-name">Afonso Kimbamba</h2>
+                <p class="user-email">afonso.kimbamba@email.com</p>
+            </div>
+            <nav class="profile-nav">
+                <a href="#account" class="profile-nav-link active">
+                    <i data-lucide="user"></i>
+                    <span>Minha Conta</span>
+                </a>
+                <a href="#orders" class="profile-nav-link">
+                    <i data-lucide="package"></i>
+                    <span>Meus Pedidos</span>
+                </a>
+                <a href="#wishlist" class="profile-nav-link">
+                    <i data-lucide="heart"></i>
+                    <span>Lista de Desejos</span>
+                </a>
+                 <a href="#listings" class="profile-nav-link">
+                    <i data-lucide="store"></i>
+                    <span>Meus Anúncios</span>
+                </a>
+                <a href="security.html" class="profile-nav-link">
+                    <i data-lucide="shield"></i>
+                    <span>Segurança</span>
+                </a>
+                <a href="#" class="profile-nav-link" id="logoutBtn">
+                    <i data-lucide="log-out"></i>
+                    <span>Sair</span>
+                </a>
             </nav>
+        </aside>
 
-            <!-- Content Area -->
-            <section class="content-area">
-                <!-- Orders -->
-                <div class="section active" id="orders">
-                    <h2>Meus Pedidos</h2>
-                    <div id="ordersList" class="products-grid"></div>
+        <!-- Content Area -->
+        <section class="profile-content">
+            <div class="profile-tab-content active" id="account">
+                <div class="card">
+                    <h2 class="card-title">Informações Pessoais</h2>
+                     <form class="form-grid">
+                        <div class="form-group">
+                            <label for="profileName" class="form-label">Nome</label>
+                            <input type="text" id="profileName" class="form-control" value="Afonso Kimbamba">
+                        </div>
+                        <div class="form-group">
+                            <label for="profileEmail" class="form-label">Email</label>
+                            <input type="email" id="profileEmail" class="form-control" value="afonso.kimbamba@email.com" disabled>
+                        </div>
+                         <div class="form-group">
+                            <label for="profilePhone" class="form-label">Telefone</label>
+                            <input type="tel" id="profilePhone" class="form-control" value="+244 923 456 789">
+                        </div>
+                        <div class="form-group span-2 form-actions">
+                            <button class="btn btn-primary">Salvar Alterações</button>
+                        </div>
+                    </form>
                 </div>
-
-                <!-- Wishlist -->
-                <div class="section" id="wishlist">
-                    <h2>Lista de Desejos</h2>
-                    <div class="products-grid" id="wishlistItems"></div>
+                 <div class="card">
+                    <h2 class="card-title">Endereço de Entrega</h2>
+                     <form class="form-grid">
+                        <div class="form-group span-2">
+                            <label for="profileAddress" class="form-label">Endereço</label>
+                            <input type="text" id="profileAddress" class="form-control" value="Rua da Samba, Edifício 12, Luanda">
+                        </div>
+                        <div class="form-group">
+                            <label for="profileCity" class="form-label">Cidade</label>
+                            <input type="text" id="profileCity" class="form-control" value="Luanda">
+                        </div>
+                         <div class="form-group">
+                            <label for="profileProvince" class="form-label">Província</label>
+                            <input type="text" id="profileProvince" class="form-control" value="Luanda">
+                        </div>
+                        <div class="form-group span-2 form-actions">
+                            <button class="btn btn-primary">Salvar Endereço</button>
+                        </div>
+                    </form>
                 </div>
+            </div>
 
-                <!-- Listings -->
-                <div class="section" id="listings">
-                    <h2>Meus Anúncios</h2>
-                    <button class="btn btn-primary btn-new-listing" id="newListingBtn">Novo Anúncio</button>
-                    <div class="products-grid" id="listingsItems"></div>
-                </div>
-
-                <!-- Messages -->
-                <div class="section" id="messages">
-                    <h2>Mensagens</h2>
-                    <div id="messagesList" class="products-grid"></div>
-                </div>
-
-                <!-- Settings -->
-                <div class="section" id="settings">
-                    <h2>Configurações</h2>
-                    <div class="settings-form">
-                        <h3>Preferências</h3>
-                        <label><input type="checkbox" id="themeToggle"> Tema Escuro</label>
-                        <label><input type="checkbox" id="voiceToggle"> Ativar Voz</label>
-                        <label><input type="checkbox" id="notificationsToggle"> Notificações</label>
-                        <h3>Endereço de Entrega</h3>
-                        <input type="text" id="deliveryAddress" placeholder="Ex.: Rua do Kuzola, Luanda">
-                        <button class="btn btn-primary btn-save-settings" id="saveSettingsBtn">Salvar</button>
+            <div class="profile-tab-content" id="orders">
+                 <div class="card">
+                    <h2 class="card-title">Meus Pedidos</h2>
+                    <div class="order-filters">
+                        <button class="filter-btn active">Todos</button>
+                        <button class="filter-btn">Pendentes</button>
+                        <button class="filter-btn">Em Trânsito</button>
+                        <button class="filter-btn">Entregues</button>
+                    </div>
+                    <div id="ordersList" class="orders-list">
+                        <!-- Orders will be injected by JS -->
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+
+            <div class="profile-tab-content" id="wishlist">
+                <div class="card">
+                    <h2 class="card-title">Lista de Desejos</h2>
+                    <div id="wishlistItems" class="products-grid">
+                         <!-- Wishlist items will be injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-tab-content" id="listings">
+                 <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Meus Anúncios</h2>
+                        <button class="btn btn-primary"><i data-lucide="plus"></i> Novo Anúncio</button>
+                    </div>
+                    <div id="listingsItems" class="products-grid">
+                         <!-- Listing items will be injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
     </main>
 
-    <!-- Edit Profile Modal -->
-    <div id="editProfileModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="modal-close">×</span>
-            <h3>Editar Perfil</h3>
-            <form id="editProfileForm">
-                <label for="profileAvatar">Foto de Perfil</label>
-                <input type="file" id="profileAvatar" accept="image/*">
-                <label for="profileName">Nome</label>
-                <input type="text" id="profileName" required>
-                <label for="profileLocation">Localização</label>
-                <input type="text" id="profileLocation">
-                <label for="profilePassword">Nova Senha</label>
-                <input type="password" id="profilePassword">
-                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-            </form>
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <h3 class="footer-heading">Atendimento ao Cliente</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Como Comprar</a></li>
+                        <li><a href="#">Métodos de Pagamento</a></li>
+                        <li><a href="#">Garantia</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-heading">Institucional</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Sobre o Bazar</a></li>
+                        <li><a href="seller.html">Venda no Bazar</a></li>
+                        <li><a href="#">Termos e Condições</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-heading">Siga-nos</h3>
+                    <div class="footer-socials">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-heading">Newsletter</h3>
+                    <p>Receba nossas promoções e novidades em primeira mão.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Seu e-mail" class="newsletter-input">
+                        <button type="submit" class="btn btn-primary">Inscrever</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© <span id="currentYear"></span> Bazar Bié Okutuala. Criado com paixão em Angola.</p>
+                <div class="footer-payment-methods">
+                    <img src="assets/images/payment/visa.svg" alt="Visa">
+                    <img src="assets/images/payment/mastercard.svg" alt="Mastercard">
+                    <img src="assets/images/payment/paypal.svg" alt="PayPal">
+                </div>
+            </div>
         </div>
-    </div>
+    </footer>
 
-    <!-- New Listing Modal -->
-    <div id="newListingModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="modal-close">×</span>
-            <h3>Novo Anúncio</h3>
-            <form id="newListingForm">
-                <label for="listingName">Nome do Produto</label>
-                <input type="text" id="listingName" required>
-                <label for="listingPrice">Preço (Kz)</label>
-                <input type="number" id="listingPrice" required>
-                <label for="listingCategory">Categoria</label>
-                <select id="listingCategory" required>
-                    <option value="Eletrônicos">Eletrônicos</option>
-                    <option value="Moda">Moda</option>
-                    <option value="Móveis">Móveis</option>
-                    <option value="Veículos">Veículos</option>
-                </select>
-                <label for="listingImages">Imagens</label>
-                <input type="file" id="listingImages" accept="image/*" multiple>
-                <label for="listingDescription">Descrição</label>
-                <textarea id="listingDescription" required></textarea>
-                <button type="submit" class="btn btn-primary">Publicar Anúncio</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Message Modal -->
-    <div id="messageModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="modal-close">×</span>
-            <h3>Conversa</h3>
-            <div id="messageContent"></div>
-            <form id="sendMessageForm">
-                <textarea id="messageText" placeholder="Escreva sua mensagem..." required></textarea>
-                <button type="submit" class="btn btn-primary">Enviar</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toastNotification" class="toast"></div>
-
-    <script src="assets/js/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="assets/js/config.js"></script>
     <script src="assets/js/notifications.js"></script>
     <script src="assets/js/user.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // Basic tab switching logic
+        const navLinks = document.querySelectorAll('.profile-nav-link');
+        const tabs = document.querySelectorAll('.profile-tab-content');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Check if it's an external link
+                const href = link.getAttribute('href');
+                if (!href.startsWith('#')) return;
+
+                e.preventDefault();
+
+                navLinks.forEach(nav => nav.classList.remove('active'));
+                tabs.forEach(tab => tab.classList.remove('active'));
+
+                link.classList.add('active');
+                const activeTab = document.querySelector(href);
+                if(activeTab) {
+                    activeTab.classList.add('active');
+                }
+            });
+        });
+
+    </script>
 </body>
 </html>

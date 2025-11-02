@@ -19,148 +19,227 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/components/navbar.css">
+    <link rel="stylesheet" href="./assets/css/checkout.css">
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
+    <header class="main-header" id="mainHeader">
+        <div class="container header-content">
             <a href="index.html" class="logo">
-                <span>Bié Okutuala</span>
+                <img src="assets/images/logo.png" alt="Bazar Bié Okutuala Logo" class="logo-img">
             </a>
+
+            <div class="search-container-header" role="search">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input-header" placeholder="Busque por produtos, marcas e muito mais..."/>
+                <button class="btn btn-primary btn-search-header" aria-label="Procurar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
             <div class="header-actions">
-                <button class="action-btn voice-toggle" id="voiceToggle" aria-label="Ativar/Desativar Assistente de Voz">
-                    <i data-lucide="mic"></i>
-                </button>
-                <button class="action-btn" id="themeToggle" aria-label="Alternar Tema">
-                    <i data-lucide="sun"></i>
-                    <i data-lucide="moon" style="display: none;"></i>
-                </button>
-                <a href="index.html" class="action-btn" aria-label="Voltar ao Início">
-                    <i data-lucide="arrow-left"></i>
+                <a href="profile.html" class="header-action-item user-profile">
+                    <i class="fa-regular fa-user"></i>
+                    <div class="action-text">
+                        <span>Olá, faça seu login</span>
+                        <strong>Minha conta</strong>
+                    </div>
+                </a>
+                <a href="#" class="header-action-item">
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+                <a href="checkout.html" class="header-action-item">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-badge">3</span>
                 </a>
             </div>
+
+            <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
+
+        <nav class="main-nav container">
+            <ul class="nav-list">
+                <li class="nav-item dropdown">
+                    <a href="categories.html" class="nav-link"><i class="fa-solid fa-bars"></i> Todas as Categorias</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Eletrônicos</a>
+                        <a href="#" class="dropdown-item">Moda Feminina</a>
+                        <a href="#" class="dropdown-item">Moda Masculina</a>
+                        <a href="#" class="dropdown-item">Casa e Cozinha</a>
+                        <a href="#" class="dropdown-item">Beleza e Cuidados</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a href="explore.html" class="nav-link">Lançamentos</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Mais Vendidos</a></li>
+                <li class="nav-item"><a href="seller.html" class="nav-link">Venda Conosco</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Atendimento ao Cliente</a></li>
+            </ul>
+            <div class="nav-contact">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>(244) 999 999 999</span>
+            </div>
+        </nav>
     </header>
 
-    <main class="container">
-        <div class="checkout-content">
-            <!-- Main Form -->
-            <div class="checkout-main">
-                <!-- Cart Summary -->
-                <section class="product-card" id="cartSection">
-                    <h2>Seu Carrinho</h2>
-                    <div id="cartItems" class="products-grid"></div>
-                    <div class="promo-code">
-                        <label for="promoCode">Código Promocional</label>
-                        <div class="input-wrapper">
-                            <i data-lucide="gift"></i>
-                            <input type="text" id="promoCode" placeholder="Ex.: BIE20OFF" aria-label="Código Promocional">
-                            <button class="apply-promo btn" aria-label="Aplicar Código"><i data-lucide="check"></i></button>
-                            <span class="error-message" id="promoCodeError"></span>
-                        </div>
-                    <div class="cart-total">
-                        <span>Total</span>
-                        <span id="cartTotal">Kz 0</span>
-                    </div>
-                    <button class="btn btn-primary" id="proceedToDelivery" aria-label="Continuar para Entrega">Continuar</button>
-                    <button id="clearCartBtn" class="btn btn-secondary">Limpar Carrinho</button>
-                    </div>
-                </section>
-
-                <!-- Delivery Details -->
-                <section class="product-card" id="deliverySection" style="display: none;">
-                    <h2>Detalhes de Entrega</h2>
-                    <form id="deliveryForm">
-                        <div class="form-group">
-                            <label for="fullName">Nome Completo</label>
-                            <div class="input-wrapper">
-                                <i data-lucide="user"></i>
-                                <input type="text" id="fullName" name="fullName" placeholder="Ex.: Afonso Kimbamba" required aria-label="Nome Completo">
-                            </div>
-                            <span class="error-message" id="fullNameError"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Telefone</label>
-                            <div class="input-wrapper">
-                                <i data-lucide="phone"></i>
-                                <input type="tel" id="phone" name="phone" placeholder="+244 923 456 789" required aria-label="Telefone">
-                            </div>
-                            <span class="error-message" id="phoneError"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Endereço</label>
-                            <div class="input-wrapper">
-                                <i data-lucide="map-pin"></i>
-                                <input type="text" id="address" name="address" placeholder="Ex.: Rua da Samba, Luanda" required aria-label="Endereço">
-                            </div>
-                            <span class="error-message" id="addressError"></span>
-                            <p class="delivery-estimate" id="deliveryEstimate"></p>
-                        </div>
-                        <div class="form-group">
-                            <label for="deliveryNotes">Notas de Entrega (Opcional)</label>
-                            <textarea id="deliveryNotes" name="deliveryNotes" placeholder="Ex.: Casa com portão vermelho" aria-label="Notas de Entrega"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="saveDelivery" aria-label="Salvar Detalhes de Entrega">Continuar</button>
-                    </form>
-                </section>
-
-                <!-- Payment Options -->
-                <section class="product-card" id="paymentSection" style="display: none;">
-                    <h2>Método de Pagamento</h2>
-                    <div class="payment-methods">
-                        <label class="payment-method">
-                            <input type="radio" name="paymentMethod" value="mpesa" required aria-label="Pagar com M-Pesa">
-                            <span>M-Pesa <img src="images/mpesa-logo.png" alt="M-Pesa" class="payment-logo"></span>
-                        </label>
-                        <label class="payment-method">
-                            <input type="radio" name="paymentMethod" value="card" aria-label="Pagar com Cartão Bancário">
-                            <span>Cartão Bancário <img src="images/visa-mastercard.png" alt="Visa/Mastercard" class="payment-logo"></span>
-                        </label>
-                        <label class="payment-method">
-                            <input type="radio" name="paymentMethod" value="cash" aria-label="Pagar na Entrega">
-                            <span>Pagamento na Entrega <i data-lucide="banknote"></i></span>
-                        </label>
-                    </div>
-                    <div id="paymentDetails" class="payment-details"></div>
-                    <button class="btn btn-primary" id="savePayment" aria-label="Salvar Método de Pagamento">Continuar</button>
-                </section>
-
-                <!-- Order Review -->
-                <section class="product-card" id="reviewSection" style="display: none;">
-                    <h2>Revisão do Pedido</h2>
-                    <div class="order-summary">
-                        <p><strong>Itens:</strong> <span id="orderItemCount">0</span></p>
-                        <p><strong>Desconto:</strong> <span id="orderDiscount">Kz 0</span></p>
-                        <p><strong>Total:</strong> <span id="orderTotal">Kz 0</span></p>
-                        <p><strong>Entrega:</strong> <span id="orderDelivery">-</span></p>
-                        <p><strong>Pagamento:</strong> <span id="orderPayment">-</span></p>
-                    </div>
-                    <div class="trust-badges">
-                        <span><i data-lucide="lock"></i> Pagamentos Seguros</span>
-                        <span><i data-lucide="shield-check"></i> Compra Protegida</span>
-                        <span><i data-lucide="truck"></i> Entrega Garantida</span>
-                    </div>
-                    <button class="btn btn-primary" id="placeOrder" aria-label="Finalizar Pedido">Finalizar Pedido</button>
-                </section>
+    <main class="container checkout-container">
+    <h1 class="checkout-title">Finalizar Compra</h1>
+    <div class="checkout-grid">
+        <div class="checkout-flow">
+            <!-- Progress Bar -->
+            <div class="checkout-progress">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Carrinho</div>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Entrega</div>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Pagamento</div>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Revisão</div>
+                </div>
             </div>
 
-            <!-- Sticky Summary -->
-            <aside class="checkout-summary">
-                <div class="summary-card product-card">
-                    <h3>Resumo do Pedido</h3>
-                    <div id="summaryItems"></div>
-                    <div class="summary-discount">
-                        <span>Desconto</span>
-                        <span id="summaryDiscount">Kz 0</span>
+            <!-- Step 1: Cart -->
+            <div class="checkout-step-content active" data-step="1">
+                <div class="card">
+                    <h2 class="card-title">Seu Carrinho</h2>
+                    <div id="cartItems" class="cart-items-list">
+                        <!-- Cart items will be injected here by JS -->
                     </div>
-                    <div class="summary-total">
-                        <span>Total</span>
-                        <span id="summaryTotal">Kz 0</span>
+                    <div class="promo-code-section">
+                        <label for="promoCode" class="form-label">Código Promocional</label>
+                        <div class="input-group">
+                            <i data-lucide="ticket" class="input-icon"></i>
+                            <input type="text" id="promoCode" placeholder="Insira o código do cupom" class="form-control">
+                            <button class="btn btn-secondary">Aplicar</button>
+                        </div>
                     </div>
-                    <button class="btn btn-primary sticky-btn" id="placeOrderSticky" aria-label="Finalizar Pedido" style="display: none;">Finalizar Pedido</button>
                 </div>
-            </aside>
+            </div>
+
+            <!-- Step 2: Delivery -->
+            <div class="checkout-step-content" data-step="2">
+                 <div class="card">
+                    <h2 class="card-title">Detalhes da Entrega</h2>
+                    <form id="deliveryForm" class="form-grid">
+                        <div class="form-group span-2">
+                            <label for="fullName" class="form-label">Nome Completo</label>
+                            <div class="input-group">
+                                <i data-lucide="user" class="input-icon"></i>
+                                <input type="text" class="form-control" id="fullName" placeholder="Seu nome completo" required>
+                            </div>
+                        </div>
+                        <div class="form-group span-2">
+                             <label for="phone" class="form-label">Telefone</label>
+                             <div class="input-group">
+                                <i data-lucide="phone" class="input-icon"></i>
+                                <input type="tel" class="form-control" id="phone" placeholder="+244 9XX XXX XXX" required>
+                            </div>
+                        </div>
+                        <div class="form-group span-2">
+                            <label for="address" class="form-label">Endereço de Entrega</label>
+                            <div class="input-group">
+                                <i data-lucide="map-pin" class="input-icon"></i>
+                                <input type="text" class="form-control" id="address" placeholder="Sua rua, bairro, cidade" required>
+                            </div>
+                        </div>
+                        <div class="form-group span-2">
+                            <label for="deliveryNotes" class="form-label">Notas Adicionais (Opcional)</label>
+                            <textarea id="deliveryNotes" class="form-control" rows="3" placeholder="Ex: Casa amarela com portão preto."></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Step 3: Payment -->
+            <div class="checkout-step-content" data-step="3">
+                <div class="card">
+                    <h2 class="card-title">Método de Pagamento</h2>
+                    <div class="payment-options">
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="mpesa" checked>
+                            <img src="./assets/images/payment/mpesa.svg" alt="M-Pesa">
+                            <span>M-Pesa</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="card">
+                             <img src="./assets/images/payment/visa.svg" alt="Visa">
+                             <img src="./assets/images/payment/mastercard.svg" alt="Mastercard">
+                            <span>Cartão de Crédito/Débito</span>
+                        </label>
+                         <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="cash">
+                            <i data-lucide="banknote" class="payment-icon"></i>
+                            <span>Pagamento na Entrega</span>
+                        </label>
+                    </div>
+                    <div id="paymentDetails" class="payment-details-form">
+                        <!-- Payment details form for card will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Review -->
+             <div class="checkout-step-content" data-step="4">
+                <div class="card">
+                    <h2 class="card-title">Revisão do Pedido</h2>
+                    <div class="review-details">
+                        <div class="review-section">
+                            <h3>Itens do Pedido:</h3>
+                            <div id="reviewCartItems"></div>
+                        </div>
+                        <div class="review-section">
+                            <h3>Detalhes da Entrega:</h3>
+                            <p id="reviewAddress"></p>
+                        </div>
+                        <div class="review-section">
+                            <h3>Método de Pagamento:</h3>
+                            <p id="reviewPaymentMethod"></p>
+                        </div>
+                    </div>
+                 </div>
+            </div>
         </div>
-    </main>
+
+        <aside class="order-summary">
+            <div class="card">
+                <h2 class="card-title">Resumo do Pedido</h2>
+                <div class="summary-line-item">
+                    <span>Subtotal</span>
+                    <span id="summarySubtotal">Kz 0,00</span>
+                </div>
+                <div class="summary-line-item">
+                    <span>Entrega</span>
+                    <span id="summaryShipping">Kz 0,00</span>
+                </div>
+                 <div class="summary-line-item discount">
+                    <span>Desconto</span>
+                    <span id="summaryDiscount">- Kz 0,00</span>
+                </div>
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span id="summaryTotal">Kz 0,00</span>
+                </div>
+                <button id="checkout-next-btn" class="btn btn-primary btn-block">Continuar</button>
+                 <button id="place-order-btn" class="btn btn-primary btn-block" style="display:none;">Finalizar Pedido</button>
+                 <div class="security-info">
+                    <i data-lucide="lock"></i>
+                    <span>Compra 100% Segura</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+</main>
 
     <!-- Order Confirmation Modal -->
     <div class="modal" id="confirmationModal" aria-hidden="true">
@@ -180,81 +259,54 @@
     <!-- Toast Notification -->
     <div class="toast" id="toastNotification" aria-live="polite"></div>
 
- <footer class="main-footer">
-            <div class="container footer-content">
-                <a href="#" class="footer-logo">Bié Okutuala</a>
-                <div class="footer-links">
-                    <a href="#">Sobre Nós</a>
-                    <a href="#">Ajuda</a>
-                    <a href="#">Termos de Uso</a>
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <h3 class="footer-heading">Atendimento ao Cliente</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Como Comprar</a></li>
+                        <li><a href="#">Métodos de Pagamento</a></li>
+                        <li><a href="#">Garantia</a></li>
+                    </ul>
                 </div>
-                <div class="footer-socials">
-                    <a href="#" aria-label="Facebook"
-                        ><svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path
-                                d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
-                            ></path></svg
-                    ></a>
-                    <a href="#" aria-label="Instagram"
-                        ><svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <rect
-                                x="2"
-                                y="2"
-                                width="20"
-                                height="20"
-                                rx="5"
-                                ry="5"
-                            ></rect>
-                            <path
-                                d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
-                            ></path>
-                            <line
-                                x1="17.5"
-                                y1="6.5"
-                                x2="17.51"
-                                y2="6.5"
-                            ></line></svg
-                    ></a>
-                    <a href="#" aria-label="WhatsApp"
-                        ><svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path
-                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
-                            ></path></svg
-                    ></a>
+                <div class="footer-column">
+                    <h3 class="footer-heading">Institucional</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="#">Sobre o Bazar</a></li>
+                        <li><a href="seller.html">Venda no Bazar</a></li>
+                        <li><a href="#">Termos e Condições</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                    </ul>
                 </div>
-                <p class="footer-copyright">
-                    © <span id="currentYear"></span> Bié Okutuala. Feito com
-                    orgulho em Angola.
-                </p>
+                <div class="footer-column">
+                    <h3 class="footer-heading">Siga-nos</h3>
+                    <div class="footer-socials">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-heading">Newsletter</h3>
+                    <p>Receba nossas promoções e novidades em primeira mão.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Seu e-mail" class="newsletter-input">
+                        <button type="submit" class="btn btn-primary">Inscrever</button>
+                    </form>
+                </div>
             </div>
-        </footer>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© <span id="currentYear"></span> Bazar Bié Okutuala. Criado com paixão em Angola.</p>
+                <div class="footer-payment-methods">
+                    <img src="assets/images/payment/visa.svg" alt="Visa">
+                    <img src="assets/images/payment/mastercard.svg" alt="Mastercard">
+                    <img src="assets/images/payment/paypal.svg" alt="PayPal">
+                </div>
+            </div>
+        </div>
+    </footer>
 
 <script src="assets/js/config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

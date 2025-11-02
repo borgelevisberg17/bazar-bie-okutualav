@@ -30,49 +30,145 @@
     <body>
         <header class="main-header" id="mainHeader">
             <div class="container header-content">
-                <a href="#" class="logo">Bazar Bié Okutuala</a>
+                <a href="index.html" class="logo">
+                    <img src="assets/images/logo.png" alt="Bazar Bié Okutuala Logo" class="logo-img">
+                </a>
 
-                <nav class="desktop-nav">
-                    <a href="index.html" class="nav-link active">Home</a>
-                    <a href="categories.html" class="nav-link">Categorias</a>
-                    <a href="explore.html" class="nav-link">Explorar</a>
-                    <a href="seller.html" class="nav-link">Vendedores</a>
-                </nav>
+                <div class="search-container-header" role="search">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input-header" placeholder="Busque por produtos, marcas e muito mais..."/>
+                    <button class="btn btn-primary btn-search-header" aria-label="Procurar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
 
                 <div class="header-actions">
-                    <button class="btn" id="theme-toggle"><i class="fas fa-moon"></i></button>
-                    <a href="auth/login.html" class="btn btn-primary">Entrar</a>
-                    <a href="#" class="header-icon"><i class="fas fa-shopping-bag"></i></a>
+                    <a href="profile.html" class="header-action-item user-profile">
+                        <i class="fa-regular fa-user"></i>
+                        <div class="action-text">
+                            <span>Olá, faça seu login</span>
+                            <strong>Minha conta</strong>
+                        </div>
+                    </a>
+                    <a href="#" class="header-action-item">
+                        <i class="fa-regular fa-heart"></i>
+                    </a>
+                    <a href="checkout.html" class="header-action-item">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="cart-badge">3</span>
+                    </a>
                 </div>
 
                 <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
+
+            <nav class="main-nav container">
+                <ul class="nav-list">
+                    <li class="nav-item dropdown">
+                        <a href="categories.html" class="nav-link"><i class="fa-solid fa-bars"></i> Todas as Categorias</a>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">Eletrônicos</a>
+                            <a href="#" class="dropdown-item">Moda Feminina</a>
+                            <a href="#" class="dropdown-item">Moda Masculina</a>
+                            <a href="#" class="dropdown-item">Casa e Cozinha</a>
+                            <a href="#" class="dropdown-item">Beleza e Cuidados</a>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="explore.html" class="nav-link">Lançamentos</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Mais Vendidos</a></li>
+                    <li class="nav-item"><a href="seller.html" class="nav-link">Venda Conosco</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Atendimento ao Cliente</a></li>
+                </ul>
+                <div class="nav-contact">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>(244) 999 999 999</span>
+                </div>
+            </nav>
         </header>
 
         <main>
-            <section class="hero-section">
-                <div class="container hero-content">
-                    <h1 class="hero-title">Tradição e Modernidade no Coração de Angola</h1>
-                    <p class="hero-subtitle">Encontre o que precisa hoje. Adicione um toque do Bié à sua vida.</p>
-                    <form class="search-container" role="search">
-                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <input type="text" id="search-input" placeholder="Procure por "/>
-                        <button class="btn btn-primary btn-search" aria-label="Procurar">
-                            Buscar
-                        </button>
-                    </form>
+            <div class="hero-container container">
+                <div class="hero-main-banner">
+                    <img src="assets/images/hero-banner.png" alt="Promoções Incríveis" class="hero-banner-img">
+                    <div class="hero-main-content">
+                        <h1>As Melhores Ofertas da Época</h1>
+                        <p>Qualidade e preço baixo em um só lugar. Aproveite!</p>
+                        <a href="#" class="btn btn-primary">Ver Ofertas</a>
+                    </div>
+                </div>
+                <div class="hero-side-banners">
+                    <div class="side-banner">
+                        <img src="assets/images/side-banner-1.png" alt="Tecnologia">
+                        <div class="side-banner-content">
+                            <h3>Tecnologia</h3>
+                            <a href="#">Ver mais</a>
+                        </div>
+                    </div>
+                    <div class="side-banner">
+                        <img src="assets/images/side-banner-2.png" alt="Moda">
+                        <div class="side-banner-content">
+                            <h3>Moda</h3>
+                            <a href="#">Ver mais</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="info-cards-section container">
+                <div class="info-card">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <div class="info-card-text">
+                        <h3>Entrega Rápida</h3>
+                        <p>Para toda a província do Bié</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <div class="info-card-text">
+                        <h3>Pagamento Seguro</h3>
+                        <p>Suas informações protegidas</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-headset"></i>
+                    <div class="info-card-text">
+                        <h3>Suporte 24/7</h3>
+                        <p>Atendimento ao cliente</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-gift"></i>
+                    <div class="info-card-text">
+                        <h3>Ofertas Exclusivas</h3>
+                        <p>Descontos e promoções</p>
+                    </div>
                 </div>
             </section>
 
-            <section class="categories-section">
-                <div class="container">
-                    <div class="categories-list" id="categorieList"></div>
+            <section class="categories-section container">
+                <div class="section-header">
+                    <h2 class="section-title">Navegue por Categorias</h2>
+                    <a href="categories.html" class="see-all">Ver Todas <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="categories-grid" id="categorieList">
+                    <!-- Category items will be dynamically inserted here -->
                 </div>
             </section>
 
-            <section class="products-section container">
+            <section class="featured-deals-section container">
+                <div class="deal-banner">
+                    <div class="deal-content">
+                        <h2>Ofertas Imperdíveis</h2>
+                        <p>Produtos selecionados com até <strong>40% de desconto</strong>. Não perca!</p>
+                        <a href="#" class="btn btn-secondary">Conferir Agora</a>
+                    </div>
+                    <img src="assets/images/deal-image.png" alt="Featured Deals" class="deal-image">
+                </div>
+            </section>
+
+            <section class="products-section container" id="recently-added-section">
                 <div class="section-header">
                     <h2 class="section-title">Recém-Adicionados</h2>
                     <a href="#" class="see-all">Ver Tudo <i class="fas fa-arrow-right"></i></a>
@@ -80,12 +176,25 @@
                 <div class="products-grid" id="recently-arrived"></div>
             </section>
 
-            <section class="products-section container">
+            <section class="products-section container" id="top-finds-section">
                 <div class="section-header">
                     <h2 class="section-title">Populares</h2>
                     <a href="#" class="see-all">Ver Tudo <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="products-grid" id="top-finds"></div>
+            </section>
+
+            <section class="brands-section container">
+                <div class="section-header">
+                    <h2 class="section-title">Marcas Parceiras</h2>
+                </div>
+                <div class="brands-grid">
+                    <img src="assets/images/brands/brand1.png" alt="Brand 1" class="brand-logo">
+                    <img src="assets/images/brands/brand2.png" alt="Brand 2" class="brand-logo">
+                    <img src="assets/images/brands/brand3.png" alt="Brand 3" class="brand-logo">
+                    <img src="assets/images/brands/brand4.png" alt="Brand 4" class="brand-logo">
+                    <img src="assets/images/brands/brand5.png" alt="Brand 5" class="brand-logo">
+                </div>
             </section>
 
             <section id="products" class="products-section container">
@@ -102,29 +211,58 @@
             <section class="sellers-section container">
                 <div class="section-header">
                     <h2 class="section-title">Nossos Vendedores</h2>
-                    <a href="#" class="see-all">Ver Todos <i class="fas fa-arrow-right"></i></a>
+                    <a href="seller.html" class="see-all">Ver Todos <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="sellers-grid" id="sellersGrid"></div>
             </section>
         </main>
 
         <footer class="main-footer">
-            <div class="container footer-content">
-                <a href="#" class="footer-logo">Bazar Bié Okutuala</a>
-                <div class="footer-links">
-                    <a href="#">Sobre Nós</a>
-                    <a href="#">Contato</a>
-                    <a href="#">Termos de Uso</a>
-                    <a href="#">Privacidade</a>
+            <div class="container">
+                <div class="footer-top">
+                    <div class="footer-column">
+                        <h3 class="footer-heading">Atendimento ao Cliente</h3>
+                        <ul class="footer-links-list">
+                            <li><a href="#">Central de Ajuda</a></li>
+                            <li><a href="#">Como Comprar</a></li>
+                            <li><a href="#">Métodos de Pagamento</a></li>
+                            <li><a href="#">Garantia</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3 class="footer-heading">Institucional</h3>
+                        <ul class="footer-links-list">
+                            <li><a href="#">Sobre o Bazar</a></li>
+                            <li><a href="seller.html">Venda no Bazar</a></li>
+                            <li><a href="#">Termos e Condições</a></li>
+                            <li><a href="#">Política de Privacidade</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3 class="footer-heading">Siga-nos</h3>
+                        <div class="footer-socials">
+                            <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h3 class="footer-heading">Newsletter</h3>
+                        <p>Receba nossas promoções e novidades em primeira mão.</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Seu e-mail" class="newsletter-input">
+                            <button type="submit" class="btn btn-primary">Inscrever</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="footer-socials">
-                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <div class="footer-bottom">
+                    <p class="footer-copyright">© <span id="currentYear"></span> Bazar Bié Okutuala. Criado com paixão em Angola.</p>
+                    <div class="footer-payment-methods">
+                        <img src="assets/images/payment/visa.svg" alt="Visa">
+                        <img src="assets/images/payment/mastercard.svg" alt="Mastercard">
+                        <img src="assets/images/payment/paypal.svg" alt="PayPal">
+                    </div>
                 </div>
-                <p class="footer-copyright">
-                    © <span id="currentYear"></span> Bazar Bié Okutuala. Criado com paixão em Angola.
-                </p>
             </div>
         </footer>
 

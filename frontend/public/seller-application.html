@@ -3,49 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Torne-se um Vendedor - Bié Okutuala</title>
+    <title>Inscrição de Vendedor - Bazar Bié Okutuala</title>
     <link rel="stylesheet" href="./assets/css/design-system.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/components/navbar.css">
+    <link rel="stylesheet" href="./assets/css/seller-application.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <a href="index.html" class="logo">Bié Okutuala</a>
+    <header class="main-header" id="mainHeader">
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="Bazar Bié Okutuala Logo" class="logo-img">
+            </a>
+            <div class="header-actions">
+                <a href="profile.html" class="header-action-item user-profile">
+                    <i data-lucide="user"></i>
+                    <span>Minha conta</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <h1>Torne-se um Vendedor</h1>
-        <p>Para se tornar um vendedor, você precisa pagar uma taxa única de 5.000 Kz.</p>
+    <main class="application-container">
+        <div class="application-header">
+            <h1 class="application-title">Inscrição de Vendedor</h1>
+            <p class="application-subtitle">Junte-se à nossa comunidade. Preencha os seus dados para começar.</p>
+        </div>
 
-        <form id="seller-application-form">
-            <h2>Informações de Pagamento</h2>
-            <div class="form-group">
-                <label for="card-number">Número do Cartão</label>
-                <input type="text" id="card-number" required>
-            </div>
-            <div class="form-group">
-                <label for="expiry-date">Data de Validade</label>
-                <input type="text" id="expiry-date" placeholder="MM/AA" required>
-            </div>
-            <div class="form-group">
-                <label for="cvv">CVV</label>
-                <input type="text" id="cvv" required>
-            </div>
+        <div class="application-form-container">
+            <div class="card">
+                <form id="seller-application-form" class="form-grid">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">1. Informações Pessoais</h2>
+                        <div class="form-group">
+                            <label for="fullName" class="form-label">Nome Completo</label>
+                            <input type="text" id="fullName" class="form-control" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Telefone</label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nif" class="form-label">NIF (Número de Identificação Fiscal)</label>
+                            <input type="text" id="nif" class="form-control" required>
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                <input type="checkbox" id="terms" required>
-                <label for="terms">Eu concordo com os <a href="#">termos e condições</a> para vendedores.</label>
-            </div>
+                    <!-- Store Information -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">2. Detalhes da Loja</h2>
+                        <div class="form-group">
+                            <label for="storeName" class="form-label">Nome da Loja</label>
+                            <input type="text" id="storeName" class="form-control" required>
+                        </div>
+                        <div class="form-group span-2">
+                            <label for="storeDescription" class="form-label">Descrição da Loja</label>
+                            <textarea id="storeDescription" class="form-control" rows="3" placeholder="Fale um pouco sobre o que sua loja vende..."></textarea>
+                        </div>
+                         <div class="form-group span-2">
+                            <label for="storeLogo" class="form-label">Logo da Loja</label>
+                            <input type="file" id="storeLogo" class="form-control-file">
+                        </div>
+                    </div>
 
-            <button type="submit" class="btn btn-primary">Pagar e Aplicar</button>
-        </form>
+                    <!-- Payment Information -->
+                    <div class="form-section">
+                         <h2 class="form-section-title">3. Pagamento da Taxa de Inscrição</h2>
+                         <p class="payment-info">Para ativar sua loja, é necessário o pagamento de uma taxa única de <strong>5,000 Kz</strong>.</p>
+                         <div class="form-group">
+                            <label for="cardNumber" class="form-label">Número do Cartão</label>
+                            <input type="text" id="cardNumber" class="form-control" placeholder="**** **** **** ****" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="expiryDate" class="form-label">Data de Validade</label>
+                            <input type="text" id="expiryDate" class="form-control" placeholder="MM/AA" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" id="cvv" class="form-control" placeholder="123" required>
+                        </div>
+                    </div>
+
+                    <!-- Submission -->
+                    <div class="form-group span-2 terms-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">Li e concordo com os <a href="#">Termos e Condições para Vendedores</a>.</label>
+                    </div>
+
+                    <div class="form-group span-2 form-actions">
+                        <button type="submit" class="btn btn-primary btn-lg">Pagar e Enviar Inscrição</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
     <script src="assets/js/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="assets/js/notifications.js"></script>
     <script src="assets/js/seller-application.js"></script>
+     <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

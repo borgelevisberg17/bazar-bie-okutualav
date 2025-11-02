@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="./assets/css/design-system.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
-    <link rel="stylesheet" href="./assets/css/components/navbar.css" />
+    <link rel="stylesheet" href="./assets/css/components/header.css">
+    <link rel="stylesheet" href="./assets/css/components/footer.css">
+    <link rel="stylesheet" href="./assets/css/components/buttons.css">
+    <link rel="stylesheet" href="./assets/css/components/cards.css">
     <link rel="stylesheet" href="./assets/css/profile.css">
 </head>
 <body>
@@ -40,23 +43,18 @@
 
         <div class="profile-content-container container">
             <div id="products" class="tab-content active">
-                <div class="products-grid" id="user-products-grid">
-                    <!-- User's products will be dynamically inserted here -->
-                </div>
+                <div class="products-grid" id="user-products-grid"></div>
             </div>
             <div id="favorites" class="tab-content">
-                <div class="products-grid" id="user-favorites-grid">
-                    <!-- User's favorite products will be dynamically inserted here -->
-                </div>
+                <div class="products-grid" id="user-favorites-grid"></div>
             </div>
-            <div id="settings" class="tab-content">
-                <!-- User settings form will be here -->
-            </div>
+            <div id="settings" class="tab-content"></div>
         </div>
     </main>
 
-    <footer class="main-footer"></footer>
+    <footer class="main-footer" id="mainFooter"></footer>
 
+    <script src="assets/js/geral.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module" src="assets/js/services/api.js"></script>
     <script src="assets/js/notifications.js"></script>

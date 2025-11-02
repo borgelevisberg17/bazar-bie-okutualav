@@ -1,18 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 :root {
-  /* Colors */
-  --primary-color: #d45d00;
-  --secondary-color: #174f27;
-  --background-color: #f3f4f6;
-  --text-color: #1f2937;
-  --text-light-color: #6b7280;
+  /* New E-commerce Social Color Palette */
+  --primary-color: #D96D2B; /* Rich Terracotta */
+  --secondary-color: #0B4F6C; /* Deep Teal */
+  --accent-color: #FFC107; /* Golden Yellow */
+  --background-color: #F7F7F7; /* Light Warm Gray */
+  --text-color: #202020; /* Dark Charcoal */
+  --text-light-color: #6c757d;
   --white-color: #ffffff;
-  --dark-color: #111827;
-  --success-color: #10b981;
-  --danger-color: #ef4444;
-  --warning-color: #f59e0b;
-  --info-color: #3b82f6;
+  --dark-color: #1a1a1a;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
 
   /* Fonts */
   --font-family-sans-serif: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -33,25 +34,28 @@
 
   /* Borders */
   --border-width: 1px;
-  --border-color: #e5e7eb;
-  --border-radius-sm: 0.25rem;
-  --border-radius: 0.5rem;
-  --border-radius-lg: 0.75rem;
-  --border-radius-xl: 1rem;
-  --border-radius-2xl: 1.5rem;
+  --border-color: #dee2e6;
+  --border-radius-sm: 0.2rem;
+  --border-radius: 0.4rem;
+  --border-radius-lg: 0.8rem;
+  --border-radius-xl: 1.2rem;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  /* Shadows - Softer and more modern */
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.07);
+  --shadow: 0 4px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 6px 12px rgba(0,0,0,0.09);
+  --shadow-lg: 0 10px 20px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 40px rgba(0,0,0,0.12);
 }
 
 body.dark-mode {
-  --background-color: #111827;
-  --text-color: #f3f4f6;
-  --white-color: #1f2937;
-  --dark-color: #f3f4f6;
-  --border-color: #374151;
+  --primary-color: #E67E22;
+  --secondary-color: #1ABC9C;
+  --accent-color: #F1C40F;
+  --background-color: #1a1a1a;
+  --text-color: #F7F7F7;
+  --text-light-color: #a0a0a0;
+  --white-color: #2c2c2c;
+  --dark-color: #F7F7F7;
+  --border-color: #444;
 }

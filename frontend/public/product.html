@@ -27,19 +27,19 @@
             </div>
 
             <div class="header-actions">
-                <a href="profile.html" class="header-action-item user-profile">
+                <div class="header-action-item user-profile">
                     <i class="fa-regular fa-user"></i>
                     <div class="action-text">
                         <span>Olá, faça seu login</span>
-                        <strong>Minha conta</strong>
+                        <strong><a href="/auth/login.html" style="color: inherit; text-decoration: none;">Minha conta</a></strong>
                     </div>
-                </a>
+                </div>
                 <a href="#" class="header-action-item">
                     <i class="fa-regular fa-heart"></i>
                 </a>
                 <a href="checkout.html" class="header-action-item">
                     <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="cart-badge">3</span>
+                    <span class="cart-badge" style="display: none;">0</span>
                 </a>
             </div>
 
@@ -165,5 +165,6 @@
     <script type="module" src="assets/js/services/api.js"></script>
     <script src="assets/js/notifications.js"></script>
     <script type="module" src="assets/js/product-details.js"></script>
+    <script type="module" src="assets/js/theme.js"></script>
 </body>
 </html>

@@ -3,314 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Finalizar compra no Bié Okutuala - O mercado online mais vibrante de Angola.">
-    <meta name="keywords" content="checkout, marketplace, Angola, compras, Bié Okutuala">
-    <meta name="author" content="Bié Okutuala">
-    <meta property="og:title" content="Checkout - Bié Okutuala">
-    <meta property="og:image" content="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg">
-    <title>Checkout - Bié Okutuala</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <title>Checkout - Bazar Bié Okutuala</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./assets/css/design-system.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
-    <link rel="stylesheet" href="./assets/css/components/navbar.css">
-    <link rel="stylesheet" href="./assets/css/checkout.css">
+    <link rel="stylesheet" href="./assets/css/components/header.css">
+    <link rel="stylesheet" href="./assets/css/components/footer.css">
+    <link rel="stylesheet" href="./assets/css/components/buttons.css">
+    <link rel="stylesheet" href="./assets/css/components/cards.css">
+    <link rel="stylesheet" href="./assets/css/components/forms.css">
+    <link rel="stylesheet" href="./assets/css/checkout.css"> <!-- Keep checkout specific styles -->
 </head>
 <body>
-    <header class="main-header" id="mainHeader">
-        <div class="container header-content">
-            <a href="index.html" class="logo">
-                <img src="assets/images/logo.png" alt="Bazar Bié Okutuala Logo" class="logo-img">
-            </a>
-
-            <div class="search-container-header" role="search">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="search-input-header" placeholder="Busque por produtos, marcas e muito mais..."/>
-                <button class="btn btn-primary btn-search-header" aria-label="Procurar">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
-
-            <div class="header-actions">
-                <a href="profile.html" class="header-action-item user-profile">
-                    <i class="fa-regular fa-user"></i>
-                    <div class="action-text">
-                        <span>Olá, faça seu login</span>
-                        <strong>Minha conta</strong>
-                    </div>
-                </a>
-                <a href="#" class="header-action-item">
-                    <i class="fa-regular fa-heart"></i>
-                </a>
-                <a href="checkout.html" class="header-action-item">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="cart-badge">3</span>
-                </a>
-            </div>
-
-            <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-
-        <nav class="main-nav container">
-            <ul class="nav-list">
-                <li class="nav-item dropdown">
-                    <a href="categories.html" class="nav-link"><i class="fa-solid fa-bars"></i> Todas as Categorias</a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Eletrônicos</a>
-                        <a href="#" class="dropdown-item">Moda Feminina</a>
-                        <a href="#" class="dropdown-item">Moda Masculina</a>
-                        <a href="#" class="dropdown-item">Casa e Cozinha</a>
-                        <a href="#" class="dropdown-item">Beleza e Cuidados</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a href="explore.html" class="nav-link">Lançamentos</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Mais Vendidos</a></li>
-                <li class="nav-item"><a href="seller.html" class="nav-link">Venda Conosco</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Atendimento ao Cliente</a></li>
-            </ul>
-            <div class="nav-contact">
-                <i class="fa-brands fa-whatsapp"></i>
-                <span>(244) 999 999 999</span>
-            </div>
-        </nav>
-    </header>
+    <header class="main-header" id="mainHeader"></header>
 
     <main class="container checkout-container">
-    <h1 class="checkout-title">Finalizar Compra</h1>
-    <div class="checkout-grid">
-        <div class="checkout-flow">
-            <!-- Progress Bar -->
-            <div class="checkout-progress">
-                <div class="progress-step active" data-step="1">
-                    <div class="step-circle">1</div>
-                    <div class="step-label">Carrinho</div>
+        <h1 class="checkout-title">Finalizar Compra</h1>
+        <div class="checkout-grid">
+            <div class="checkout-flow">
+                <!-- Progress Bar remains the same -->
+                <div class="checkout-progress">
+                    <div class="progress-step active" data-step="1"><div class="step-circle">1</div><div class="step-label">Carrinho</div></div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" data-step="2"><div class="step-circle">2</div><div class="step-label">Entrega</div></div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" data-step="3"><div class="step-circle">3</div><div class="step-label">Pagamento</div></div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" data-step="4"><div class="step-circle">4</div><div class="step-label">Revisão</div></div>
                 </div>
-                <div class="progress-line"></div>
-                <div class="progress-step" data-step="2">
-                    <div class="step-circle">2</div>
-                    <div class="step-label">Entrega</div>
+
+                <!-- Steps Content -->
+                <div class="checkout-step-content active" data-step="1">
+                    <div class="card"><h2 class="card-title">Seu Carrinho</h2><div id="cartItems" class="cart-items-list"></div></div>
                 </div>
-                <div class="progress-line"></div>
-                <div class="progress-step" data-step="3">
-                    <div class="step-circle">3</div>
-                    <div class="step-label">Pagamento</div>
+                <div class="checkout-step-content" data-step="2">
+                    <div class="card"><h2 class="card-title">Detalhes da Entrega</h2><form id="deliveryForm" class="form-grid"></form></div>
                 </div>
-                <div class="progress-line"></div>
-                <div class="progress-step" data-step="4">
-                    <div class="step-circle">4</div>
-                    <div class="step-label">Revisão</div>
+                <div class="checkout-step-content" data-step="3">
+                    <div class="card"><h2 class="card-title">Método de Pagamento</h2><div class="payment-options"></div><div id="paymentDetails" class="payment-details-form"></div></div>
+                </div>
+                <div class="checkout-step-content" data-step="4">
+                    <div class="card"><h2 class="card-title">Revisão do Pedido</h2><div class="review-details"></div></div>
                 </div>
             </div>
 
-            <!-- Step 1: Cart -->
-            <div class="checkout-step-content active" data-step="1">
+            <aside class="order-summary">
                 <div class="card">
-                    <h2 class="card-title">Seu Carrinho</h2>
-                    <div id="cartItems" class="cart-items-list">
-                        <!-- Cart items will be injected here by JS -->
-                    </div>
-                    <div class="promo-code-section">
-                        <label for="promoCode" class="form-label">Código Promocional</label>
-                        <div class="input-group">
-                            <i data-lucide="ticket" class="input-icon"></i>
-                            <input type="text" id="promoCode" placeholder="Insira o código do cupom" class="form-control">
-                            <button class="btn btn-secondary">Aplicar</button>
-                        </div>
-                    </div>
+                    <h2 class="card-title">Resumo do Pedido</h2>
+                    <div class="summary-line-item"><span>Subtotal</span><span id="summarySubtotal">Kz 0,00</span></div>
+                    <div class="summary-line-item"><span>Entrega</span><span id="summaryShipping">Kz 0,00</span></div>
+                    <div class="summary-line-item discount"><span>Desconto</span><span id="summaryDiscount">- Kz 0,00</span></div>
+                    <div class="summary-total"><span>Total</span><span id="summaryTotal">Kz 0,00</span></div>
+                    <button id="checkout-next-btn" class="btn btn-primary btn-block">Continuar</button>
+                    <button id="place-order-btn" class="btn btn-primary btn-block" style="display:none;">Finalizar Pedido</button>
                 </div>
-            </div>
-
-            <!-- Step 2: Delivery -->
-            <div class="checkout-step-content" data-step="2">
-                 <div class="card">
-                    <h2 class="card-title">Detalhes da Entrega</h2>
-                    <form id="deliveryForm" class="form-grid">
-                        <div class="form-group span-2">
-                            <label for="fullName" class="form-label">Nome Completo</label>
-                            <div class="input-group">
-                                <i data-lucide="user" class="input-icon"></i>
-                                <input type="text" class="form-control" id="fullName" placeholder="Seu nome completo" required>
-                            </div>
-                        </div>
-                        <div class="form-group span-2">
-                             <label for="phone" class="form-label">Telefone</label>
-                             <div class="input-group">
-                                <i data-lucide="phone" class="input-icon"></i>
-                                <input type="tel" class="form-control" id="phone" placeholder="+244 9XX XXX XXX" required>
-                            </div>
-                        </div>
-                        <div class="form-group span-2">
-                            <label for="address" class="form-label">Endereço de Entrega</label>
-                            <div class="input-group">
-                                <i data-lucide="map-pin" class="input-icon"></i>
-                                <input type="text" class="form-control" id="address" placeholder="Sua rua, bairro, cidade" required>
-                            </div>
-                        </div>
-                        <div class="form-group span-2">
-                            <label for="deliveryNotes" class="form-label">Notas Adicionais (Opcional)</label>
-                            <textarea id="deliveryNotes" class="form-control" rows="3" placeholder="Ex: Casa amarela com portão preto."></textarea>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Step 3: Payment -->
-            <div class="checkout-step-content" data-step="3">
-                <div class="card">
-                    <h2 class="card-title">Método de Pagamento</h2>
-                    <div class="payment-options">
-                        <label class="payment-option">
-                            <input type="radio" name="paymentMethod" value="mpesa" checked>
-                            <img src="./assets/images/payment/mpesa.svg" alt="M-Pesa">
-                            <span>M-Pesa</span>
-                        </label>
-                        <label class="payment-option">
-                            <input type="radio" name="paymentMethod" value="card">
-                             <img src="./assets/images/payment/visa.svg" alt="Visa">
-                             <img src="./assets/images/payment/mastercard.svg" alt="Mastercard">
-                            <span>Cartão de Crédito/Débito</span>
-                        </label>
-                         <label class="payment-option">
-                            <input type="radio" name="paymentMethod" value="cash">
-                            <i data-lucide="banknote" class="payment-icon"></i>
-                            <span>Pagamento na Entrega</span>
-                        </label>
-                    </div>
-                    <div id="paymentDetails" class="payment-details-form">
-                        <!-- Payment details form for card will be injected here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 4: Review -->
-             <div class="checkout-step-content" data-step="4">
-                <div class="card">
-                    <h2 class="card-title">Revisão do Pedido</h2>
-                    <div class="review-details">
-                        <div class="review-section">
-                            <h3>Itens do Pedido:</h3>
-                            <div id="reviewCartItems"></div>
-                        </div>
-                        <div class="review-section">
-                            <h3>Detalhes da Entrega:</h3>
-                            <p id="reviewAddress"></p>
-                        </div>
-                        <div class="review-section">
-                            <h3>Método de Pagamento:</h3>
-                            <p id="reviewPaymentMethod"></p>
-                        </div>
-                    </div>
-                 </div>
-            </div>
+            </aside>
         </div>
+    </main>
 
-        <aside class="order-summary">
-            <div class="card">
-                <h2 class="card-title">Resumo do Pedido</h2>
-                <div class="summary-line-item">
-                    <span>Subtotal</span>
-                    <span id="summarySubtotal">Kz 0,00</span>
-                </div>
-                <div class="summary-line-item">
-                    <span>Entrega</span>
-                    <span id="summaryShipping">Kz 0,00</span>
-                </div>
-                 <div class="summary-line-item discount">
-                    <span>Desconto</span>
-                    <span id="summaryDiscount">- Kz 0,00</span>
-                </div>
-                <div class="summary-total">
-                    <span>Total</span>
-                    <span id="summaryTotal">Kz 0,00</span>
-                </div>
-                <button id="checkout-next-btn" class="btn btn-primary btn-block">Continuar</button>
-                 <button id="place-order-btn" class="btn btn-primary btn-block" style="display:none;">Finalizar Pedido</button>
-                 <div class="security-info">
-                    <i data-lucide="lock"></i>
-                    <span>Compra 100% Segura</span>
-                </div>
-            </div>
-        </aside>
-    </div>
-</main>
+    <footer class="main-footer" id="mainFooter"></footer>
 
-    <!-- Order Confirmation Modal -->
-    <div class="modal" id="confirmationModal" aria-hidden="true">
-        <div class="modal-content">
-            <button class="modal-close-btn action-btn" id="modalCloseBtn" aria-label="Fechar Modal"><i data-lucide="x"></i></button>
-            <div class="confirmation-content">
-                <div class="success-animation">
-                    <i data-lucide="check-circle" class="success-icon"></i>
-                </div>
-                <h2>Oba! Pedido Confirmado!</h2>
-                <p>Gracias por comprar no Bié Okutuala. Sua confirmação está a caminho!</p>
-                <a href="index.html" class="btn btn-primary" aria-label="Voltar à Página Inicial">Explorar Mais</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toastNotification" aria-live="polite"></div>
-
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-column">
-                    <h3 class="footer-heading">Atendimento ao Cliente</h3>
-                    <ul class="footer-links-list">
-                        <li><a href="#">Central de Ajuda</a></li>
-                        <li><a href="#">Como Comprar</a></li>
-                        <li><a href="#">Métodos de Pagamento</a></li>
-                        <li><a href="#">Garantia</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3 class="footer-heading">Institucional</h3>
-                    <ul class="footer-links-list">
-                        <li><a href="#">Sobre o Bazar</a></li>
-                        <li><a href="seller.html">Venda no Bazar</a></li>
-                        <li><a href="#">Termos e Condições</a></li>
-                        <li><a href="#">Política de Privacidade</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3 class="footer-heading">Siga-nos</h3>
-                    <div class="footer-socials">
-                        <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3 class="footer-heading">Newsletter</h3>
-                    <p>Receba nossas promoções e novidades em primeira mão.</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Seu e-mail" class="newsletter-input">
-                        <button type="submit" class="btn btn-primary">Inscrever</button>
-                    </form>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p class="footer-copyright">© <span id="currentYear"></span> Bazar Bié Okutuala. Criado com paixão em Angola.</p>
-                <div class="footer-payment-methods">
-                    <img src="assets/images/payment/visa.svg" alt="Visa">
-                    <img src="assets/images/payment/mastercard.svg" alt="Mastercard">
-                    <img src="assets/images/payment/paypal.svg" alt="PayPal">
-                </div>
-            </div>
-        </div>
-    </footer>
-
-<script src="assets/js/config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script src="assets/js/notifications.js"></script>
-<script src="./assets/js/checkout.js"></script>
+    <script src="assets/js/geral.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="assets/js/notifications.js"></script>
+    <script src="./assets/js/checkout.js"></script>
 </body>
 </html>

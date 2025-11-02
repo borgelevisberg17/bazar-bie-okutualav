@@ -40,7 +40,7 @@ const createUser = async ({
     name,
     email,
     password_hash,
-    role = "customer"
+    role = "user"
 }) => {
     if (mode === "pg") {
         return db.one(

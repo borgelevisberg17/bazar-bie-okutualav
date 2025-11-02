@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Bazar Bié Okutuala</title>
+    <title>Registo - Bazar Bié Okutuala</title>
     <link rel="stylesheet" href="../assets/css/design-system.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
@@ -12,8 +12,12 @@
 <body>
     <main class="auth-container">
         <div class="auth-card">
-            <h1 class="auth-title">Login</h1>
-            <form id="login-form">
+            <h1 class="auth-title">Criar Conta</h1>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="name" class="form-label">Nome</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
                 <div class="form-group">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" name="email" class="form-control" required>
@@ -22,12 +26,9 @@
                     <label for="password" class="form-label">Senha</label>
                     <input type="password" name="password" class="form-control" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                <button type="submit" class="btn btn-primary btn-block">Registar</button>
             </form>
-            <div class="social-login">
-                <button class="btn btn-social-google btn-block">Entrar com Google</button>
-            </div>
-            <p class="auth-switch">Não tem uma conta? <a href="register.html">Crie uma</a></p>
+            <p class="auth-switch">Já tem uma conta? <a href="login.html">Faça login</a></p>
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

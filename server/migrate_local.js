@@ -1,10 +1,11 @@
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const pgp = require('pg-promise')({});
-const connectionString = process.argv[2];
+const connectionString = process.env.DATABASE_URL_LOCAL;
 
 if (!connectionString) {
-  console.error('Please provide a database connection string as an argument.');
+  console.error('DATABASE_URL_LOCAL not found in .env file.');
   process.exit(1);
 }
 

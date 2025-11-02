@@ -1,114 +1,93 @@
-import { updateUserUI, logout } from "./auth.js";
-
-/**
- * Loads the navbar component into the page.
- * @returns {Promise<void>}
- */
-async function loadNavbar() {
-    try {
-        const response = await fetch("/common/navbar.html");
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const navbarHtml = await response.text();
-        const mainHeader = document.getElementById("mainHeader");
-
-        // The desktop-nav is now inside the loaded navbar.html, so we don't need to touch it here.
-        // The side-menu is now loaded from navbar.html, so we append it to the body.
-        document.body.insertAdjacentHTML("beforeend", navbarHtml);
-    } catch (error) {
-        console.error("Could not load the navbar:", error);
-    }
-}
-
-/**
- * Initializes the menu functionality after the navbar is loaded.
- */
-function initializeMenu() {
-    updateUserUI(); // Update UI based on user login status
-
-    const menuToggle = document.getElementById("menu-toggle");
-    const sideMenu = document.getElementById("side-menu");
-    const overlay = document.getElementById("mobile-overlay");
-
-    if (!menuToggle || !sideMenu || !overlay) {
-        console.error("Menu elements not found after loading navbar.");
-        return; // Exit if menu elements are not found
-    }
-
-    // Add logout button to the menu
-    const menuNav = document.querySelector(".menu-nav ul");
-    if (menuNav) {
-        const logoutButton = document.createElement("li");
-        logoutButton.innerHTML = `
-            <a href="#" id="logout-button">
-                <span class="nav-icon"><i data-lucide="log-out"></i></span>
-                Sair
-            </a>
-        `;
-        menuNav.appendChild(logoutButton);
-
-        document
-            .getElementById("logout-button")
-            .addEventListener("click", event => {
-                event.preventDefault();
-                logout();
-            });
-    }
-
-    const openMenu = () => {
-        menuToggle.classList.add("is-active");
-        sideMenu.classList.add("is-active");
-        overlay.classList.add("is-active");
-        document.body.classList.add("menu-open");
-    };
-
-    const closeMenu = () => {
-        menuToggle.classList.remove("is-active");
-        sideMenu.classList.remove("is-active");
-        overlay.classList.remove("is-active");
-        document.body.classList.remove("menu-open");
-        document.querySelectorAll(".has-submenu.is-open").forEach(submenu => {
-            submenu.classList.remove("is-open");
-            submenu.querySelector(".submenu").style.maxHeight = null;
-        });
-    };
-
-    menuToggle.addEventListener("click", () => {
-        sideMenu.classList.contains("is-active") ? closeMenu() : openMenu();
-    });
-
-    overlay.addEventListener("click", closeMenu);
-
-    document.querySelectorAll(".has-submenu > a").forEach(link => {
-        link.addEventListener("click", e => {
-            e.preventDefault();
-            const parentLi = link.parentElement;
-            const submenu = parentLi.querySelector(".submenu");
-
-            if (parentLi.classList.contains("is-open")) {
-                parentLi.classList.remove("is-open");
-                submenu.style.maxHeight = null;
-            } else {
-                document
-                    .querySelectorAll(".has-submenu.is-open")
-                    .forEach(openSubmenu => {
-                        if (openSubmenu !== parentLi) {
-                            openSubmenu.classList.remove("is-open");
-                            openSubmenu.querySelector(
-                                ".submenu"
-                            ).style.maxHeight = null;
-                        }
-                    });
-                parentLi.classList.add("is-open");
-                submenu.style.maxHeight = submenu.scrollHeight + "px";
+document.addEventListener("DOMContentLoaded", () => {
+    const loadComponent = async (url, elementId) => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
             }
-        });
-    });
-}
+            const text = await response.text();
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = text;
+            } else {
+                console.warn(`Element with ID '${elementId}' not found.`);
+            }
+        } catch (error) {
+            console.error(`Error loading component from ${url}:`, error);
+        }
+    };
 
-// Load the navbar and then initialize the menu
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadNavbar();
-    initializeMenu();
+    const setupHeader = () => {
+        // Mobile Menu
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const mobileSideMenu = document.getElementById('mobile-side-menu');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const overlay = document.getElementById('overlay');
+
+        if (mobileNavToggle && mobileSideMenu && closeMenuBtn && overlay) {
+            mobileNavToggle.addEventListener('click', () => {
+                mobileSideMenu.classList.add('open');
+                overlay.classList.add('visible');
+            });
+            const closeMenu = () => {
+                mobileSideMenu.classList.remove('open');
+                overlay.classList.remove('visible');
+            };
+            closeMenuBtn.addEventListener('click', closeMenu);
+            overlay.addEventListener('click', closeMenu);
+        }
+
+        // Cart Icon
+        const cartBtn = document.getElementById('cart-btn');
+        if (cartBtn) {
+            cartBtn.addEventListener('click', () => {
+                window.location.href = '/checkout.html';
+            });
+        }
+
+        // Search Overlay
+        const searchBtn = document.getElementById('search-btn');
+        const searchOverlay = document.getElementById('search-overlay');
+        const closeSearchBtn = document.getElementById('close-search-btn');
+        const searchInput = document.getElementById('search-input');
+
+        if (searchBtn && searchOverlay && closeSearchBtn) {
+            searchBtn.addEventListener('click', () => {
+                searchOverlay.classList.add('open');
+                searchInput.focus();
+            });
+
+            closeSearchBtn.addEventListener('click', () => {
+                searchOverlay.classList.remove('open');
+            });
+        }
+
+        // User Profile & Logout
+        const userSession = JSON.parse(localStorage.getItem('user_session'));
+        const profileAvatar = document.querySelector('.profile-avatar');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        if (userSession && profileAvatar) {
+            // Assume user data is in session, replace placeholder
+            // In a real app, you might have user details in the session
+            // profileAvatar.src = userSession.avatar_url || '/assets/images/placeholders/avatar.png';
+        }
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('user_session');
+                // You might want to also call an API endpoint to invalidate the token on the server
+                window.location.href = '/auth/login.html';
+            });
+        }
+    };
+
+    const init = async () => {
+        await loadComponent('/common/header.html', 'mainHeader');
+        await loadComponent('/common/footer.html', 'mainFooter');
+        setupHeader(); // Setup all header functionality
+    };
+
+    init();
 });

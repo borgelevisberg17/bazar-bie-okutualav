@@ -8,13 +8,14 @@
     <link rel="stylesheet" href="./assets/css/design-system.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
-    <link rel="stylesheet" href="./assets/css/components/navbar.css">
+    <link rel="stylesheet" href="./assets/css/components/header.css">
+    <link rel="stylesheet" href="./assets/css/components/footer.css">
+    <link rel="stylesheet" href="./assets/css/components/buttons.css">
+    <link rel="stylesheet" href="./assets/css/components/forms.css">
     <link rel="stylesheet" href="./assets/css/product-details.css">
 </head>
 <body>
-    <header class="main-header" id="mainHeader">
-        <!-- O mesmo header de antes -->
-    </header>
+    <header class="main-header" id="mainHeader"></header>
 
     <main class="container product-details-container">
         <div class="product-details-layout">
@@ -22,9 +23,7 @@
                 <div class="main-image">
                     <img src="assets/images/placeholders/product-main.png" alt="Produto Principal" id="main-product-image">
                 </div>
-                <div class="thumbnail-images" id="thumbnail-gallery">
-                    <!-- Thumbnails serão inseridos dinamicamente -->
-                </div>
+                <div class="thumbnail-images" id="thumbnail-gallery"></div>
             </section>
 
             <section class="product-info-details">
@@ -46,36 +45,27 @@
                         <input type="number" class="quantity-input" value="1" min="1" id="quantity-input">
                         <button class="btn-quantity" data-action="increase">+</button>
                     </div>
-                    <button class="btn btn-primary btn-add-to-cart-details" id="add-to-cart-btn">Adicionar ao Carrinho</button>
-                </div>
-
-                <div class="product-secondary-actions">
-                    <button class="btn-action" id="wishlist-btn"><i class="far fa-heart"></i> Adicionar aos Favoritos</button>
-                    <button class="btn-action"><i class="fas fa-share-alt"></i> Partilhar</button>
+                    <button class="btn btn-primary" id="add-to-cart-btn">Adicionar ao Carrinho</button>
                 </div>
             </section>
         </div>
 
         <section class="comments-section">
             <h2>Comentários</h2>
-            <form class="comment-form" id="comment-form">
-                <input type="text" class="comment-input" placeholder="Adicione um comentário..." required>
+            <form class="comment-form form-group" id="comment-form">
+                <input type="text" class="form-control" placeholder="Adicione um comentário..." required>
                 <button type="submit" class="btn btn-primary">Publicar</button>
             </form>
-            <div class="comment-list" id="comments-list">
-                <!-- Comentários serão inseridos dinamicamente -->
-            </div>
+            <div class="comment-list" id="comments-list"></div>
         </section>
     </main>
 
-    <footer class="main-footer">
-        <!-- O mesmo footer de antes -->
-    </footer>
+    <footer class="main-footer" id="mainFooter"></footer>
 
+    <script src="assets/js/geral.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module" src="assets/js/services/api.js"></script>
     <script src="assets/js/notifications.js"></script>
     <script type="module" src="assets/js/product-details.js"></script>
-    <script type="module" src="assets/js/theme.js"></script>
 </body>
 </html>

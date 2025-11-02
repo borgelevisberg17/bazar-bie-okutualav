@@ -1,4 +1,5 @@
-import { getProducts, getCategories, api } from "./services/api.js";
+import { showToast } from "./notifications.js";
+import { getProducts, getCategories } from "./services/api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const productsGrid = document.getElementById("products-grid");
@@ -6,34 +7,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     const loadMoreBtn = document.getElementById("load-more-btn");
 
     let currentPage = 1;
-    let currentCategory = 'all';
     const productsPerPage = 12;
 
-    await loadPageData();
-
-    async function loadPageData() {
-        productsGrid.innerHTML = '<div class="loading-spinner"></div>';
+    const loadProducts = async (page, category = null) => {
         try {
-            const [productsData, categoriesData] = await Promise.all([
-                getProducts(currentPage, productsPerPage),
-                getCategories()
-            ]);
-
+            const productsData = await getProducts(page, productsPerPage, category);
             const products = productsData?.data || [];
-            const categories = categoriesData?.data || [];
-
-            renderCategories(categories);
-            renderProducts(productsGrid, products, false);
-
-            if (products.length === productsPerPage) {
-                document.querySelector('.load-more-container').style.display = 'block';
+            renderProducts(productsGrid, products, page > 1);
+            if (products.length < productsPerPage) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
             }
-
         } catch (error) {
-            console.log("erro: ", error);
-            productsGrid.innerHTML = "<p>Ocorreu um erro ao carregar os produtos.</p>";
+            showToast("Erro ao carregar produtos.", "error");
         }
-    }
+    };
+
+    const loadCategories = async () => {
+        try {
+            const categoriesData = await getCategories();
+            const categories = categoriesData?.data || [];
+            renderCategories(categories);
+        } catch (error) {
+            showToast("Erro ao carregar categorias.", "error");
+        }
+    };
 
     function renderCategories(categories) {
         categoryFilters.innerHTML = `<button class="filter-btn active" data-category="all">Todos</button>`;
@@ -42,77 +41,68 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         document.querySelectorAll('.filter-btn').forEach(button => {
-            button.addEventListener('click', async () => {
+            button.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-                currentCategory = button.dataset.category;
                 currentPage = 1;
-
-                productsGrid.innerHTML = '<div class="loading-spinner"></div>';
-                const productsData = await getProducts(currentPage, productsPerPage, currentCategory === 'all' ? null : currentCategory);
-                renderProducts(productsGrid, productsData.data, false);
+                productsGrid.innerHTML = '';
+                const category = button.dataset.category === 'all' ? null : button.dataset.category;
+                loadProducts(currentPage, category);
             });
         });
     }
 
-    function renderProductCard(product) {
-        const productCard = document.createElement("article");
-        productCard.className = "product-card";
-
-        const imageUrl = product.image_url || "assets/images/placeholders/product.png";
-        const sellerAvatarUrl = product.seller?.avatar_url || "assets/images/placeholders/avatar.png";
-
-        productCard.innerHTML = `
-            <div class="product-card-header">
-                <img src="${sellerAvatarUrl}" alt="${product.seller?.name || 'Vendedor'}" class="seller-avatar">
-                <div class="seller-info">
-                    <a href="seller.html?id=${product.seller?.id}" class="seller-name">${product.seller?.name || 'Vendedor'}</a>
-                    <span class="post-time">Publicado há pouco</span>
-                </div>
-            </div>
-            <a href="product.html?id=${product.id}" class="product-image-container">
-                <img src="${imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
-            </a>
-            <div class="product-info">
-                <a href="product.html?id=${product.id}" class="product-title">${product.name}</a>
-                <p class="product-price">${parseFloat(product.price).toLocaleString("pt-AO", { style: 'currency', currency: 'AOA' })}</p>
-            </div>
-            <div class="product-card-footer">
-                <div class="product-actions">
-                     <button class="product-action-btn btn-wishlist" aria-label="Adicionar aos favoritos">
-                        <i class="fa-regular fa-heart"></i>
-                    </button>
-                    <button class="product-action-btn" aria-label="Comentar">
-                        <i class="fa-regular fa-comment"></i>
-                    </button>
-                </div>
-                <button class="btn btn-primary btn-add-to-cart">Adicionar</button>
-            </div>
-        `;
-        return productCard;
-    }
-
-    function renderProducts(container, productsToRender, append = false) {
-        if (!container) return;
-
-        const loadingSpinner = container.querySelector('.loading-spinner');
-        if (loadingSpinner) {
-            loadingSpinner.remove();
-        }
-
-        if (!append) {
-            container.innerHTML = "";
-        }
-
-        if (productsToRender.length === 0) {
-            if (!append) container.innerHTML = "<p>Nenhum produto encontrado para esta categoria.</p>";
-            if (loadMoreBtn) loadMoreBtn.style.display = "none";
+    function renderProducts(container, products, append = false) {
+        if (!append) container.innerHTML = "";
+        if (products.length === 0 && !append) {
+            container.innerHTML = "<p>Nenhum produto encontrado.</p>";
             return;
         }
-
-        productsToRender.forEach(product => {
-            const productCard = renderProductCard(product);
+        products.forEach(product => {
+            const productCard = document.createElement("article");
+            productCard.className = "product-card";
+            productCard.innerHTML = `
+                <a href="product.html?id=${product.id}" class="product-image-container">
+                    <img src="${product.image_url || 'assets/images/placeholders/product.png'}" alt="${product.name}" class="product-image">
+                </a>
+                <div class="product-info">
+                    <a href="product.html?id=${product.id}" class="product-title">${product.name}</a>
+                    <p class="product-price">${parseFloat(product.price).toLocaleString("pt-AO", { style: 'currency', currency: 'AOA' })}</p>
+                </div>
+                <div class="product-card-footer">
+                    <button class="btn btn-primary btn-add-to-cart" data-product-id="${product.id}">Adicionar</button>
+                </div>`;
             container.appendChild(productCard);
         });
     }
+
+    productsGrid.addEventListener('click', (e) => {
+        if (e.target.classList.contains('btn-add-to-cart')) {
+            const productId = e.target.dataset.productId;
+            const productCard = e.target.closest('.product-card');
+            const productName = productCard.querySelector('.product-title').textContent;
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingProduct = cart.find(item => item.id === productId);
+
+            if (existingProduct) {
+                existingProduct.quantity += 1;
+            } else {
+                cart.push({ id: productId, name: productName, quantity: 1, price: productCard.querySelector('.product-price').textContent });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            showToast(`${productName} adicionado ao carrinho!`, 'success');
+        }
+    });
+
+    loadMoreBtn.addEventListener('click', () => {
+        currentPage++;
+        const currentCategory = categoryFilters.querySelector('.active').dataset.category;
+        const category = currentCategory === 'all' ? null : currentCategory;
+        loadProducts(currentPage, category);
+    });
+
+    loadProducts(currentPage);
+    loadCategories();
 });

@@ -71,10 +71,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             const data = await res.json();
             if (data.success) {
-                alert('2FA enabled successfully!');
+                showToast('2FA enabled successfully!', 'success');
                 window.location.reload();
             } else {
-                alert('Invalid token, please try again.');
+                showToast('Invalid token, please try again.', 'error');
             }
         } catch (err) {
             console.error('Error verifying 2FA:', err);
@@ -92,10 +92,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             const data = await res.json();
             if (data.success) {
-                alert('2FA disabled successfully!');
+                showToast('2FA disabled successfully!', 'success');
                 window.location.reload();
             } else {
-                alert('Failed to disable 2FA.');
+                showToast('Failed to disable 2FA.', 'error');
             }
         } catch (err) {
             console.error('Error disabling 2FA:', err);

@@ -19,8 +19,8 @@ async function fetchFromAPI(endpoint, options = {}) {
         ...options.headers
     };
 
-    if (session && session.accessToken) {
-        headers["Authorization"] = `Bearer ${session.accessToken}`;
+    if (session && session.token) {
+        headers["Authorization"] = `Bearer ${session.token}`;
     }
 
     try {

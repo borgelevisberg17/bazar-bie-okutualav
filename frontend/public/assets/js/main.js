@@ -1,50 +1,26 @@
 import { getCategories, getProducts, getSellers, api } from "./services/api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const sellersGrid = document.getElementById("sellersGrid");
     const filtersContainer = document.getElementById("filters");
     const productsGrid = document.getElementById("products-grid");
     const recentArrived = document.getElementById("recently-arrived");
     const topFinds = document.getElementById("top-finds");
     const categoryShelf = document.getElementById("categorieList");
     const loadMoreBtn = document.getElementById("load-more-btn");
-    const track = document.querySelector(".carousel-track");
-    const dots = document.querySelectorAll(".dot");
+    const sellersGrid = document.getElementById("sellersGrid");
 
     let currentPage = 1;
     const productsPerPage = 12;
 
-    if (track && dots.length > 0) {
-        track.addEventListener("scroll", () => {
-            const index = Math.round(track.scrollLeft / track.offsetWidth);
-            dots.forEach((dot, i) =>
-                dot.classList.toggle("active", i === index)
-            );
-        });
-
-        dots.forEach((dot, i) => {
-            dot.addEventListener("click", () => {
-                track.scrollTo({
-                    left: i * track.offsetWidth,
-                    behavior: "smooth"
-                });
-            });
-        });
-    }
-
-    /**
-     * Loads all the necessary data for the page (categories, products, sellers).
-     * @returns {Promise<void>}
-     */
     await loadPageData();
+
     async function loadPageData() {
         try {
-            const [categoriesData, productsData, sellersData] =
-                await Promise.all([
-                    getCategories(),
-                    getProducts(currentPage, productsPerPage),
-                    getSellers()
-                ]);
+            const [categoriesData, productsData, sellersData] = await Promise.all([
+                getCategories(),
+                getProducts(currentPage, productsPerPage),
+                getSellers(),
+            ]);
 
             const categories = categoriesData?.data || [];
             const products = productsData?.data || [];
@@ -52,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             renderCategories(categories);
             renderFilters(categories);
-            renderProducts(productsGrid, products, true); // Append products
+            renderProducts(productsGrid, products, true);
             renderProducts(recentArrived, products.slice(0, 4));
             renderProducts(topFinds, products.slice(4, 8));
             renderSellers(sellers);
@@ -62,10 +38,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    /**
-     * Renders the category list.
-     * @param {Array<Object>} categories - The array of category objects.
-     */
+    const categoryIcons = {
+        'smartphones': 'fa-mobile-screen-button',
+        'laptops': 'fa-laptop',
+        'fragrances': 'fa-spray-can-sparkles',
+        'skincare': 'fa-spa',
+        'groceries': 'fa-carrot',
+        'home-decoration': 'fa-house-chimney',
+        'default': 'fa-tag'
+    };
+
     function renderCategories(categories) {
         if (!categoryShelf) return;
         if (categories.length === 0) {
@@ -73,33 +55,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
         categoryShelf.innerHTML = categories
-            .map(
-                c => `
+            .map(c => `
                 <a class="category-item" data-cat="${c.slug}">
-                 <div class="category-icon">
-                    <i data-lucide="${c.slug}"></i>
-                  </div>  <span>${c.name}</span>
+                    <div class="category-icon">
+                        <i class="fa-solid ${categoryIcons[c.slug] || categoryIcons['default']}"></i>
+                    </div>
+                    <span>${c.name}</span>
                 </a>
-            `
-            )
+            `)
             .join("");
-        try {
-            lucide.createIcons();
-        } catch (e) {
-            console.error("erro: ", e);
-        }
-        const allCategory = document.querySelector(
-            '.category-item[data-cat="all"]'
-        );
-        if (allCategory) {
-            allCategory.classList.add("active");
-        }
     }
 
-    /**
-     * Renders the filter buttons.
-     * @param {Array<Object>} categories - The array of category objects.
-     */
     function renderFilters(categories) {
         if (!filtersContainer) return;
         filtersContainer.innerHTML = "";
@@ -118,75 +84,44 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    /**
-     * Creates a product card element.
-     * @param {Object} product - The product object.
-     * @returns {HTMLElement} The product card element.
-     */
     function renderProductCard(product) {
         const productCard = document.createElement("article");
         productCard.className = "product-card";
         productCard.dataset.category = product.category;
 
-        let tagHTML = product.tag
-            ? `<div class="product-tag ${product.tag.toLowerCase()}">${
-                  product.tag
-              }</div>`
-            : "";
-
-        const imageUrl =
-            product.image_url || "assets/images/placeholders/product.png";
-        const sellerAvatar =
-            product.seller_avatar_url ||
-            "assets/images/placeholders/avatar.png";
-        const description = product.description || "";
-        const rating = Math.round(product.rating || 0);
-        const reviews_count = product.reviews_count || 0;
+        const imageUrl = product.image_url || "assets/images/placeholders/product.png";
 
         productCard.innerHTML = `
-<a href="details/product-details.html?id=${
-            product.id
-        }" class="product-link" data-property-id="${product.id}">
-    <div class="product-image">
-        <img src="${imageUrl}" alt="${product.name}" loading="lazy">
-        ${tagHTML}
-    </div>
-  <div class="product-card-footer">
-    <div class="product-info">
-        <h3>${product.name}</h3>
-        <p class="product-price">
-            ${parseFloat(product.price).toLocaleString("pt-AO")}Kz
-        </p></div>
-
-            <div class="card-actions">
-                <button class="btn-wishlist" aria-label="Adicionar aos favoritos">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
+            <a href="product.html?id=${product.id}" class="product-link" data-property-id="${product.id}">
+                <div class="product-image">
+                    <img src="${imageUrl}" alt="${product.name}" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <h3>${product.name}</h3>
+                    <p class="product-price">${parseFloat(product.price).toLocaleString("pt-AO")} Kz</p>
+                </div>
+            </a>
+            <div class="product-card-footer">
+                 <button class="btn-wishlist" aria-label="Adicionar aos favoritos">
+                    <i class="fa-regular fa-heart"></i>
                 </button>
                 <button class="btn-cart" aria-label="Adicionar ao carrinho">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0
-                        2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
+                    <i class="fa-solid fa-cart-shopping"></i>
                 </button>
             </div>
-        </div>
+        `;
 
-</a>
-`;
-        const cartButton = productCard.querySelector(".btn-cart");
-        cartButton.addEventListener("click", event => {
+        productCard.querySelector(".btn-cart").addEventListener("click", event => {
             event.preventDefault();
+            const button = event.currentTarget;
+            button.classList.add("adding");
+            setTimeout(() => {
+                button.classList.remove("adding");
+            }, 1000);
             showToast("Produto adicionado ao carrinho!");
         });
 
-        const wishlistButton = productCard.querySelector(".btn-wishlist");
-        wishlistButton.addEventListener("click", async event => {
+        productCard.querySelector(".btn-wishlist").addEventListener("click", async event => {
             event.preventDefault();
             try {
                 await api.post("/wishlist", { productId: product.id });
@@ -198,18 +133,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         return productCard;
     }
 
-    /**
-     * Renders a list of products in a given container.
-     * @param {HTMLElement} container - The container element to render the products in.
-     * @param {Array<Object>} productsToRender - The array of product objects to render.
-     * @param {boolean} [append=false] - Whether to append the products to the container or replace its content.
-     */
     function renderProducts(container, productsToRender, append = false) {
         if (!container) return;
         if (productsToRender.length === 0) {
-            if (!append)
-                container.innerHTML = "<p>Nenhum produto encontrado.</p>";
-            loadMoreBtn.style.display = "none"; // Esconder botão se não há mais produtos
+            if (!append) container.innerHTML = "<p>Nenhum produto encontrado.</p>";
+            if (loadMoreBtn) loadMoreBtn.style.display = "none";
             return;
         }
         if (!append) {
@@ -219,17 +147,49 @@ document.addEventListener("DOMContentLoaded", async () => {
             const productCard = renderProductCard(product);
             container.appendChild(productCard);
         });
+    }
+
+    function setupFiltering() {
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const productCards = document.querySelectorAll(".product-card");
+
+        if (filterButtons.length === 0) return;
+
+        filterButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const filter = button.dataset.filter;
+
+                filterButtons.forEach(btn => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                productCards.forEach(card => {
+                    card.style.display = (filter === "all" || card.dataset.category === filter) ? "block" : "none";
+                });
+            });
+        });
+    }
+
+    async function handleLoadMore() {
+        currentPage++;
         try {
-            lucide.createIcons();
-        } catch (e) {
-            console.error("Erro ao criar ícones Lucide:", e);
+            const productsData = await getProducts(currentPage, productsPerPage);
+            const products = productsData?.data || [];
+            renderProducts(productsGrid, products, true);
+        } catch (error) {
+            console.error("Erro ao carregar mais produtos:", error);
+            if(loadMoreBtn) loadMoreBtn.style.display = "none";
         }
     }
 
-    /**
-     * Renders the list of sellers.
-     * @param {Array<Object>} sellersToRender - The array of seller objects.
-     */
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener("click", handleLoadMore);
+    }
+
+    const currentYear = document.getElementById("currentYear");
+    if (currentYear) {
+        currentYear.textContent = new Date().getFullYear();
+    }
+
     function renderSellers(sellersToRender) {
         if (!sellersGrid) return;
         if (sellersToRender.length === 0) {
@@ -250,86 +210,5 @@ document.addEventListener("DOMContentLoaded", async () => {
                 `;
             sellersGrid.appendChild(sellerCard);
         });
-    }
-
-    try {
-        lucide.createIcons();
-    } catch (e) {
-        console.error("Erro ao criar ícones Lucide:", e);
-    }
-
-    /**
-     * Sets up the event listeners for the filter buttons.
-     */
-    function setupFiltering() {
-        const filterButtons = document.querySelectorAll(".filter-btn");
-        const productCards = document.querySelectorAll(".product-card");
-
-        if (filterButtons.length === 0) return;
-
-        filterButtons.forEach(button => {
-            button.addEventListener("click", () => {
-                const filter = button.dataset.filter;
-
-                filterButtons.forEach(btn => btn.classList.remove("active"));
-                button.classList.add("active");
-
-                productCards.forEach(card => {
-                    card.classList.add("hidden");
-                    setTimeout(() => {
-                        if (
-                            filter === "all" ||
-                            card.dataset.category === filter
-                        ) {
-                            card.style.display = "flex";
-                            setTimeout(
-                                () => card.classList.remove("hidden"),
-                                20
-                            );
-                        } else {
-                            card.style.display = "none";
-                        }
-                    }, 200);
-                });
-            });
-        });
-    }
-
-    /**
-     * Handles the "Load More" button click event.
-     * @returns {Promise<void>}
-     */
-    async function handleLoadMore() {
-        currentPage++;
-        try {
-            const productsData = await getProducts(currentPage, productsPerPage);
-            const products = productsData?.data || [];
-            renderProducts(productsGrid, products, true);
-        } catch (error) {
-            console.error("Erro ao carregar mais produtos:", error);
-            loadMoreBtn.style.display = "none";
-        }
-    }
-
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener("click", handleLoadMore);
-    }
-
-    /**
-     * Sets up the scroll behavior for the main header.
-     */
-    function setupHeaderScroll() {
-        const header = document.getElementById("mainHeader");
-        if (header) {
-            window.addEventListener("scroll", () => {
-                header.classList.toggle("scrolled", window.scrollY > 50);
-            });
-        }
-    }
-
-    setupHeaderScroll();
-    const currentYear = document.getElementById("currentYear");
-    if (currentYear) {
-        currentYear.textContent = new Date().getFullYear();
     }
 });

@@ -5,26 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
             name="description"
-            content="Bié Okutuala - Conectando compradores e vendedores no coração de Angola. O seu bazar digital para encontrar produtos únicos e apoiar a comunidade local."
+            content="Bazar Bié Okutuala - O seu marketplace moderno para compras e vendas na região do Bié, Angola. Encontre produtos únicos, apoie o comércio local e desfrute de uma experiência de compra elegante e fluida."
         />
         <meta
             name="keywords"
-            content="bazar, marketplace, rede social, Angola, Bié, compras locais, vendas, produtos artesanais, comunidade"
+            content="e-commerce, marketplace, Angola, Bié, compras online, moda, eletrônicos, artesanato, produtos locais"
         />
-        <meta name="author" content="Bié Okutuala" />
-        <title>Bié Okutuala - O Seu Mercado Social Online</title>
+        <meta name="author" content="Bazar Bié Okutuala" />
+        <title>Bazar Bié Okutuala - Comércio Moderno, Cultura Local</title>
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
         />
-        <link
-            href="assets/fonts/Roboto-Regular.ttf?family=Roboto:wght@400;500;600;700"
-            rel="stylesheet"
-        />
-        <script src="https://unpkg.com/lucide@latest"></script>
-        <link rel="stylesheet" href="./assets/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
         <link rel="stylesheet" href="./assets/css/design-system.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" href="./assets/css/main.css" />
@@ -33,64 +30,40 @@
     <body>
         <header class="main-header" id="mainHeader">
             <div class="container header-content">
-                  <button
-                    class="mobile-menu-toggle"
-                    id="menu-toggle"
-                    aria-label="Abrir menu"
-                >
-                    <div class="hamburger-box">
-                        <div class="hamburger-inner"></div>
-                    </div>
+                <a href="#" class="logo">Bazar Bié Okutuala</a>
 
-                </button>
-                <a href="#" class="logo">Bié Okutuala</a>
                 <nav class="desktop-nav">
-                    <!-- Conteúdo do desktop nav aqui -->
+                    <a href="index.html" class="nav-link active">Home</a>
+                    <a href="categories.html" class="nav-link">Categorias</a>
+                    <a href="explore.html" class="nav-link">Explorar</a>
+                    <a href="seller.html" class="nav-link">Vendedores</a>
                 </nav>
 
-                            <div class="header-icon">
-                            <i class="fas fa-shopping-bag"></i>
-                        </div>
+                <div class="header-actions">
+                    <button class="btn" id="theme-toggle"><i class="fas fa-moon"></i></button>
+                    <a href="auth/login.html" class="btn btn-primary">Entrar</a>
+                    <a href="#" class="header-icon"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+
+                <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </header>
-
-        <!-- Overlay para o fundo -->
-        <div class="mobile-overlay" id="mobile-overlay"></div>
 
         <main>
             <section class="hero-section">
                 <div class="container hero-content">
+                    <h1 class="hero-title">Tradição e Modernidade no Coração de Angola</h1>
+                    <p class="hero-subtitle">Encontre o que precisa hoje. Adicione um toque do Bié à sua vida.</p>
                     <form class="search-container" role="search">
-                        <label for="search-input" class="sr-only">Procurar por...</label>
-                        <input
-                            type="text"
-                            id="search-input"
-                            placeholder="Estou procurando por..."
-                        />
-                        <button class="btn-search" aria-label="Procurar">
-                            <span class="search-icon">
-                                <svg
-                                    width="18"
-                                    height="18"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <line
-                                        x1="21"
-                                        y1="21"
-                                        x2="16.65"
-                                        y2="16.65"
-                                    ></line>
-                                </svg>
-                            </span>
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="search-input" placeholder="Procure por "/>
+                        <button class="btn btn-primary btn-search" aria-label="Procurar">
+                            Buscar
                         </button>
-                        </form>
-                    </div>
+                    </form>
+                </div>
             </section>
 
             <section class="categories-section">
@@ -98,122 +71,67 @@
                     <div class="categories-list" id="categorieList"></div>
                 </div>
             </section>
-            <div class="tops-container">
-                <section class="products-section">
-                                      <div class="section-header">
-                        <h2 class="section-title">Acabou de Chegar</h2>
-                        <span class="see-all">Ver Tudo</span>
-                    </div>
-                    <div class="products-grid" id="recently-arrived"></div>
-                </section>
-                <section class="products-section">
-<div class="section-header">
-                        <h2 class="section-title">Promoções de Outubro</h2>
-                        <span class="see-all">Ver Tudo</span>
-                    </div>
-                    <div class="products-grid" id="top-finds"></div>
-                </section>
-            </div>
 
-            <section id="products" class="products-section tops-container">
-                <div class="container">
-<div class="section-header">
-                        <h2 class="section-title">Todas as Categorias</h2>
-                        <span class="see-all">Ver Tudo</span>
-                    </div>
-                    <div class="filters" id="filters">
-                        <!-- Filtros serão inseridos aqui -->
-                    </div>
-                    <div class="products-grid" id="products-grid">
-                        <!-- Produtos serão inseridos aqui -->
-                    </div>
-                    <div class="load-more-container">
-                        <button id="load-more-btn" class="btn btn-primary">Carregar Mais</button>
-                    </div>
+            <section class="products-section container">
+                <div class="section-header">
+                    <h2 class="section-title">Recém-Adicionados</h2>
+                    <a href="#" class="see-all">Ver Tudo <i class="fas fa-arrow-right"></i></a>
                 </div>
+                <div class="products-grid" id="recently-arrived"></div>
+            </section>
+
+            <section class="products-section container">
+                <div class="section-header">
+                    <h2 class="section-title">Populares</h2>
+                    <a href="#" class="see-all">Ver Tudo <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="products-grid" id="top-finds"></div>
+            </section>
+
+            <section id="products" class="products-section container">
+                <div class="section-header">
+                    <h2 class="section-title">Explore Nossos Produtos</h2>
+                </div>
+                <div class="filters" id="filters"></div>
+                <div class="products-grid" id="products-grid"></div>
+                <div class="load-more-container">
+                    <button id="load-more-btn" class="btn btn-primary">Carregar Mais</button>
+                </div>
+            </section>
+
+            <section class="sellers-section container">
+                <div class="section-header">
+                    <h2 class="section-title">Nossos Vendedores</h2>
+                    <a href="#" class="see-all">Ver Todos <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="sellers-grid" id="sellersGrid"></div>
             </section>
         </main>
 
         <footer class="main-footer">
             <div class="container footer-content">
-                <a href="#" class="footer-logo" aria-label="Página inicial">Bié Okutuala</a>
+                <a href="#" class="footer-logo">Bazar Bié Okutuala</a>
                 <div class="footer-links">
-                    <a href="#" aria-label="Sobre Nós">Sobre Nós</a>
-                    <a href="#" aria-label="Ajuda">Ajuda</a>
-                    <a href="#" aria-label="Termos de Uso">Termos de Uso</a>
+                    <a href="#">Sobre Nós</a>
+                    <a href="#">Contato</a>
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Privacidade</a>
                 </div>
                 <div class="footer-socials">
-                    <a href="#" aria-label="Facebook"
-                        ><svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path
-                                d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
-                            ></path></svg
-                    ></a>
-                    <a href="#" aria-label="Instagram"
-                        ><svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <rect
-                                x="2"
-                                y="2"
-                                width="20"
-                                height="20"
-                                rx="5"
-                                ry="5"
-                            ></rect>
-                            <path
-                                d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
-                            ></path>
-                            <line
-                                x1="17.5"
-                                y1="6.5"
-                                x2="17.51"
-                                y2="6.5"
-                            ></line></svg
-                    ></a>
-                    <a href="#" aria-label="WhatsApp"
-                        ><svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path
-                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
-                            ></path></svg
-                    ></a>
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
                 <p class="footer-copyright">
-                    © <span id="currentYear"></span> Bié Okutuala. Feito com
-                    orgulho em Angola.
+                    © <span id="currentYear"></span> Bazar Bié Okutuala. Criado com paixão em Angola.
                 </p>
             </div>
         </footer>
 
-        <script type="module" src="assets/js/geral.js"></script>
         <script type="module" src="assets/js/services/api.js"></script>
         <script src="assets/js/notifications.js"></script>
         <script type="module" src="assets/js/main.js"></script>
+        <script src="assets/js/theme.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     </body>
 </html>

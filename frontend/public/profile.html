@@ -9,55 +9,73 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/components/header.css">
-    <link rel="stylesheet" href="./assets/css/components/footer.css">
-    <link rel="stylesheet" href="./assets/css/components/buttons.css">
     <link rel="stylesheet" href="./assets/css/components/cards.css">
     <link rel="stylesheet" href="./assets/css/profile.css">
+    <link rel="stylesheet" href="./assets/css/components/footer.css">
 </head>
 <body>
     <header class="main-header" id="mainHeader"></header>
 
-    <main class="profile-page-container">
-        <section class="profile-header-section">
-            <div class="profile-cover-photo">
-                <img src="assets/images/placeholders/cover-photo.png" alt="Foto de Capa">
+    <main class="profile-page">
+        <section class="profile-header">
+            <div class="cover-photo">
+                <img src="assets/images/placeholders/cover-photo.png" alt="Foto de Capa" id="cover-photo">
             </div>
-            <div class="profile-details-container container">
-                <div class="profile-avatar-container">
-                    <img src="assets/images/placeholders/user-avatar.png" alt="Avatar do Usuário" class="profile-avatar">
+            <div class="profile-main-info container">
+                <div class="profile-avatar-wrapper">
+                    <img src="assets/images/placeholders/user-avatar.png" alt="Avatar do Usuário" id="profile-avatar">
                 </div>
-                <div class="profile-info">
-                    <h1 class="profile-name">Nome do Usuário</h1>
-                    <p class="profile-bio">Breve biografia ou localização do usuário.</p>
+                <div class="profile-actions">
+                    <button class="btn btn-secondary" id="edit-profile-btn">Editar Perfil</button>
+                    <button class="btn btn-primary" id="follow-btn">Seguir</button>
                 </div>
-                <div class="profile-header-actions">
-                    <button class="btn btn-secondary">Editar Perfil</button>
+                <div class="profile-details">
+                    <h1 class="profile-name" id="profile-name">Nome do Usuário</h1>
+                    <p class="profile-bio" id="profile-bio">Esta é uma bio de exemplo. Clique em editar perfil para alterá-la.</p>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <strong>120</strong>
+                            <span>Produtos</span>
+                        </div>
+                        <div class="stat">
+                            <strong>1.2k</strong>
+                            <span>Seguidores</span>
+                        </div>
+                        <div class="stat">
+                            <strong>340</strong>
+                            <span>Seguindo</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <nav class="profile-tabs-nav container">
-                <a href="#products" class="tab-link active">Meus Produtos</a>
-                <a href="#favorites" class="tab-link">Favoritos</a>
-                <a href="#settings" class="tab-link">Configurações</a>
-            </nav>
         </section>
 
-        <div class="profile-content-container container">
-            <div id="products" class="tab-content active">
-                <div class="products-grid" id="user-products-grid"></div>
+        <section class="profile-content container">
+            <nav class="profile-tabs">
+                <a href="#products" class="tab-link active" data-tab="products-grid">
+                    <i class="fas fa-th-large"></i> <span>Produtos</span>
+                </a>
+                <a href="#favorites" class="tab-link" data-tab="favorites-grid">
+                    <i class="fas fa-heart"></i> <span>Favoritos</span>
+                </a>
+            </nav>
+            <div class="tab-content active" id="products-grid">
+                <!-- User's product posts will be dynamically inserted here -->
             </div>
-            <div id="favorites" class="tab-content">
-                <div class="products-grid" id="user-favorites-grid"></div>
+            <div class="tab-content" id="favorites-grid" style="display: none;">
+                <!-- User's favorite posts will be dynamically inserted here -->
             </div>
-            <div id="settings" class="tab-content"></div>
-        </div>
+        </section>
     </main>
 
-    <footer class="main-footer" id="mainFooter"></footer>
+    <nav class="bottom-nav" id="bottomNav"></nav>
 
     <script src="assets/js/geral.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module" src="assets/js/services/api.js"></script>
     <script src="assets/js/notifications.js"></script>
     <script type="module" src="assets/js/profile.js"></script>
+
+    <footer id="mainFooter"></footer>
 </body>
 </html>

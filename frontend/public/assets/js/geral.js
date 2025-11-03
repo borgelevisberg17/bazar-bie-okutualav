@@ -2,69 +2,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadComponent = async (url, elementId) => {
         try {
             const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
-            }
+            if (!response.ok) throw new Error(`Failed to fetch ${url}`);
             const text = await response.text();
             const element = document.getElementById(elementId);
-            if (element) {
-                element.innerHTML = text;
-            } else {
-                console.warn(`Element with ID '${elementId}' not found.`);
-            }
+            if (element) element.innerHTML = text;
         } catch (error) {
-            console.error(`Error loading component from ${url}:`, error);
+            console.error(`Error loading component:`, error);
         }
     };
 
-    const setupHeader = () => {
-        // Mobile Menu
-        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
-        const mobileSideMenu = document.getElementById('mobile-side-menu');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
-        const overlay = document.getElementById('overlay');
-
-        if (mobileNavToggle && mobileSideMenu && closeMenuBtn && overlay) {
-            mobileNavToggle.addEventListener('click', () => {
-                mobileSideMenu.classList.add('open');
-                overlay.classList.add('visible');
-                document.body.classList.add('no-scroll');
-            });
-            const closeMenu = () => {
-                mobileSideMenu.classList.remove('open');
-                overlay.classList.remove('visible');
-                document.body.classList.remove('no-scroll');
-            };
-            closeMenuBtn.addEventListener('click', closeMenu);
-            overlay.addEventListener('click', closeMenu);
-        }
-
-        // Cart Icon
-        const cartBtn = document.getElementById('cart-btn');
-        if (cartBtn) {
-            cartBtn.addEventListener('click', () => {
-                window.location.href = '/checkout.html';
-            });
-        }
-
-        // Search Overlay
-        const searchBtn = document.getElementById('search-btn');
-        const searchOverlay = document.getElementById('search-overlay');
-        const closeSearchBtn = document.getElementById('close-search-btn');
-        const searchInput = document.getElementById('search-input');
-
-        if (searchBtn && searchOverlay && closeSearchBtn) {
-            searchBtn.addEventListener('click', () => {
-                searchOverlay.classList.add('open');
-                searchInput.focus();
-            });
-
-            closeSearchBtn.addEventListener('click', () => {
-                searchOverlay.classList.remove('open');
-            });
-        }
-
-        // User Profile & Logout
+    const setupDesktopHeader = () => {
         const userSession = JSON.parse(localStorage.getItem('user_session'));
         const profileAvatar = document.querySelector('.profile-avatar');
         const logoutBtn = document.getElementById('logout-btn');
@@ -77,16 +24,53 @@ document.addEventListener("DOMContentLoaded", () => {
             logoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 localStorage.removeItem('user_session');
-                // You might want to also call an API endpoint to invalidate the token on the server
                 window.location.href = '/auth/login.html';
             });
         }
     };
 
+    const setActiveNavIcon = () => {
+        const currentPath = window.location.pathname;
+        const navIcons = document.querySelectorAll('.nav-icon');
+
+        navIcons.forEach(icon => {
+            const iconPath = icon.getAttribute('href');
+            icon.classList.remove('active');
+            if (currentPath === iconPath || (currentPath === '/' && iconPath === '/')) {
+                icon.classList.add('active');
+            }
+        });
+    };
+
     const init = async () => {
-        await loadComponent('/common/header.html', 'mainHeader');
-        await loadComponent('/common/footer.html', 'mainFooter');
-        setupHeader(); // Setup all header functionality
+        // Load header for desktop, and bottom nav for mobile
+        // The display is controlled by CSS media queries
+        const mainHeader = document.getElementById('mainHeader');
+        const bottomNav = document.getElementById('bottomNav');
+        const mainFooter = document.getElementById('mainFooter');
+
+        if(mainHeader) {
+            await loadComponent('/common/header.html', 'mainHeader');
+            setupDesktopHeader();
+        }
+
+        if(mainFooter) {
+            await loadComponent('/common/footer.html', 'mainFooter');
+        }
+
+        if(bottomNav){
+            // As header.html now contains the bottom nav, we can source it from there.
+            // A better approach would be separate files, but for now this works.
+            const response = await fetch('/common/header.html');
+            const text = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'text/html');
+            const mobileNavContent = doc.querySelector('.bottom-nav');
+            if (mobileNavContent) {
+                bottomNav.innerHTML = mobileNavContent.innerHTML;
+                setActiveNavIcon();
+            }
+        }
     };
 
     init();

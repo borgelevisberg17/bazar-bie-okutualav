@@ -9,63 +9,62 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/components/header.css">
-    <link rel="stylesheet" href="./assets/css/components/footer.css">
     <link rel="stylesheet" href="./assets/css/components/buttons.css">
-    <link rel="stylesheet" href="./assets/css/components/forms.css">
     <link rel="stylesheet" href="./assets/css/product-details.css">
+    <link rel="stylesheet" href="./assets/css/components/footer.css">
 </head>
 <body>
     <header class="main-header" id="mainHeader"></header>
 
-    <main class="container product-details-container">
-        <div class="product-details-layout">
-            <section class="product-gallery">
-                <div class="main-image">
-                    <img src="assets/images/placeholders/product-main.png" alt="Produto Principal" id="main-product-image">
-                </div>
-                <div class="thumbnail-images" id="thumbnail-gallery"></div>
-            </section>
-
-            <section class="product-info-details">
-                <div class="seller-profile-header">
-                    <img src="assets/images/placeholders/avatar.png" class="seller-avatar-large" alt="Vendedor" id="seller-avatar">
-                    <div class="seller-details">
-                        <a href="#" class="seller-name-details" id="seller-name">Nome do Vendedor</a>
+    <main class="container product-detail-page">
+        <!-- Main Product Post -->
+        <div class="product-post-card-expanded">
+            <div class="post-image-expanded">
+                <img src="assets/images/placeholders/product-main.png" alt="Produto Principal" id="main-product-image">
+            </div>
+            <div class="post-content-expanded">
+                <div class="post-header-expanded">
+                    <img src="assets/images/placeholders/avatar.png" class="seller-avatar" alt="Vendedor" id="seller-avatar">
+                    <div class="seller-info">
+                        <a href="#" class="seller-name" id="seller-name">Nome do Vendedor</a>
                         <p class="seller-location" id="seller-location">Bié, Angola</p>
                     </div>
+                    <button class="btn btn-secondary btn-follow">Seguir</button>
                 </div>
-
-                <h1 class="product-title-details" id="product-name">Nome do Produto</h1>
-                <p class="product-price-details" id="product-price">Kz 0,00</p>
-                <p class="product-description-details" id="product-description"></p>
-
-                <div class="product-actions-group">
-                    <div class="quantity-selector">
-                        <button class="btn-quantity" data-action="decrease">-</button>
-                        <input type="number" class="quantity-input" value="1" min="1" id="quantity-input">
-                        <button class="btn-quantity" data-action="increase">+</button>
-                    </div>
-                    <button class="btn btn-primary" id="add-to-cart-btn">Adicionar ao Carrinho</button>
+                <div class="post-body-expanded">
+                    <h1 class="product-title-details" id="product-name">Nome do Produto</h1>
+                    <p class="product-price-details" id="product-price">Kz 0,00</p>
+                    <p class="product-description-details" id="product-description"></p>
                 </div>
-            </section>
+                <div class="post-actions-expanded">
+                    <button class="btn btn-primary btn-block">Adicionar ao Carrinho</button>
+                    <button class="btn btn-ghost btn-block" id="like-btn"><i class="far fa-heart"></i> Gostar</button>
+                </div>
+            </div>
         </div>
 
-        <section class="comments-section">
+        <!-- Comments Section -->
+        <section class="comments-section" id="comments">
             <h2>Comentários</h2>
-            <form class="comment-form form-group" id="comment-form">
-                <input type="text" class="form-control" placeholder="Adicione um comentário..." required>
+            <form class="comment-form" id="comment-form">
+                <img src="assets/images/placeholders/avatar.png" class="current-user-avatar" alt="Seu Avatar">
+                <input type="text" class="comment-input" placeholder="Adicione um comentário..." required>
                 <button type="submit" class="btn btn-primary">Publicar</button>
             </form>
-            <div class="comment-list" id="comments-list"></div>
+            <div class="comment-list" id="comments-list">
+                <!-- Comments will be dynamically inserted here -->
+            </div>
         </section>
     </main>
 
-    <footer class="main-footer" id="mainFooter"></footer>
+    <nav class="bottom-nav" id="bottomNav"></nav>
 
     <script src="assets/js/geral.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module" src="assets/js/services/api.js"></script>
     <script src="assets/js/notifications.js"></script>
     <script type="module" src="assets/js/product-details.js"></script>
+
+    <footer id="mainFooter"></footer>
 </body>
 </html>

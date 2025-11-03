@@ -1,82 +1,73 @@
-:root {
-    --primary-color: #6a5acd;
-    --secondary-color: #f0f2f5;
-    --text-color: #333;
-    --sidebar-bg: #fff;
-    --sidebar-width: 250px;
+/* =================================================================
+   Admin Page - Clean & Modern Style
+   ================================================================= */
+
+/* Hide main navigation on admin pages for a focused experience */
+.main-header, .bottom-nav {
+    display: none !important;
 }
+
 body {
-    background-color: var(--secondary-color);
+    background-color: var(--surface-color);
+}
+
+.admin-container {
+    display: flex;
+    height: 100vh;
+}
+
+.admin-sidebar {
+    width: 250px;
+    background-color: var(--background-color);
+    padding: var(--spacing-xl);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-title {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-xl);
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.admin-nav .nav-item {
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    color: var(--text-light-color);
+    font-weight: var(--font-weight-medium);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.admin-nav .nav-item:hover {
+    background-color: var(--surface-color);
     color: var(--text-color);
 }
-.wrapper {
-    display: flex;
-}
-#sidebar {
-    width: var(--sidebar-width);
-    background-color: var(--sidebar-bg);
-    min-height: 100vh;
-    transition: all 0.3s;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-}
-#sidebar .sidebar-header {
-    padding: 20px;
-    background: var(--primary-color);
-    color: #fff;
-    text-align: center;
-}
-#sidebar ul.components {
-    padding: 20px 0;
-}
-#sidebar ul li a {
-    padding: 15px 20px;
-    font-size: 1.1em;
-    display: block;
-    color: #555;
-    border-radius: 5px;
-    margin: 5px 10px;
-    transition: all 0.3s ease;
-}
-#sidebar ul li a:hover {
-    background: var(--primary-color);
-    color: #fff;
-}
-#content {
-    width: calc(100% - var(--sidebar-width));
-    padding: 20px;
-    min-height: 100vh;
-    transition: all 0.3s;
-}
-.card {
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.05);
-}
-.card-header {
+
+.admin-nav .nav-item.active {
     background-color: var(--primary-color);
-    color: #fff;
-    font-weight: bold;
-    border-radius: 10px 10px 0 0;
+    color: var(--white-color);
 }
-.chat-box {
-    height: 400px;
+
+.admin-content {
+    flex: 1;
+    padding: var(--spacing-xxl);
     overflow-y: auto;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
 }
-.chat-message {
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    max-width: 80%;
+
+.content-section {
+    display: none;
 }
-.chat-message.sender {
-    background-color: var(--primary-color);
-    color: #fff;
-    margin-left: auto;
-}
-.chat-message.receiver {
-    background-color: #f1f1f1;
+
+.content-section.active {
+    display: block;
 }

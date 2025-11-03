@@ -1,23 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 :root {
-  /* New E-commerce Social Color Palette */
-  --primary-color: #D96D2B; /* Rich Terracotta */
-  --secondary-color: #0B4F6C; /* Deep Teal */
-  --accent-color: #FFC107; /* Golden Yellow */
-  --background-color: #F7F7F7; /* Light Warm Gray */
-  --text-color: #202020; /* Dark Charcoal */
+  /* E-commerce Social Color Palette */
+  --primary-color: #d45d00;
+  --secondary-color: #174f27;
+  --accent-color: #f5a623;
+  --background-color: #ffffff;
+  --surface-color: #f3f4f6; /* Very light grey for cards and surfaces */
+  --text-color: #1a1a1a;
   --text-light-color: #6c757d;
   --white-color: #ffffff;
   --dark-color: #1a1a1a;
+  --border-color: #e5e7eb; /* Lighter border color */
   --success-color: #28a745;
   --danger-color: #dc3545;
-  --warning-color: #ffc107;
-  --info-color: #17a2b8;
 
   /* Fonts */
-  --font-family-sans-serif: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-family-sans-serif: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-size-base: 1rem;
   --font-weight-light: 300;
   --font-weight-normal: 400;
@@ -30,32 +29,34 @@
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
-  --spacing-xl: 3rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
 
   /* Borders */
   --border-width: 1px;
-  --border-color: #dee2e6;
-  --border-radius-sm: 0.2rem;
-  --border-radius: 0.4rem;
-  --border-radius-lg: 0.8rem;
-  --border-radius-xl: 1.2rem;
+  --border-radius-sm: 0.375rem; /* 6px */
+  --border-radius: 0.5rem;    /* 8px */
+  --border-radius-lg: 0.75rem;   /* 12px */
+  --border-radius-xl: 1rem;      /* 16px */
+  --border-radius-2xl: 1.5rem;    /* 24px */
+  --border-radius-full: 9999px;
 
-  /* Shadows - Softer and more modern */
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.07);
-  --shadow: 0 4px 8px rgba(0,0,0,0.08);
-  --shadow-md: 0 6px 12px rgba(0,0,0,0.09);
-  --shadow-lg: 0 10px 20px rgba(0,0,0,0.1);
-  --shadow-xl: 0 20px 40px rgba(0,0,0,0.12);
+  /* Shadows - Subtle and layered */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
 }
 
 body.dark-mode {
-  --primary-color: #E67E22;
-  --secondary-color: #1ABC9C;
-  --accent-color: #F1C40F;
-  --background-color: #1a1a1a;
-  --text-color: #F7F7F7;
+  --primary-color: #e87a3d;
+  --secondary-color: #2ecc71;
+  --accent-color: #f7b731;
+  --background-color: #121212;
+  --surface-color: #1e1e1e;
+  --text-color: #f3f4f6;
   --text-light-color: #a0a0a0;
-  --white-color: #2c2c2c;
-  --dark-color: #F7F7F7;
-  --border-color: #444;
+  --border-color: #373737;
 }

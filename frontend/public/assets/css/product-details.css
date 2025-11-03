@@ -1,74 +1,68 @@
-/* ==========================================================================
-   Product Details Page Styles - Mobile First
-   ========================================================================== */
-
-/* Layout */
+/* Product Details Page Styles */
 .product-details-layout {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-    padding-bottom: var(--spacing-xl);
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
 }
 
-/* Image Gallery */
-.product-gallery {
+/* Product Gallery */
+.product-gallery .main-image {
+    background-color: var(--color-gray-100);
     border-radius: var(--border-radius-lg);
     overflow: hidden;
+    margin-bottom: 1rem;
+    aspect-ratio: 1/1;
 }
 
 .main-image img {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     object-fit: cover;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
 }
 
 .thumbnail-gallery {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-md);
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.75rem;
 }
 
-.thumbnail-gallery img {
+.thumbnail-image {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1/1;
     object-fit: cover;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-md);
     cursor: pointer;
     border: 2px solid transparent;
     transition: border-color 0.2s ease;
 }
 
-.thumbnail-gallery img:hover,
-.thumbnail-gallery img.active {
-    border-color: var(--primary-color);
+.thumbnail-image:hover {
+    border-color: var(--color-primary);
 }
 
 /* Product Info */
-.product-info .product-title {
-    font-size: 1.75rem;
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-sm);
+.product-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-gray-900);
 }
 
-.product-info .product-price {
+.product-price {
     font-size: 2rem;
-    font-weight: var(--font-weight-light);
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-lg);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
 }
 
-/* Seller Card */
 .seller-card {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
-    background-color: var(--surface-color);
+    gap: 1rem;
+    background-color: var(--color-gray-50);
+    padding: 1rem;
     border-radius: var(--border-radius-lg);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 1.5rem;
 }
 
 .seller-avatar {
@@ -80,112 +74,137 @@
 .seller-details {
     flex-grow: 1;
 }
-
 .seller-name {
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-color);
+    font-weight: 600;
+    color: var(--color-gray-800);
+    display: block;
 }
-
 .seller-rating {
-    font-size: 0.9rem;
-    color: var(--text-light-color);
+    font-size: 0.875rem;
+    color: var(--color-gray-500);
 }
 
-/* Product Actions */
+.product-description {
+    color: var(--color-gray-600);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
 .product-actions {
     display: flex;
-    gap: var(--spacing-md);
-    margin: var(--spacing-lg) 0;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
-
 .quantity-selector {
     display: flex;
     align-items: center;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-full);
 }
-
 .quantity-selector input {
     width: 50px;
     text-align: center;
-    border: none;
-    background: none;
-    font-size: 1.1rem;
+    border: 1px solid var(--color-gray-300);
+    padding: 0.6rem;
 }
-
 .btn-quantity {
-    padding: 0 var(--spacing-md);
-    font-size: 1.5rem;
+    width: 40px;
+    height: 100%;
+    border: 1px solid var(--color-gray-300);
+    background-color: var(--color-gray-100);
 }
 
 .btn-add-to-cart {
     flex-grow: 1;
 }
-.btn-block{
-    width: 100%;
+
+.btn-like.liked {
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
 }
 
 /* Additional Info Tabs */
 .tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-gray-200);
+    margin-bottom: 1.5rem;
 }
 
 .tab-link {
-    padding: var(--spacing-md) 0;
-    margin-right: var(--spacing-xl);
-    border-bottom: 3px solid transparent;
-    font-weight: var(--font-weight-medium);
+    padding: 1rem 1.5rem;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-gray-500);
+    position: relative;
+    cursor: pointer;
 }
 
 .tab-link.active {
-    border-bottom-color: var(--primary-color);
-    color: var(--primary-color);
+    color: var(--color-primary);
+}
+
+.tab-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary);
 }
 
 .tab-content {
     display: none;
+    line-height: 1.7;
 }
 
 .tab-content.active {
     display: block;
 }
 
-/* Comments */
+/* Comments section */
+.comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.comment {
+    display: flex;
+    gap: 1rem;
+}
+.comment-content {
+    background-color: var(--color-gray-100);
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+    width: 100%;
+}
+.comment-content p {
+    margin: 0;
+}
+.comment-content small {
+    color: var(--color-gray-500);
+    font-size: 0.75rem;
+}
+
 .comment-form {
     display: flex;
-    gap: var(--spacing-md);
+    gap: 1rem;
     align-items: center;
 }
-.current-user-avatar {
+.current-user-avatar, .comment img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
 }
 .comment-input {
     flex-grow: 1;
-    border-radius: var(--border-radius-full);
+    padding: 0.75rem;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--color-gray-300);
 }
 
-/* ==========================================================================
-   Desktop Layout
-   ========================================================================== */
-@media (min-width: 768px) {
+@media (max-width: 992px) {
     .product-details-layout {
-        flex-direction: row;
-        gap: var(--spacing-xl);
-    }
-
-    .product-gallery {
-        flex: 1;
-    }
-
-    .product-info {
-        flex: 1;
-    }
-
-    .product-info .product-title {
-        font-size: 2.25rem;
+        grid-template-columns: 1fr;
     }
 }

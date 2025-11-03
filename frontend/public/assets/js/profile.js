@@ -1,104 +1,106 @@
-import { api } from "./services/api.js";
-import { showToast } from "./notifications.js";
+import { showToast } from './notifications.js';
+import { getMyProfile, getProductsByUser, getFavoriteProducts } from './services/api.js';
+import { getUserSession } from './auth.js';
 
-document.addEventListener("DOMContentLoaded", () => {
-    // --- DOM Elements ---
-    const profileNameEl = document.getElementById("profile-name");
-    const profileBioEl = document.getElementById("profile-bio");
-    const profileAvatarEl = document.getElementById("profile-avatar");
-    const coverPhotoEl = document.getElementById("cover-photo");
-    const productsGridEl = document.getElementById("products-grid");
-    const favoritesGridEl = document.getElementById("favorites-grid");
-    const tabs = document.querySelectorAll('.tab-link');
-    const tabContents = document.querySelectorAll('.tab-content');
+document.addEventListener('DOMContentLoaded', () => {
+    const profileName = document.getElementById('profile-name');
+    const profileBio = document.getElementById('profile-bio');
+    const profileAvatar = document.getElementById('profile-avatar');
+    const productsStat = document.querySelector('.profile-stats .stat:nth-child(1) strong');
+    const followersStat = document.querySelector('.profile-stats .stat:nth-child(2) strong');
+    const followingStat = document.querySelector('.profile-stats .stat:nth-child(3) strong');
+    const editProfileBtn = document.getElementById('edit-profile-btn');
 
-    // --- State ---
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get("id"); // May be null if viewing own profile
-    const userSession = JSON.parse(localStorage.getItem('user_session'));
-    const profileId = userId || userSession?.user?.id;
+    const tabs = document.querySelectorAll('.profile-tabs .tab-link');
+    const tabContents = document.querySelectorAll('.profile-content .tab-content');
+    const productsGrid = document.getElementById('products-grid');
+    const favoritesGrid = document.getElementById('favorites-grid');
 
-    if (!profileId) {
-        document.querySelector('main').innerHTML = '<p class="container">Perfil não encontrado.</p>';
+    const currentUser = getUserSession()?.user;
+
+    if (!currentUser) {
+        window.location.href = '/auth/login.html';
         return;
     }
 
-    // --- Functions ---
-    const renderUserProfile = (user) => {
-        profileNameEl.textContent = user.name;
-        profileBioEl.textContent = user.bio || 'Nenhuma bio disponível.';
-        profileAvatarEl.src = user.avatar_url || 'assets/images/placeholders/user-avatar.png';
-        coverPhotoEl.src = user.cover_photo_url || 'assets/images/placeholders/cover-photo.png';
-        // TODO: Populate stats like follower counts when API is ready
+    const renderProfile = (user) => {
+        profileName.textContent = user.name;
+        profileBio.textContent = user.bio || 'Adicione uma bio no seu perfil.';
+        profileAvatar.src = user.avatar_url || 'assets/images/placeholders/user-avatar.png';
+        productsStat.textContent = user.products_count || 0;
+        followersStat.textContent = user.followers_count || 0;
+        followingStat.textContent = user.following_count || 0;
     };
 
-    const renderUserProducts = (products) => {
-        if (products.length === 0) {
-            productsGridEl.innerHTML = '<p>Este usuário ainda não publicou produtos.</p>';
+    const renderProducts = (products, gridElement) => {
+        gridElement.innerHTML = '';
+        if (!products || products.length === 0) {
+            gridElement.innerHTML = '<p class="empty-state-text">Nenhum produto para mostrar.</p>';
             return;
         }
-        // Re-using the social post card structure. For a real app, this would be a shared component.
-        productsGridEl.innerHTML = products.map(product => {
-             const imageUrl = product.images && product.images.length > 0 ? product.images[0].image_url : 'assets/images/placeholders/product.png';
-             return `
-                <article class="product-post-card">
-                    <div class="post-image">
-                        <a href="product.html?id=${product.id}">
-                            <img src="${imageUrl}" alt="${product.name}" class="product-image">
-                        </a>
-                    </div>
-                    <div class="post-footer">
-                         <div class="post-description">
-                            <span class="product-name">${product.name}</span>
-                        </div>
-                        <div class="post-stats">
-                            <span>${parseFloat(product.price).toLocaleString("pt-AO", { style: 'currency', currency: 'AOA' })}</span>
-                        </div>
-                    </div>
-                </article>
+
+        products.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            const imageUrl = product.images && product.images.length > 0 ? product.images[0].image_url : 'assets/images/placeholders/product.png';
+            const priceFormatted = new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA' }).format(product.price);
+
+            productCard.innerHTML = `
+                <a href="product.html?id=${product.id}" class="product-image-link">
+                    <img src="${imageUrl}" alt="${product.name}" class="product-image">
+                </a>
+                <div class="product-info">
+                    <a href="product.html?id=${product.id}">
+                        <h3 class="product-title">${product.name}</h3>
+                    </a>
+                    <p class="product-price">${priceFormatted}</p>
+                </div>
             `;
-        }).join('');
-    };
-
-    const handleTabClick = (e) => {
-        e.preventDefault();
-        const clickedTab = e.currentTarget;
-        const targetId = clickedTab.dataset.tab;
-
-        tabs.forEach(tab => tab.classList.remove('active'));
-        clickedTab.classList.add('active');
-
-        tabContents.forEach(content => {
-            if (content.id === targetId) {
-                content.style.display = 'grid'; // or 'block' etc.
-                content.classList.add('active');
-            } else {
-                content.style.display = 'none';
-                content.classList.remove('active');
-            }
+            gridElement.appendChild(productCard);
         });
     };
 
-    // --- Initial Load ---
-    const loadPage = async () => {
+    tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = e.currentTarget.getAttribute('href').substring(1);
+
+            tabs.forEach(t => t.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === targetId) {
+                    content.classList.add('active');
+                    content.style.display = 'grid'; // Assuming grid layout
+                } else {
+                    content.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    const init = async () => {
         try {
-            // Fetch user profile and products concurrently
-            const [userResponse, productsResponse] = await Promise.all([
-                api.get(`/users/${profileId}`),
-                api.get(`/users/${profileId}/products`)
+            // Fetch all data in parallel
+            const [profile, userProducts, favoriteProducts] = await Promise.all([
+                getMyProfile(),
+                getProductsByUser(currentUser.id),
+                getFavoriteProducts()
             ]);
 
-            renderUserProfile(userResponse.data);
-            renderUserProducts(productsResponse.data);
+            renderProfile(profile.data);
+            renderProducts(userProducts.data, productsGrid);
+            renderProducts(favoriteProducts.data, favoritesGrid);
 
         } catch (error) {
-            showToast("Erro ao carregar o perfil.", "error");
+            showToast('Erro ao carregar o seu perfil.', 'error');
         }
     };
 
-    // --- Event Listeners ---
-    tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
+    editProfileBtn.addEventListener('click', () => {
+        window.location.href = '/settings.html#profile';
+    });
 
-    // --- Run ---
-    loadPage();
+    init();
 });

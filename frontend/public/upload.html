@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vender Produto - Bazar Bié Okutuala</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/design-system.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/components/header.css">
+    <link rel="stylesheet" href="assets/css/components/footer.css">
+    <link rel="stylesheet" href="assets/css/components/forms.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <header id="header-placeholder"></header>
+
+    <main class="container main-content">
+        <section class="upload-product-form-container">
+            <h1>Vender um Novo Produto</h1>
+            <p>Preencha os detalhes abaixo para adicionar um produto ao seu bazar.</p>
+            <form id="upload-product-form" class="modern-form">
+                <div class="form-group">
+                    <label for="product-name">Nome do Produto</label>
+                    <input type="text" id="product-name" name="product-name" required placeholder="Ex: Smartphone XPTO">
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Descrição</label>
+                    <textarea id="product-description" name="product-description" rows="6" required placeholder="Descreva o estado, características e outros detalhes importantes do seu produto."></textarea>
+                </div>
+                <div class="form-group-inline">
+                    <div class="form-group">
+                        <label for="product-price">Preço (AOA)</label>
+                        <input type="number" id="product-price" name="product-price" required placeholder="25000">
+                    </div>
+                    <div class="form-group">
+                        <label for="product-category">Categoria</label>
+                        <select id="product-category" name="product-category" required>
+                            <option value="" disabled selected>Selecione uma categoria</option>
+                            <!-- Categorias serão carregadas dinamicamente -->
+                        </select>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label for="product-location">Localização</label>
+                    <input type="text" id="product-location" name="product-location" required placeholder="Ex: Cuito, Bié">
+                </div>
+                <div class="form-group">
+                    <label>Imagens do Produto</label>
+                    <div class="image-upload-container">
+                        <div id="image-preview-container"></div>
+                        <label for="product-images" class="image-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Arraste e solte ou clique para carregar</span>
+                        </label>
+                        <input type="file" id="product-images" name="product-images" multiple accept="image/*" class="image-upload-input">
+                    </div>
+                     <small>Pode carregar até 5 imagens. A primeira será a imagem de destaque.</small>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-lg">Publicar Produto</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-upload">Cancelar</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer id="footer-placeholder"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="assets/js/geral.js"></script>
+    <script type="module" src="assets/js/services/api.js"></script>
+    <script src="assets/js/notifications.js"></script>
+    <script type="module" src="assets/js/upload.js"></script>
+     <script src="assets/js/theme.js"></script>
+</body>
+</html>

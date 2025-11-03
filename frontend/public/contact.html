@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Bazar Bié Okutuala</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/design-system.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/components/header.css">
+    <link rel="stylesheet" href="assets/css/components/footer.css">
+    <link rel="stylesheet" href="assets/css/components/forms.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <header id="header-placeholder"></header>
+
+    <main class="container main-content">
+        <section class="contact-container">
+            <div class="contact-header">
+                <h1>Contacte-nos</h1>
+                <p>Tem alguma dúvida, sugestão ou precisa de ajuda? A nossa equipa está pronta para o ajudar.</p>
+            </div>
+
+            <div class="contact-layout">
+                <!-- Contact Form -->
+                <div class="contact-form-wrapper">
+                    <form id="contact-form" class="modern-form">
+                        <div class="form-group">
+                            <label for="name">O seu Nome</label>
+                            <input type="text" id="name" name="name" required placeholder="Insira o seu nome completo">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">O seu Email</label>
+                            <input type="email" id="email" name="email" required placeholder="exemplo@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Assunto</label>
+                            <input type="text" id="subject" name="subject" required placeholder="Sobre o que gostaria de falar?">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensagem</label>
+                            <textarea id="message" name="message" rows="6" required placeholder="Escreva a sua mensagem detalhadamente aqui..."></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-lg">Enviar Mensagem</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="contact-info-wrapper">
+                    <h3>Informações de Contacto</h3>
+                    <p>Pode também nos contactar através dos seguintes canais:</p>
+                    <ul class="contact-details-list">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Email</strong>
+                                <a href="mailto:suporte@bazarbie.co.ao">suporte@bazarbie.co.ao</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <div>
+                                <strong>Telefone</strong>
+                                <a href="tel:+2449xxxxxxxx">+244 9XX XXX XXX</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Endereço</strong>
+                                <p>Cuito, Bié, Angola</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="social-links">
+                        <h4>Siga-nos</h4>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer-placeholder"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="assets/js/geral.js"></script>
+    <script type="module" src="assets/js/services/api.js"></script>
+    <script src="assets/js/notifications.js"></script>
+    <script type="module" src="assets/js/contact.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+</html>

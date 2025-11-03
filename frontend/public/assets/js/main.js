@@ -61,38 +61,70 @@ document.addEventListener("DOMContentLoaded", async () => {
         products.forEach(product => {
             const productCard = document.createElement("article");
             productCard.className = "product-card";
+            const imageUrl = product.images && product.images.length > 0 ? product.images[0].image_url : 'assets/images/placeholders/product.png';
+
             productCard.innerHTML = `
+                <div class="product-card-header">
+                    <img src="${product.seller?.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="${product.seller?.name}" class="seller-avatar">
+                    <div class="seller-info">
+                        <a href="seller.html?id=${product.seller?.id}" class="seller-name">${product.seller?.name}</a>
+                        <span class="post-time">${new Date(product.created_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
                 <a href="product.html?id=${product.id}" class="product-image-container">
-                    <img src="${product.image_url || 'assets/images/placeholders/product.png'}" alt="${product.name}" class="product-image">
+                    <img src="${imageUrl}" alt="${product.name}" class="product-image">
                 </a>
                 <div class="product-info">
                     <a href="product.html?id=${product.id}" class="product-title">${product.name}</a>
+                    <p class="product-description">${product.description ? product.description.substring(0, 100) + '...' : ''}</p>
                     <p class="product-price">${parseFloat(product.price).toLocaleString("pt-AO", { style: 'currency', currency: 'AOA' })}</p>
                 </div>
                 <div class="product-card-footer">
+                    <div class="product-actions">
+                        <button class="product-action-btn" data-action="like"><i class="far fa-heart"></i> <span>${product.likes_count || 0}</span></button>
+                        <button class="product-action-btn" data-action="comment"><i class="far fa-comment"></i> <span>${product.comments_count || 0}</span></button>
+                    </div>
                     <button class="btn btn-primary btn-add-to-cart" data-product-id="${product.id}">Adicionar</button>
                 </div>`;
             container.appendChild(productCard);
         });
     }
 
-    productsGrid.addEventListener('click', (e) => {
-        if (e.target.classList.contains('btn-add-to-cart')) {
-            const productId = e.target.dataset.productId;
-            const productCard = e.target.closest('.product-card');
-            const productName = productCard.querySelector('.product-title').textContent;
+    productsGrid.addEventListener('click', async (e) => {
+        const target = e.target;
+        const productCard = target.closest('.product-card');
+        if (!productCard) return;
 
+        const productId = productCard.querySelector('.btn-add-to-cart').dataset.productId;
+
+        if (target.closest('.btn-add-to-cart')) {
+            const productName = productCard.querySelector('.product-title').textContent;
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             const existingProduct = cart.find(item => item.id === productId);
-
             if (existingProduct) {
                 existingProduct.quantity += 1;
             } else {
                 cart.push({ id: productId, name: productName, quantity: 1, price: productCard.querySelector('.product-price').textContent });
             }
-
             localStorage.setItem('cart', JSON.stringify(cart));
             showToast(`${productName} adicionado ao carrinho!`, 'success');
+        }
+
+        if (target.closest('.product-action-btn[data-action="like"]')) {
+            try {
+                const response = await api.post(`/products/${productId}/like`);
+                if (response.data) {
+                    const likeCount = target.closest('.product-action-btn').querySelector('span');
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                    showToast('Gostou do produto!', 'success');
+                }
+            } catch (error) {
+                showToast('Erro ao gostar do produto.', 'error');
+            }
+        }
+
+        if (target.closest('.product-action-btn[data-action="comment"]')) {
+            window.location.href = `product.html?id=${productId}#comments-section`;
         }
     });
 

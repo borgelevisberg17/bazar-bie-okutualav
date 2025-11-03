@@ -28,10 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
             mobileNavToggle.addEventListener('click', () => {
                 mobileSideMenu.classList.add('open');
                 overlay.classList.add('visible');
+                document.body.classList.add('no-scroll');
             });
             const closeMenu = () => {
                 mobileSideMenu.classList.remove('open');
                 overlay.classList.remove('visible');
+                document.body.classList.remove('no-scroll');
             };
             closeMenuBtn.addEventListener('click', closeMenu);
             overlay.addEventListener('click', closeMenu);
@@ -68,9 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const logoutBtn = document.getElementById('logout-btn');
 
         if (userSession && profileAvatar) {
-            // Assume user data is in session, replace placeholder
-            // In a real app, you might have user details in the session
-            // profileAvatar.src = userSession.avatar_url || '/assets/images/placeholders/avatar.png';
+            profileAvatar.src = userSession.user.avatar_url || '/assets/images/placeholders/avatar.png';
         }
 
         if (logoutBtn) {

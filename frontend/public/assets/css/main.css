@@ -20,6 +20,71 @@ body {
   line-height: 1.6;
 }
 
+body.no-scroll {
+  overflow: hidden;
+}
+
+.mobile-side-menu {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    background-color: var(--white-color);
+    box-shadow: var(--shadow-lg);
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.mobile-side-menu.open {
+    left: 0;
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.mobile-nav ul {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+}
+
+.mobile-nav ul li a {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.mobile-nav ul li a:hover {
+    background-color: var(--background-color);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    z-index: 999;
+}
+
+.overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
 .container {
   max-width: 1280px;
   margin: 0 auto;
@@ -113,8 +178,8 @@ body {
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
 }
 
 .product-card {
@@ -209,6 +274,10 @@ body {
     font-size: 1.2rem;
     color: var(--text-light-color);
     transition: color 0.3s ease;
+}
+
+.product-action-btn i {
+    margin-right: 0.5rem;
 }
 
 .product-action-btn:hover {
@@ -583,6 +652,12 @@ body {
     text-decoration: none;
 }
 
+@media (min-width: 1280px) {
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 @media (max-width: 1024px) {
     .hero-container {
         grid-template-columns: 1fr;
@@ -591,11 +666,14 @@ body {
         max-width: 100%;
         text-align: center;
     }
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
     .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
     .info-cards-section {
         grid-template-columns: 1fr;

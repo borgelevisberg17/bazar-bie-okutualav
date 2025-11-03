@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagens - Bazar Bié Okutuala</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/design-system.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/components/header.css">
+    <link rel="stylesheet" href="assets/css/components/footer.css">
+    <link rel="stylesheet" href="assets/css/messages.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <header id="header-placeholder"></header>
+
+    <main class="container main-content">
+        <div class="messages-container">
+            <!-- Conversations List -->
+            <aside class="conversations-sidebar">
+                <div class="sidebar-header">
+                    <h2>Conversas</h2>
+                    <button class="icon-btn" id="new-message-btn" aria-label="Nova Mensagem">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Procurar conversas...">
+                </div>
+                <div class="conversations-list" id="conversations-list">
+                    <!-- Placeholder conversation -->
+                    <div class="conversation-item active">
+                        <img src="assets/images/placeholders/avatar.png" alt="User Avatar" class="avatar">
+                        <div class="conversation-details">
+                            <div class="conversation-header">
+                                <span class="user-name">Nome do Vendedor</span>
+                                <span class="message-time">14:32</span>
+                            </div>
+                            <p class="last-message">Olá! Ainda tem o produto para vender?</p>
+                        </div>
+                    </div>
+                    <!-- More conversations will be loaded here -->
+                </div>
+            </aside>
+
+            <!-- Chat Area -->
+            <section class="chat-area">
+                <div class="chat-header">
+                     <img src="assets/images/placeholders/avatar.png" alt="User Avatar" class="avatar">
+                    <h3>Nome do Vendedor</h3>
+                    <!-- Add more actions like call or profile view if needed -->
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Incoming Message -->
+                    <div class="message-bubble incoming">
+                        <p>Olá! Sim, ainda está disponível. O telemóvel está em perfeitas condições, quase não foi usado.</p>
+                        <span class="message-timestamp">14:35</span>
+                    </div>
+                    <!-- Outgoing Message -->
+                    <div class="message-bubble outgoing">
+                        <p>Excelente! É possível negociar o preço?</p>
+                        <span class="message-timestamp">14:36</span>
+                    </div>
+                    <!-- More messages will be loaded here -->
+                </div>
+                <div class="chat-input-area">
+                    <button class="icon-btn"><i class="fas fa-paperclip"></i></button>
+                    <input type="text" id="message-input" placeholder="Escreva a sua mensagem...">
+                    <button class="btn btn-primary" id="send-message-btn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer id="footer-placeholder"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="assets/js/geral.js"></script>
+    <script type="module" src="assets/js/services/api.js"></script>
+    <script src="assets/js/notifications.js"></script>
+    <script type="module" src="assets/js/messages.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+</html>

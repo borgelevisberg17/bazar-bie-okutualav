@@ -1,0 +1,76 @@
+/* Favorites Page Specific Styles */
+.favorites-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.favorites-container h1 {
+    font-size: 2.5rem;
+    color: var(--color-gray-800);
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.favorites-container p {
+    font-size: 1.125rem;
+    color: var(--color-gray-600);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Overriding some product-card styles for this specific context if needed */
+.favorites-grid .product-card {
+    transition: all 0.3s ease;
+}
+
+.favorites-grid .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.product-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem 1rem;
+}
+
+.btn-remove-favorite {
+    color: var(--color-primary); /* Heart is filled because it's a favorite */
+    font-size: 1.25rem;
+}
+
+.btn-remove-favorite:hover {
+    color: var(--color-danger);
+    transform: scale(1.1);
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    background-color: var(--color-gray-50);
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+    color: var(--color-gray-500);
+}
+
+.empty-state .fa-heart-broken {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-gray-400);
+}
+
+.empty-state h2 {
+    font-size: 1.75rem;
+    color: var(--color-gray-800);
+    margin-bottom: 0.5rem;
+}

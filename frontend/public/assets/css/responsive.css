@@ -8,17 +8,13 @@
     padding-right: var(--spacing-md);
 }
 
-.social-feed {
-    display: grid;
-    /* Creates a responsive grid that adjusts the number of columns based on container width */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-lg);
-}
-
-/* Hide elements on mobile */
 .hide-on-mobile {
     display: none;
 }
+.show-on-mobile {
+    display: block; /* Or flex, grid, etc. */
+}
+
 
 /* ==========================================================================
    Media Queries for Larger Screens
@@ -39,9 +35,15 @@
         max-width: 720px;
     }
 
-    /* Show elements on tablets and larger */
-    .show-on-tablet {
-        display: block;
+    .hide-on-mobile {
+        display: block; /* Or flex, grid, etc. */
+    }
+    .show-on-mobile {
+        display: none;
+    }
+
+    .main-content {
+        padding-top: calc(var(--header-height) + var(--spacing-lg));
     }
 }
 
@@ -49,11 +51,6 @@
 @media (min-width: 992px) {
     .container {
         max-width: 960px;
-    }
-
-    .social-feed {
-        /* On larger screens, you might want a more controlled max column width */
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
 }
 

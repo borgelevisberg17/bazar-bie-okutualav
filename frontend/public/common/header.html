@@ -1,67 +1,45 @@
+<!-- Desktop Header -->
 <div class="header-container">
     <div class="logo">
         <a href="/">Bazar Bié</a>
     </div>
 
-    <!-- Desktop Navigation -->
-    <nav class="main-nav desktop-nav">
-        <ul>
-            <li><a href="/explore.html">Explorar</a></li>
-            <li><a href="/categories.html">Categorias</a></li>
-            <li><a href="/seller-application.html">Vender</a></li>
-            <li><a href="/how-it-works.html">Como Funciona</a></li>
-        </ul>
-    </nav>
+    <div class="header-search">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" placeholder="Procurar..." class="search-input">
+    </div>
 
     <div class="header-actions">
-        <button class="icon-btn" id="search-btn"><i class="fas fa-search"></i></button>
-        <button class="icon-btn" id="cart-btn"><i class="fas fa-shopping-cart"></i></button>
+        <a href="/upload.html" class="icon-btn" aria-label="Upload Product"><i class="fas fa-plus-square"></i></a>
+        <a href="/messages.html" class="icon-btn" aria-label="Messages"><i class="fas fa-paper-plane"></i></a>
         <div class="profile-dropdown">
             <img src="/assets/images/placeholders/avatar.png" alt="User Avatar" class="profile-avatar">
             <div class="dropdown-menu">
-                <a href="/profile.html">Meu Perfil</a>
-                <a href="/orders.html">Meus Pedidos</a>
-                <a href="/security.html">Segurança</a>
-                <a href="#" id="logout-btn">Sair</a>
+                <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
+                <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
+                <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
             </div>
         </div>
-        <!-- Hamburger Menu Button -->
-        <button class="icon-btn mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
     </div>
 </div>
 
-<!-- Mobile Side-Menu (Off-canvas) -->
-<div class="mobile-side-menu" id="mobile-side-menu">
-    <div class="mobile-menu-header">
-        <div class="logo">
-            <a href="/">Bazar Bié</a>
-        </div>
-        <button class="icon-btn close-menu-btn" id="close-menu-btn" aria-label="Close menu">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    <nav class="mobile-nav">
-        <ul>
-            <li><a href="/explore.html">Explorar</a></li>
-            <li><a href="/categories.html">Categorias</a></li>
-            <li><a href="/seller-application.html">Vender</a></li>
-            <li><a href="/how-it-works.html">Como Funciona</a></li>
-        </ul>
-    </nav>
-</div>
-<div class="overlay" id="overlay"></div>
-
-<!-- Search Overlay -->
-<div class="search-overlay" id="search-overlay">
-    <div class="search-overlay-content">
-        <form class="search-form" id="search-form">
-            <input type="text" placeholder="Procurar produtos, vendedores..." class="search-input" id="search-input">
-            <button type="submit" class="search-btn" aria-label="Search"><i class="fas fa-search"></i></button>
-        </form>
-        <button class="icon-btn close-search-btn" id="close-search-btn" aria-label="Close search">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-</div>
+<!-- Mobile Bottom Navigation -->
+<nav class="bottom-nav">
+    <a href="/" class="nav-icon active" aria-label="Home">
+        <i class="fas fa-home"></i>
+    </a>
+    <a href="/explore.html" class="nav-icon" aria-label="Explore">
+        <i class="fas fa-search"></i>
+    </a>
+    <a href="/upload.html" class="nav-icon" aria-label="Upload">
+        <i class="fas fa-plus-square"></i>
+    </a>
+    <a href="/messages.html" class="nav-icon" aria-label="Messages">
+        <i class="fas fa-paper-plane"></i>
+    </a>
+    <a href="/profile.html" class="nav-icon" aria-label="Profile">
+        <i class="fas fa-user-circle"></i>
+    </a>
+</nav>

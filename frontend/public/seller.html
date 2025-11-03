@@ -12,43 +12,45 @@
     <link rel="stylesheet" href="./assets/css/components/footer.css">
     <link rel="stylesheet" href="./assets/css/components/buttons.css">
     <link rel="stylesheet" href="./assets/css/components/cards.css">
-    <link rel="stylesheet" href="./assets/css/profile.css"> <!-- Reusing the profile CSS -->
+    <link rel="stylesheet" href="./assets/css/profile.css">
 </head>
 <body>
     <header class="main-header" id="mainHeader"></header>
 
-    <main class="profile-page-container">
-        <section class="profile-header-section">
-            <div class="profile-cover-photo">
-                <img src="assets/images/placeholders/seller-cover.png" alt="Foto de Capa do Vendedor">
-            </div>
-            <div class="profile-details-container container">
-                <div class="profile-avatar-container">
-                    <img src="assets/images/placeholders/seller-avatar.png" alt="Avatar do Vendedor" class="profile-avatar">
-                </div>
-                <div class="profile-info">
-                    <h1 class="profile-name">Nome da Loja do Vendedor</h1>
-                    <p class="profile-bio">Especialistas em produtos locais e artesanato.</p>
-                </div>
-                <div class="profile-header-actions">
-                    <button class="btn btn-primary">Seguir</button>
-                    <button class="btn btn-secondary">Contactar</button>
-                </div>
-            </div>
-            <nav class="profile-tabs-nav container">
-                <a href="#products" class="tab-link active">Produtos</a>
-                <a href="#about" class="tab-link">Sobre</a>
-                <a href="#reviews" class="tab-link">Avaliações</a>
-            </nav>
+    <main class="profile-page">
+        <!-- Seller Banner -->
+        <section class="profile-banner">
+            <img src="assets/images/placeholders/seller-cover.png" alt="Banner do Vendedor" id="seller-banner">
         </section>
 
-        <div class="profile-content-container container">
-            <div id="products" class="tab-content active">
-                <div class="products-grid" id="seller-products-grid"></div>
+        <!-- Seller Header -->
+        <section class="container profile-header">
+            <div class="profile-avatar">
+                <img src="assets/images/placeholders/seller-avatar.png" alt="Avatar do Vendedor" id="seller-avatar">
             </div>
-            <div id="about" class="tab-content"></div>
-            <div id="reviews" class="tab-content"></div>
-        </div>
+            <div class="profile-info">
+                <h1 class="seller-name" id="seller-name">Nome do Vendedor</h1>
+                <p class="seller-bio" id="seller-bio">Biografia do vendedor...</p>
+                <div class="seller-stats">
+                    <span><strong id="product-count">0</strong> Produtos</span>
+                    <span><strong id="follower-count">0</strong> Seguidores</span>
+                    <span><strong id="seller-rating">4.5</strong> <i class="fas fa-star"></i></span>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-primary" id="follow-btn"><i class="fas fa-user-plus"></i> Seguir</button>
+                <button class="btn btn-outline" id="message-btn"><i class="fas fa-envelope"></i> Mensagem</button>
+            </div>
+        </section>
+
+        <!-- Seller's Products -->
+        <section class="container seller-products">
+            <h2>Produtos</h2>
+            <div class="products-grid" id="seller-products-grid">
+                <!-- Product cards will be dynamically inserted here -->
+            </div>
+        </section>
+
     </main>
 
     <footer class="main-footer" id="mainFooter"></footer>

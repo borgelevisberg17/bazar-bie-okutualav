@@ -1,47 +1,60 @@
 /* =================================================================
-   Card Component - Social Post Style
+   Card Component - Social Post Style (Modernized)
    ================================================================= */
 
 .social-feed {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xl);
-    max-width: 600px;
+    max-width: 600px; /* Centered feed */
     margin: 0 auto;
     padding: var(--spacing-lg) 0;
 }
 
 .product-post-card {
-    background-color: var(--background-color);
-    border-radius: var(--border-radius-lg);
-    border: 1px solid var(--border-color);
+    background-color: var(--surface-color); /* Use surface for slight contrast */
+    border-radius: var(--border-radius-2xl); /* Larger, softer radius */
+    border: none; /* Remove border, use shadow for separation */
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    box-shadow: var(--shadow-md); /* Add depth */
+    transition: box-shadow 0.3s ease;
+}
+
+.product-post-card:hover {
+    box-shadow: var(--shadow-lg);
 }
 
 /* Card Header: Seller Info */
 .post-header {
     display: flex;
     align-items: center;
-    padding: var(--spacing-md);
-    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg); /* More horizontal padding */
+    gap: var(--spacing-md);
 }
 
 .seller-avatar {
-    width: 40px;
-    height: 40px;
+    width: 48px; /* Slightly larger avatar */
+    height: 48px;
     border-radius: var(--border-radius-full);
     object-fit: cover;
+    border: 2px solid var(--primary-color); /* Highlight seller */
 }
 
 .seller-info {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .seller-name {
     font-weight: var(--font-weight-semibold);
     color: var(--text-color);
+    text-decoration: none;
+}
+.seller-name:hover {
+    text-decoration: underline;
 }
 
 /* Card Body: Product Image */
@@ -53,21 +66,24 @@
     width: 100%;
     height: auto;
     object-fit: cover;
+    aspect-ratio: 1 / 1; /* Enforce square images */
 }
 
 /* Card Footer: Actions and Info */
 .post-footer {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-lg); /* Adjusted padding */
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
 }
 
 .post-actions {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Pushes items to opposite ends */
-    margin-bottom: var(--spacing-sm);
+    justify-content: space-between;
 }
 
-.post-actions > div {
+.post-actions .action-group {
     display: flex;
     gap: var(--spacing-lg);
 }
@@ -76,9 +92,10 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--text-light-color);
-    font-size: 1.5rem;
+    color: var(--text-color);
+    font-size: 1.5rem; /* Slightly larger icons */
     transition: color 0.2s, transform 0.2s;
+    padding: 0;
 }
 
 .action-btn:hover {
@@ -86,36 +103,44 @@
     transform: scale(1.1);
 }
 
-.action-btn.liked {
+.action-btn.liked i {
     color: var(--danger-color);
+    font-weight: 900; /* Solid heart */
 }
 
 .btn-buy {
-    background-color: var(--primary-color-light);
-    color: var(--primary-color);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-xs) var(--spacing-md);
-    font-size: 0.9rem;
-    font-weight: var(--font-weight-bold);
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-radius: var(--border-radius-full); /* Pill shape */
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .btn-buy:hover {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
 }
 
 .btn-buy i {
-    margin-right: var(--spacing-xs);
+    margin-right: var(--spacing-sm);
 }
 
 .post-stats {
-    font-size: 0.9rem;
-    font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--spacing-sm);
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-medium);
+    padding: 0 var(--spacing-xs);
+}
+
+.post-description {
+    padding: 0 var(--spacing-xs);
+    font-size: 1rem;
 }
 
 .post-description .seller-name {
-    margin-right: var(--spacing-xs);
+    margin-right: var(--spacing-sm);
 }
 
 .post-description .product-name {
@@ -123,7 +148,83 @@
 }
 
 .view-comments {
-    font-size: 0.85rem;
+    padding: 0 var(--spacing-xs);
+    font-size: 0.9rem;
     color: var(--text-light-color);
     cursor: pointer;
+    text-decoration: none;
+}
+.view-comments:hover {
+    text-decoration: underline;
+}
+
+/* Generic Product Card (for grids) */
+.product-card {
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.product-card__image-container {
+  position: relative;
+}
+
+.product-card__image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.product-card__content {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allows content to fill space */
+}
+
+.product-card__title {
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-color);
+  text-decoration: none;
+}
+.product-card__title:hover {
+    text-decoration: underline;
+}
+
+.product-card__price {
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.product-card__seller {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: auto; /* Pushes to bottom */
+    padding-top: var(--spacing-sm);
+    text-decoration: none;
+}
+
+.product-card__seller-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.product-card__seller-name {
+    font-size: 0.9rem;
+    color: var(--text-light-color);
 }

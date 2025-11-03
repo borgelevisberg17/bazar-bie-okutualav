@@ -1,58 +1,24 @@
-/* =================================================================
-   Header Component - Social E-commerce Style
-   ================================================================= */
+/* ==========================================================================
+   Header & Navigation Styles - Mobile First
+   ========================================================================== */
 
-/* Mobile-First: Bottom Navigation Bar */
-.bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    background-color: var(--background-color);
-    border-top: 1px solid var(--border-color);
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
-    z-index: 1000;
-}
-
-.nav-icon {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-light-color);
-    font-size: 1.5rem; /* Increased icon size */
-    transition: color 0.2s;
-}
-
-.nav-icon.active,
-.nav-icon:hover {
-    color: var(--primary-color);
-}
-
-/* Main Header for Desktop */
+/* Main Header (Top Bar) */
 .main-header {
-    display: none; /* Hide by default, show on larger screens */
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-sm) 0;
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
-    background-color: var(--white-color);
-    border-bottom: 1px solid var(--border-color);
     z-index: 1000;
-    padding: var(--spacing-sm) 0;
+    height: 60px; /* Fixed height for consistency */
 }
 
 .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--spacing-lg);
+    padding: 0 var(--spacing-md);
 }
 
 .logo a {
@@ -62,48 +28,185 @@
     text-decoration: none;
 }
 
-.header-search {
-    position: relative;
-    width: 300px;
+.search-input {
+    display: none; /* Hidden on mobile */
 }
 
-.header-search .search-input {
-    width: 100%;
-    padding: 0.5rem 1rem 0.5rem 2.5rem; /* Add padding for icon */
-    border-radius: var(--border-radius-full);
-    border: 1px solid var(--border-color);
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+}
+
+/* Mobile Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-color: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    padding: var(--spacing-sm) 0;
+    z-index: 1000;
 }
 
-.header-search .search-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
+.nav-icon {
     color: var(--text-light-color);
+    font-size: 1.5rem;
+    text-align: center;
 }
 
-.header-actions {
+.nav-icon.active {
+    color: var(--primary-color);
+}
+
+.nav-icon .upload-center i {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+}
+
+/* Mobile Sidebar (Hamburger Menu) */
+.mobile-sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Initially hidden off-screen */
+    width: 280px;
+    height: 100%;
+    background-color: var(--surface-color);
+    z-index: 1002;
+    transition: left 0.3s ease-in-out;
+    padding: var(--spacing-xl) 0;
+}
+
+.mobile-sidebar.open {
+    left: 0;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav a {
+    color: var(--text-color);
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 1.1rem;
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
 }
-
-.profile-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--border-radius-full);
-    cursor: pointer;
-    object-fit: cover;
+.sidebar-nav a:hover {
+    background-color: var(--border-color);
+}
+.sidebar-nav .dropdown-divider {
+    border-top: 1px solid var(--border-color);
+    margin: var(--spacing-md) 0;
 }
 
-/* Show desktop header and hide mobile nav on larger screens */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.sidebar-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==========================================================================
+   Responsive Styles for Desktop
+   ========================================================================== */
 @media (min-width: 768px) {
-    .bottom-nav {
+    /* Hide mobile-specific elements */
+    .bottom-nav,
+    .mobile-menu-toggle,
+    .mobile-sidebar,
+    .sidebar-overlay {
+        display: none !important;
+    }
+
+    .show-on-mobile {
         display: none;
     }
 
+    .hide-on-mobile {
+        display: flex; /* Or 'block', 'inline-flex', etc. depending on the element */
+        align-items: center;
+    }
+
     .main-header {
+        padding: var(--spacing-md) 0;
+        height: auto;
+    }
+
+    .header-container {
+        padding: 0 var(--spacing-lg);
+    }
+
+    .header-search {
+        flex-grow: 1;
+        margin: 0 var(--spacing-xl);
+        background: var(--background-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-full);
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .search-input {
         display: block;
+        border: none;
+        outline: none;
+        background: transparent;
+        width: 100%;
+        margin-left: var(--spacing-sm);
+    }
+
+    .header-actions {
+        gap: var(--spacing-lg);
+    }
+
+    .profile-dropdown {
+        position: relative;
+    }
+
+    .profile-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 120%;
+        right: 0;
+        background-color: var(--surface-color);
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: var(--spacing-sm) 0;
+        min-width: 200px;
+        z-index: 1001;
+    }
+
+    .profile-dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu a {
+        padding: var(--spacing-md) var(--spacing-lg);
     }
 }

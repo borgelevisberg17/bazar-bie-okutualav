@@ -42,25 +42,44 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    const init = async () => {
-        // Load header for desktop, and bottom nav for mobile
-        // The display is controlled by CSS media queries
-        const mainHeader = document.getElementById('mainHeader');
-        const bottomNav = document.getElementById('bottomNav');
-        const mainFooter = document.getElementById('mainFooter');
+    const setupFAQToggle = () => {
+        const faqItems = document.querySelectorAll('.faq-item');
+        if (!faqItems.length) return;
 
-        if(mainHeader) {
-            await loadComponent('/common/header.html', 'mainHeader');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+
+                // Close all other items before toggling
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+
+                // Toggle the clicked item
+                item.classList.toggle('active');
+            });
+        });
+    };
+
+    const init = async () => {
+        const headerPlaceholder = document.getElementById('header-placeholder');
+        const footerPlaceholder = document.getElementById('footer-placeholder');
+
+        if (headerPlaceholder) {
+            await loadComponent('/common/header.html', 'header-placeholder');
             setupDesktopHeader();
         }
 
-        if(mainFooter) {
-            await loadComponent('/common/footer.html', 'mainFooter');
+        if (footerPlaceholder) {
+            await loadComponent('/common/footer.html', 'footer-placeholder');
         }
 
-        if(bottomNav){
-            // As header.html now contains the bottom nav, we can source it from there.
-            // A better approach would be separate files, but for now this works.
+        // Setup mobile navigation if placeholder exists
+        const bottomNav = document.getElementById('bottomNav');
+        if (bottomNav) {
             const response = await fetch('/common/header.html');
             const text = await response.text();
             const parser = new DOMParser();
@@ -70,6 +89,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 bottomNav.innerHTML = mobileNavContent.innerHTML;
                 setActiveNavIcon();
             }
+        }
+
+        setupFAQToggle();
+        setupMobileMenu();
+    };
+
+    const setupMobileMenu = () => {
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mobileSidebar = document.getElementById('mobile-sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const body = document.body;
+
+        if (hamburgerBtn && mobileSidebar && sidebarOverlay) {
+            hamburgerBtn.addEventListener('click', () => {
+                mobileSidebar.classList.toggle('open');
+                sidebarOverlay.classList.toggle('open');
+                body.style.overflow = mobileSidebar.classList.contains('open') ? 'hidden' : '';
+            });
+
+            sidebarOverlay.addEventListener('click', () => {
+                mobileSidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                body.style.overflow = '';
+            });
         }
     };
 

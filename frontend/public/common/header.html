@@ -1,45 +1,65 @@
-<!-- Desktop Header -->
-<div class="header-container">
-    <div class="logo">
-        <a href="/">Bazar Bié</a>
-    </div>
+<!-- Main Header -->
+<header class="main-header">
+    <div class="container header-container">
+        <!-- Logo -->
+        <div class="logo">
+            <a href="/">Bazar Bié</a>
+        </div>
 
-    <div class="header-search">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" placeholder="Procurar..." class="search-input">
-    </div>
+        <!-- Desktop Search Bar (visible on larger screens) -->
+        <div class="header-search hide-on-mobile">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" placeholder="Procurar..." class="search-input">
+        </div>
 
-    <div class="header-actions">
-        <a href="/upload.html" class="icon-btn" aria-label="Upload Product"><i class="fas fa-plus-square"></i></a>
-        <a href="/messages.html" class="icon-btn" aria-label="Messages"><i class="fas fa-paper-plane"></i></a>
-        <div class="profile-dropdown">
-            <img src="/assets/images/placeholders/avatar.png" alt="User Avatar" class="profile-avatar">
-            <div class="dropdown-menu">
-                <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
-                <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
-                <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
-                <div class="dropdown-divider"></div>
-                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+        <!-- Header Actions & Profile Dropdown (Desktop) -->
+        <div class="header-actions hide-on-mobile">
+            <a href="/upload.html" class="icon-btn" aria-label="Upload Product">
+                <i class="fas fa-plus-square"></i>
+            </a>
+            <a href="/messages.html" class="icon-btn" aria-label="Messages">
+                <i class="fas fa-paper-plane"></i>
+            </a>
+            <div class="profile-dropdown">
+                <img src="/assets/images/placeholders/avatar.png" alt="User Avatar" class="profile-avatar" tabindex="0">
+                <div class="dropdown-menu">
+                    <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
+                    <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
+                    <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                </div>
             </div>
         </div>
+
+        <!-- Mobile Menu Toggle (Hamburger) -->
+        <div class="mobile-menu-toggle show-on-mobile">
+            <button id="hamburger-btn" class="icon-btn" aria-label="Open Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </div>
-</div>
+</header>
+
+<!-- Mobile Sidebar (Initially Hidden) -->
+<aside class="mobile-sidebar" id="mobile-sidebar">
+    <nav class="sidebar-nav">
+        <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
+        <a href="/upload.html"><i class="fas fa-plus-square"></i> Vender Produto</a>
+        <a href="/messages.html"><i class="fas fa-paper-plane"></i> Mensagens</a>
+        <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
+        <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
+        <div class="dropdown-divider"></div>
+        <a href="#" id="logout-btn-mobile"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </nav>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <!-- Mobile Bottom Navigation -->
-<nav class="bottom-nav">
-    <a href="/" class="nav-icon active" aria-label="Home">
-        <i class="fas fa-home"></i>
-    </a>
-    <a href="/explore.html" class="nav-icon" aria-label="Explore">
-        <i class="fas fa-search"></i>
-    </a>
-    <a href="/upload.html" class="nav-icon" aria-label="Upload">
-        <i class="fas fa-plus-square"></i>
-    </a>
-    <a href="/messages.html" class="nav-icon" aria-label="Messages">
-        <i class="fas fa-paper-plane"></i>
-    </a>
-    <a href="/profile.html" class="nav-icon" aria-label="Profile">
-        <i class="fas fa-user-circle"></i>
-    </a>
+<nav class="bottom-nav show-on-mobile">
+    <a href="/" class="nav-icon active" aria-label="Home"><i class="fas fa-home"></i></a>
+    <a href="/explore.html" class="nav-icon" aria-label="Explore"><i class="fas fa-search"></i></a>
+    <a href="/upload.html" class="nav-icon upload-center" aria-label="Upload"><i class="fas fa-plus-circle"></i></a>
+    <a href="/messages.html" class="nav-icon" aria-label="Messages"><i class="fas fa-paper-plane"></i></a>
+    <a href="/profile.html" class="nav-icon" aria-label="Profile"><i class="fas fa-user-circle"></i></a>
 </nav>

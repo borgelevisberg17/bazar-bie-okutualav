@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Responsive Design - Mobile First
+   ========================================================================== */
+
+/* Base styles for mobile devices */
+.container {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+}
+
+.social-feed {
+    display: grid;
+    /* Creates a responsive grid that adjusts the number of columns based on container width */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* Hide elements on mobile */
+.hide-on-mobile {
+    display: none;
+}
+
+/* ==========================================================================
+   Media Queries for Larger Screens
+   ========================================================================== */
+
+/* Medium devices (tablets, landscape phones), 576px and up */
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Large devices (tablets, small desktops), 768px and up */
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+
+    /* Show elements on tablets and larger */
+    .show-on-tablet {
+        display: block;
+    }
+}
+
+/* Extra-large devices (desktops), 992px and up */
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+
+    .social-feed {
+        /* On larger screens, you might want a more controlled max column width */
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+/* Extra-extra-large devices (large desktops), 1200px and up */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+/* Maximum width devices (extra large desktops), 1400px and up */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+}

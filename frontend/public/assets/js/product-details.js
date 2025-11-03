@@ -1,121 +1,115 @@
-import { getProductById, api } from "./services/api.js";
+import { getProductById, getProductReviews, api } from "./services/api.js";
 import { showToast } from "./notifications.js";
+import { getSession } from '../auth.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // --- DOM Elements ---
-    const mainProductImage = document.getElementById("main-product-image");
-    const productNameEl = document.getElementById("product-name");
-    const productPriceEl = document.getElementById("product-price");
-    const productDescriptionEl = document.getElementById("product-description");
-    const sellerAvatarEl = document.getElementById("seller-avatar");
-    const sellerNameEl = document.getElementById("seller-name");
-    const sellerLocationEl = document.getElementById("seller-location");
-    const commentForm = document.getElementById("comment-form");
-    const commentsListEl = document.getElementById("comments-list");
-    const currentUserAvatar = document.querySelector('.current-user-avatar');
-
     // --- State ---
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
-    const userSession = JSON.parse(localStorage.getItem('user_session'));
+    const session = getSession();
 
     if (!productId) {
-        document.querySelector('main').innerHTML = '<p class="container">ID do produto não encontrado.</p>';
+        document.querySelector('main.container').innerHTML = '<p>ID do produto não encontrado.</p>';
         return;
     }
 
-    if(userSession?.user?.avatar_url && currentUserAvatar) {
-        currentUserAvatar.src = userSession.user.avatar_url;
-    }
+    // --- DOM Elements ---
+    const mainImageEl = document.getElementById("main-product-image");
+    const thumbnailGalleryEl = document.getElementById("thumbnail-gallery");
+    const productNameEl = document.getElementById("product-name");
+    const productPriceEl = document.getElementById("product-price");
+    const productDescriptionEl = document.getElementById("product-description");
+    const productLongDescriptionEl = document.getElementById("product-long-description");
+    const sellerAvatarEl = document.getElementById("seller-avatar");
+    const sellerNameEl = document.getElementById("seller-name");
+    const sellerLink = document.getElementById("seller-link");
 
     // --- Functions ---
-    const renderProductDetails = (product) => {
+    const renderProduct = (product) => {
         document.title = `${product.name} - Bazar Bié Okutuala`;
-        mainProductImage.src = product.images?.[0]?.image_url || 'assets/images/placeholders/product-main.png';
         productNameEl.textContent = product.name;
-        productPriceEl.textContent = parseFloat(product.price).toLocaleString("pt-AO", { style: 'currency', currency: 'AOA' });
-        productDescriptionEl.textContent = product.description;
+        productPriceEl.textContent = new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA' }).format(product.price);
+        productDescriptionEl.textContent = product.description.substring(0, 150) + '...';
+        productLongDescriptionEl.textContent = product.description;
 
+        // Render Seller Info
         if (product.seller) {
             sellerAvatarEl.src = product.seller.avatar_url || 'assets/images/placeholders/avatar.png';
             sellerNameEl.textContent = product.seller.name;
+            sellerLink.href = `seller.html?id=${product.seller.id}`;
             sellerNameEl.href = `seller.html?id=${product.seller.id}`;
-            sellerLocationEl.textContent = product.seller.location || 'Bié, Angola';
+        }
+
+        // Render Image Gallery
+        if (product.images && product.images.length > 0) {
+            mainImageEl.src = product.images[0].image_url;
+            thumbnailGalleryEl.innerHTML = product.images.map((image, index) => `
+                <img src="${image.image_url}" alt="Thumbnail ${index + 1}" class="thumbnail ${index === 0 ? 'active' : ''}" data-index="${index}">
+            `).join('');
         }
     };
 
-    const renderComments = (comments) => {
-        if (comments.length === 0) {
-            commentsListEl.innerHTML = '<p>Seja o primeiro a comentar!</p>';
+    const renderReviews = (reviews) => {
+        const commentsListEl = document.getElementById("comments-list");
+        if (!reviews || reviews.length === 0) {
+            commentsListEl.innerHTML = "<p>Ainda não há avaliações para este produto.</p>";
             return;
         }
-        commentsListEl.innerHTML = comments.map(comment => `
+        commentsListEl.innerHTML = reviews.map(review => `
             <div class="comment-item">
-                <img src="${comment.user.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="${comment.user.name}" class="comment-avatar">
+                <img src="${review.user.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="${review.user.name}" class="comment-avatar">
                 <div class="comment-content">
-                    <div>
-                        <a href="profile.html?id=${comment.user.id}" class="comment-author">${comment.user.name}</a>
-                        <span class="comment-text">${comment.comment}</span>
-                    </div>
+                    <a href="profile.html?id=${review.user.id}" class="comment-author">${review.user.name}</a>
+                    <p class="comment-text">${review.comment}</p>
                 </div>
             </div>
         `).join('');
     };
 
-    const handleCommentSubmit = async (e) => {
-        e.preventDefault();
-        const commentInput = e.target.querySelector('.comment-input');
-        const commentText = commentInput.value.trim();
-
-        if (!commentText) return;
-
-        try {
-            const response = await api.post(`/products/${productId}/reviews`, { comment: commentText });
-            const newComment = response.data;
-
-            // Optimistic update
-            const newCommentElement = document.createElement('div');
-            newCommentElement.className = 'comment-item';
-            newCommentElement.innerHTML = `
-                <img src="${userSession.user.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="${userSession.user.name}" class="comment-avatar">
-                <div class="comment-content">
-                     <div>
-                        <a href="profile.html?id=${userSession.user.id}" class="comment-author">${userSession.user.name}</a>
-                        <span class="comment-text">${newComment.comment}</span>
-                    </div>
-                </div>`;
-
-            if(commentsListEl.querySelector('p')) {
-                commentsListEl.innerHTML = '';
+    const setupEventListeners = () => {
+        // Image Gallery
+        thumbnailGalleryEl.addEventListener('click', (e) => {
+            if (e.target.classList.contains('thumbnail')) {
+                mainImageEl.src = e.target.src;
+                document.querySelectorAll('.thumbnail').forEach(thumb => thumb.classList.remove('active'));
+                e.target.classList.add('active');
             }
-            commentsListEl.prepend(newCommentElement);
-            commentInput.value = '';
-            showToast("Comentário publicado!", "success");
+        });
 
-        } catch (error) {
-            showToast("Erro ao publicar comentário.", "error");
-        }
+        // Tabs
+        const tabs = document.querySelectorAll('.tab-link');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+            });
+        });
+
+        // Quantity Selector
+        const qtyInput = document.getElementById('quantity');
+        document.getElementById('increase-qty').addEventListener('click', () => qtyInput.value++);
+        document.getElementById('decrease-qty').addEventListener('click', () => {
+            if (qtyInput.value > 1) qtyInput.value--;
+        });
     };
 
     // --- Initial Load ---
     const loadPage = async () => {
         try {
             const productData = await getProductById(productId);
-            const product = productData?.data;
-            if (product) {
-                renderProductDetails(product);
-                renderComments(product.reviews || []);
-            } else {
-                document.querySelector('main').innerHTML = '<p class="container">Produto não encontrado.</p>';
-            }
+            const product = productData.data;
+            renderProduct(product);
+            const reviewsData = await getProductReviews(productId);
+            renderReviews(reviewsData.data);
+            setupEventListeners();
         } catch (error) {
-            document.querySelector('main').innerHTML = '<p class="container">Ocorreu um erro ao carregar o produto.</p>';
+            showToast("Erro ao carregar os detalhes do produto.", "error");
+            document.querySelector('main.container').innerHTML = '<p>Produto não encontrado.</p>';
         }
     };
 
-    // --- Event Listeners ---
-    commentForm.addEventListener('submit', handleCommentSubmit);
-
-    // --- Run ---
     loadPage();
 });

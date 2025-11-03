@@ -1,83 +1,84 @@
 import { getProductsBySeller, getSellerDetails } from './services/api.js';
+import { showToast } from './notifications.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const sellerId = urlParams.get('id');
 
     if (!sellerId) {
-        document.querySelector('.profile-content-container').innerHTML = '<p>Vendedor não encontrado.</p>';
+        document.querySelector('.profile-page').innerHTML = '<p class="container">Vendedor não encontrado.</p>';
         return;
     }
-
-    const tabs = document.querySelectorAll('.tab-link');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabs.forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            e.preventDefault();
-            tabs.forEach(item => item.classList.remove('active'));
-            tab.classList.add('active');
-            const target = document.querySelector(tab.getAttribute('href'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            target.classList.add('active');
-        });
-    });
 
     loadSellerProfile(sellerId);
 });
 
 async function loadSellerProfile(sellerId) {
+    // --- DOM Elements ---
+    const sellerBannerEl = document.getElementById('seller-banner');
+    const sellerAvatarEl = document.getElementById('seller-avatar');
+    const sellerNameEl = document.getElementById('seller-name');
+    const sellerBioEl = document.getElementById('seller-bio');
+    const productCountEl = document.getElementById('product-count');
+    const followerCountEl = document.getElementById('follower-count');
+    const sellerRatingEl = document.getElementById('seller-rating');
     const productsGrid = document.getElementById('seller-products-grid');
-    const sellerName = document.querySelector('.profile-name');
-    const sellerBio = document.querySelector('.profile-bio');
-    const sellerAvatar = document.querySelector('.profile-avatar');
 
-    productsGrid.innerHTML = '<div class="loading-spinner"></div>';
+    productsGrid.innerHTML = '<div class="loading-spinner"></div>'; // Show loader
 
     try {
-        const [sellerDetails, sellerProducts] = await Promise.all([
+        // Fetch seller details and products in parallel
+        const [sellerDetailsData, sellerProductsData] = await Promise.all([
             getSellerDetails(sellerId),
             getProductsBySeller(sellerId)
         ]);
 
-        sellerName.textContent = sellerDetails.data.name;
-        sellerBio.textContent = sellerDetails.data.bio || 'Especialista em produtos locais.';
-        sellerAvatar.src = sellerDetails.data.avatar_url || 'assets/images/placeholders/seller-avatar.png';
+        const seller = sellerDetailsData.data;
+        const products = sellerProductsData.data;
 
-        renderProducts(productsGrid, sellerProducts.data);
+        // Populate Seller Info
+        document.title = `${seller.name} - Bazar Bié Okutuala`;
+        sellerBannerEl.src = seller.cover_photo_url || 'assets/images/placeholders/seller-cover.png';
+        sellerAvatarEl.src = seller.avatar_url || 'assets/images/placeholders/seller-avatar.png';
+        sellerNameEl.textContent = seller.name;
+        sellerBioEl.textContent = seller.bio || 'Este vendedor ainda não adicionou uma biografia.';
+
+        // Populate Seller Stats (assuming API provides this data)
+        productCountEl.textContent = products.length;
+        followerCountEl.textContent = seller.followers_count || 0;
+        sellerRatingEl.innerHTML = `${seller.average_rating || 'N/A'} <i class="fas fa-star"></i>`;
+
+        renderProducts(productsGrid, products);
 
     } catch (error) {
-        productsGrid.innerHTML = '<p>Ocorreu um erro ao carregar os produtos do vendedor.</p>';
-        console.error('Error loading seller profile:', error);
+        showToast("Ocorreu um erro ao carregar o perfil do vendedor.", "error");
+        productsGrid.innerHTML = '<p>Não foi possível carregar os produtos.</p>';
     }
 }
 
 function renderProducts(container, products) {
-    if (products.length === 0) {
+    if (!products || products.length === 0) {
         container.innerHTML = '<p>Este vendedor ainda não tem produtos à venda.</p>';
         return;
     }
 
-    container.innerHTML = products.map(product => `
-        <article class="product-card">
-            <a href="product.html?id=${product.id}" class="product-image-container">
-                <img src="${product.image_url || 'assets/images/placeholders/product.png'}" alt="${product.name}" class="product-image" loading="lazy">
-            </a>
-            <div class="product-info">
-                <a href="product.html?id=${product.id}" class="product-title">${product.name}</a>
-                <p class="product-price">${parseFloat(product.price).toLocaleString("pt-AO", { style: 'currency', currency: 'AOA' })}</p>
-            </div>
-            <div class="product-card-footer">
-                <div class="product-actions">
-                     <button class="product-action-btn btn-wishlist" aria-label="Adicionar aos favoritos">
-                        <i class="fa-regular fa-heart"></i>
-                    </button>
-                    <button class="product-action-btn" aria-label="Comentar">
-                        <i class="fa-regular fa-comment"></i>
-                    </button>
+    container.innerHTML = products.map(product => {
+        const imageUrl = product.images && product.images.length > 0
+            ? product.images[0].image_url
+            : 'assets/images/placeholders/product.png';
+        const priceFormatted = new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA' }).format(product.price);
+
+        return `
+            <div class="product-card">
+                <a href="product.html?id=${product.id}" class="product-card__image-container">
+                    <img src="${imageUrl}" alt="${product.name}" class="product-card__image">
+                </a>
+                <div class="product-card__content">
+                    <a href="product.html?id=${product.id}" class="product-card__title">${product.name}</a>
+                    <p class="product-card__price">${priceFormatted}</p>
+                    <!-- Seller info can be omitted here as we are on the seller's page -->
                 </div>
-                <button class="btn btn-primary btn-add-to-cart">Adicionar</button>
             </div>
-        </article>
-    `).join('');
+        `;
+    }).join('');
 }

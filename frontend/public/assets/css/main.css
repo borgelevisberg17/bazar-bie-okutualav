@@ -1,54 +1,14 @@
-/* Reset and base styles */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ==========================================================================
+   Main Page Specific Styles (main.css)
+   ========================================================================== */
 
-html {
-  scroll-behavior: smooth;
-}
+/* This file is for styles that are ONLY used on the main page (index.html).
+   Global styles are in style.css and responsive styles are in responsive.css.
+*/
 
-body {
-  font-family: var(--font-family-sans-serif);
-  background-color: var(--background-color);
-  color: var(--text-color);
-  line-height: 1.6;
-  font-weight: var(--font-weight-normal);
-  transition: background-color 0.3s, color 0.3s;
-}
-
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--secondary-color);
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: var(--font-weight-bold);
-  line-height: 1.2;
-  margin-bottom: var(--spacing-md);
-}
-
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-lg);
-}
-
-.no-scroll {
-  overflow: hidden;
+/* Social Feed Section */
+.social-feed {
+    /* The responsive grid layout is handled by responsive.css */
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-xxl);
 }

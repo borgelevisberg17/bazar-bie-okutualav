@@ -1,83 +1,103 @@
-/* frontend/public/assets/css/components/footer.css */
-
-#mainFooter {
-    background-color: var(--background-color-light);
-    color: var(--text-color-secondary);
-    padding: 4rem 0;
-    margin-top: 4rem;
+/* ==========================================================================
+   Footer Component Styles - Mobile First
+   ========================================================================== */
+.main-footer {
+    background-color: var(--surface-color);
+    color: var(--text-light-color);
+    padding: var(--spacing-xxl) 0;
     border-top: 1px solid var(--border-color);
-    font-size: 0.9rem;
-    display: block; /* Ensure it is not hidden by default */
 }
 
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 2rem;
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
 }
 
 .footer-column {
-    flex: 1;
-    min-width: 200px;
+    margin-bottom: var(--spacing-lg);
 }
 
-.footer-column h3 {
-    color: var(--text-color-primary);
-    margin-bottom: 1.5rem;
+.footer-heading {
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-color);
+    margin-bottom: var(--spacing-md);
 }
 
 .footer-column p {
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
-.footer-column ul {
+.footer-links {
     list-style: none;
     padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
 }
 
-.footer-column ul li a {
-    color: var(--text-color-secondary);
-    text-decoration: none;
-    margin-bottom: 0.75rem;
-    display: inline-block;
-    transition: color 0.3s ease;
+.footer-links a {
+    color: var(--text-light-color);
+    transition: color 0.2s ease;
 }
-
-.footer-column ul li a:hover {
+.footer-links a:hover {
     color: var(--primary-color);
 }
 
-.social-icons {
+.newsletter-form {
+    margin-top: var(--spacing-md);
+}
+
+.newsletter-input {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Footer Bottom Section */
+.footer-bottom {
+    border-top: 1px solid var(--border-color);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    text-align: center;
 }
 
 .social-icons a {
-    color: var(--text-color-secondary);
-    font-size: 1.2rem;
-    transition: color 0.3s ease;
+    color: var(--text-light-color);
+    font-size: 1.25rem;
+    margin-left: var(--spacing-lg);
+    transition: color 0.2s ease;
 }
-
 .social-icons a:hover {
     color: var(--primary-color);
 }
 
-.footer-bottom {
-    text-align: center;
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
+/* ==========================================================================
+   Desktop Layout for Footer
+   ========================================================================== */
+@media (min-width: 768px) {
+    .footer-grid {
+        /* Create a 2x2 grid on tablets */
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+    }
 }
 
-@media (max-width: 768px) {
-    #mainFooter {
-        /* Hide footer on mobile to prioritize bottom nav */
-        display: none;
+@media (min-width: 992px) {
+    .footer-grid {
+        /* Create a 4-column grid on desktops */
+        grid-template-columns: repeat(4, 1fr);
     }
 }

@@ -1,5 +1,6 @@
 import { showToast } from "./notifications.js";
-import { getProducts, getProductDetails } from "./services/api.js";
+import { getProducts, getProductDetails, likeProduct, unlikeProduct } from "./services/api.js";
+import { getSession } from './auth.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const socialFeed = document.getElementById("social-feed");
@@ -56,17 +57,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             postCard.innerHTML = `
                 <div class="post-header">
-                    <a href="seller.html?id=${product.seller?.id}">
+                    <a href="seller.html?id=${product.seller?.id}" class="seller-link">
                         <img src="${product.seller?.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="${product.seller?.name}" class="seller-avatar">
+                        <span class="seller-name">${product.seller?.name}</span>
                     </a>
-                    <div class="seller-info">
-                        <a href="seller.html?id=${product.seller?.id}" class="seller-name">${product.seller?.name}</a>
-                    </div>
                 </div>
                 <div class="post-image-carousel">
-                    <div class="carousel-track" style="transform: translateX(0%);">
-                        ${imageSlides}
-                    </div>
+                    <div class="carousel-track">${imageSlides}</div>
                     ${images.length > 1 ? `
                         <button class="carousel-btn prev"><i class="fas fa-chevron-left"></i></button>
                         <button class="carousel-btn next"><i class="fas fa-chevron-right"></i></button>
@@ -81,29 +78,65 @@ document.addEventListener("DOMContentLoaded", () => {
                             <button class="action-btn" data-action="comment"><i class="far fa-comment"></i></button>
                             <button class="action-btn" data-action="share"><i class="far fa-paper-plane"></i></button>
                         </div>
-                        <div class="action-group">
-                            <span class="price">${priceFormatted}</span>
-                            <button class="btn-add-to-cart" data-product-id="${product.id}">
-                                <i class="fas fa-cart-plus"></i>
-                            </button>
-                        </div>
+                        <button class="btn-add-to-cart" data-product-id="${product.id}">
+                            <i class="fas fa-cart-plus"></i> Adicionar
+                        </button>
+                    </div>
+                    <div class="post-description">
+                        <a href="product.html?id=${product.id}" class="product-name-link">
+                            <h3 class="product-name">${product.name}</h3>
+                        </a>
+                        <p class="price">${priceFormatted}</p>
                     </div>
                     <div class="post-stats">
                         <span>${product.likes_count || 0} gostos</span>
+                        <a href="product.html?id=${product.id}#comments" class="view-comments">
+                           ${product.comments_count || 0} comentários
+                        </a>
                     </div>
-                    <div class="post-description">
-                        <a href="seller.html?id=${product.seller?.id}" class="seller-name">${product.seller?.name}</a>
-                        <span class="product-name">${product.name}</span>
-                    </div>
-                    <a href="product.html?id=${product.id}#comments" class="view-comments">
-                        Ver todos os ${product.comments_count || 0} comentários
-                    </a>
                 </div>
             `;
             socialFeed.appendChild(postCard);
             setupCarousel(postCard);
             setupQuickView(postCard);
+            setupLikeButtons(postCard);
         });
+    };
+
+    const setupLikeButtons = (postCard) => {
+        const likeBtn = postCard.querySelector('[data-action="like"]');
+        if (likeBtn) {
+            likeBtn.addEventListener('click', async () => {
+                const productId = likeBtn.dataset.productId;
+                const isLiked = likeBtn.classList.contains('liked');
+                const currentUser = getSession()?.user;
+
+                if (!currentUser) {
+                    showToast('Precisa de iniciar sessão para gostar de produtos.', 'info');
+                    return;
+                }
+
+                likeBtn.disabled = true;
+                try {
+                    const response = isLiked ? await unlikeProduct(productId) : await likeProduct(productId);
+                    const likesCount = response.data.likes_count;
+
+                    likeBtn.classList.toggle('liked');
+                    likeBtn.querySelector('i').classList.toggle('far');
+                    likeBtn.querySelector('i').classList.toggle('fas');
+
+                    const postStats = postCard.querySelector('.post-stats span');
+                    if (postStats) {
+                        postStats.textContent = `${likesCount} gostos`;
+                    }
+
+                } catch (error) {
+                    showToast('Ocorreu um erro ao processar o seu gosto.', 'error');
+                } finally {
+                    likeBtn.disabled = false;
+                }
+            });
+        }
     };
 
     const setupCarousel = (postCard) => {

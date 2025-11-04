@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.title = `${product.name} - Bazar Bié Okutuala`;
 
         const productHTML = `
-            <div class="product-details-grid">
+            <div class="product-details-container">
                 <!-- Image Gallery -->
                 <section class="product-gallery">
                     <div class="main-image-container">
@@ -28,38 +28,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 </section>
 
                 <!-- Product Info -->
-                <section class="product-info-card">
-                    <div class="product-category">${product.category?.name || 'Sem Categoria'}</div>
-                    <h1 class="product-title">${product.name}</h1>
-                    <p class="product-price">${new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA' }).format(product.price)}</p>
-
-                    <div class="seller-card">
-                        <a href="seller.html?id=${product.seller.id}">
-                            <img src="${product.seller.avatar_url || 'assets/images/placeholders/avatar.png'}" class="seller-avatar" alt="Vendedor">
-                        </a>
-                        <div class="seller-details">
-                            <a href="seller.html?id=${product.seller.id}" class="seller-name">${product.seller.name}</a>
-                            <span class="seller-rating">Vendedor Verificado</span>
-                        </div>
+                <section class="product-info">
+                    <div class="product-header">
+                        <span class="product-category">${product.category?.name || 'Sem Categoria'}</span>
+                        <h1 class="product-title">${product.name}</h1>
+                        <p class="product-price">${new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA' }).format(product.price)}</p>
                     </div>
 
-                    <p class="product-description">${product.description.substring(0, 150)}...</p>
+                    <div class="product-description">
+                        <p>${product.description}</p>
+                    </div>
 
                     <div class="product-actions">
                         <div class="quantity-selector">
-                            <button class="btn-quantity" id="decrease-qty">-</button>
-                            <input type="number" id="quantity" value="1" min="1">
-                            <button class="btn-quantity" id="increase-qty">+</button>
+                            <button class="btn-quantity" id="decrease-qty"><i class="fas fa-minus"></i></button>
+                            <span id="quantity-display">1</span>
+                            <button class="btn-quantity" id="increase-qty"><i class="fas fa-plus"></i></button>
                         </div>
-                        <button class="btn btn-primary btn-add-to-cart" id="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Adicionar</button>
+                        <button class="btn btn-primary btn-add-to-cart" id="add-to-cart-btn">
+                            <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
+                        </button>
                     </div>
+
                     <div class="social-actions">
                          <button class="btn social-btn" id="like-btn" data-liked="${product.is_liked}">
-                            <i class="${product.is_liked ? 'fas' : 'far'} fa-heart"></i> <span>${product.likes_count}</span>
+                            <i class="${product.is_liked ? 'fas' : 'far'} fa-heart"></i> <span>${product.likes_count} Gostos</span>
                         </button>
-                        <button class="btn social-btn" id="comment-btn"><i class="far fa-comment"></i> <span>${product.comments_count}</span></button>
+                        <button class="btn social-btn" id="comment-btn">
+                           <i class="far fa-comment"></i> <span>${product.comments_count} Comentários</span>
+                       </button>
                     </div>
                 </section>
+
+                <!-- Seller Card -->
+                <aside class="seller-card-container">
+                     <div class="seller-card">
+                        <a href="seller.html?id=${product.seller.id}" class="seller-link">
+                            <img src="${product.seller.avatar_url || 'assets/images/placeholders/avatar.png'}" class="seller-avatar" alt="Vendedor">
+                            <div class="seller-details">
+                               <span class="seller-name">${product.seller.name}</span>
+                               <span class="seller-rating">Vendedor Verificado</span>
+                            </div>
+                        </a>
+                        <button class="btn btn-outline">Seguir</button>
+                    </div>
+                </aside>
             </div>
         `;
         pageContent.innerHTML = productHTML;
@@ -84,14 +97,29 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('Precisa de iniciar sessão para gostar de produtos.', 'info');
             return;
         }
+
         const isLiked = likeBtn.dataset.liked === 'true';
+        const likesCountSpan = likeBtn.querySelector('span');
+        let currentLikes = parseInt(likesCountSpan.textContent.split(' ')[0]);
+
+        // Optimistic UI update
+        likeBtn.dataset.liked = !isLiked;
+        likeBtn.querySelector('i').classList.toggle('fas');
+        likeBtn.querySelector('i').classList.toggle('far');
+        likesCountSpan.textContent = `${isLiked ? currentLikes - 1 : currentLikes + 1} Gostos`;
         likeBtn.disabled = true;
+
         try {
             const response = isLiked ? await unlikeProduct(productId) : await likeProduct(productId);
-            likeBtn.dataset.liked = !isLiked;
-            likeBtn.innerHTML = `<i class="${!isLiked ? 'fas' : 'far'} fa-heart"></i> <span>${response.data.likes_count}</span>`;
+            // Update with actual count from server to ensure consistency
+            likesCountSpan.textContent = `${response.data.likes_count} Gostos`;
         } catch (error) {
-            showToast('Ocorreu um erro.', 'error');
+            // Revert UI on error
+            showToast('Ocorreu um erro ao processar o seu gosto.', 'error');
+            likeBtn.dataset.liked = isLiked;
+            likeBtn.querySelector('i').classList.toggle('fas');
+            likeBtn.querySelector('i').classList.toggle('far');
+            likesCountSpan.textContent = `${currentLikes} Gostos`;
         } finally {
             likeBtn.disabled = false;
         }

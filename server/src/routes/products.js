@@ -90,4 +90,44 @@ router.post(
  */
 router.get("/:id/details", productController.getDetails);
 
+/**
+ * @swagger
+ * /products/{id}/like:
+ *   post:
+ *     summary: Like a product.
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product liked successfully.
+ */
+router.post("/:id/like", authFirebase, productController.like);
+
+/**
+ * @swagger
+ * /products/{id}/unlike:
+ *   post:
+ *     summary: Unlike a product.
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product unliked successfully.
+ */
+router.post("/:id/unlike", authFirebase, productController.unlike);
+
 module.exports = router;

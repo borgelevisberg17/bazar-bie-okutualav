@@ -1,134 +1,101 @@
+import { getConversations, getMessagesWithUser, createMessage } from './services/api.js';
 import { showToast } from './notifications.js';
-import { getConversations, getMessages, sendMessage } from './services/api.js';
-import { getUserSession } from './auth.js';
+import { getSession } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const conversationsList = document.getElementById('conversations-list');
+    const chatHeader = document.querySelector('.chat-header h3');
+    const chatAvatar = document.querySelector('.chat-header .avatar');
     const chatMessages = document.getElementById('chat-messages');
     const messageInput = document.getElementById('message-input');
     const sendMessageBtn = document.getElementById('send-message-btn');
-    const chatHeader = document.querySelector('.chat-area .chat-header h3');
-    const chatAvatar = document.querySelector('.chat-area .chat-header .avatar');
+    const user = getSession()?.user;
 
-    let currentConversationId = null;
-    const currentUser = getUserSession()?.user;
+    if (!user) {
+        window.location.href = '/auth/login.html';
+        return;
+    }
 
-    const renderConversations = (conversations) => {
-        conversationsList.innerHTML = '';
-        if (conversations.length === 0) {
-            conversationsList.innerHTML = '<p class="empty-list">Nenhuma conversa encontrada.</p>';
-            return;
-        }
-        conversations.forEach(convo => {
-            const otherUser = convo.participants.find(p => p.id !== currentUser.id);
-            if (!otherUser) return;
+    let conversations = [];
+    let activeConversation = null;
 
-            const convoItem = document.createElement('div');
-            convoItem.className = 'conversation-item';
-            convoItem.dataset.conversationId = convo.id;
-            convoItem.innerHTML = `
-                <img src="${otherUser.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="${otherUser.name}" class="avatar">
+    const renderConversations = () => {
+        if (!conversationsList) return;
+        const conversationsHTML = conversations.map(convo => `
+            <div class="conversation-item ${activeConversation?.id === convo.id ? 'active' : ''}" data-conversation-id="${convo.id}">
+                <img src="${convo.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="User Avatar" class="avatar">
                 <div class="conversation-details">
                     <div class="conversation-header">
-                        <span class="user-name">${otherUser.name}</span>
-                        <span class="message-time">${new Date(convo.last_message.created_at).toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' })}</span>
+                        <span class="user-name">${convo.name}</span>
+                        <span class="message-time">${new Date(convo.created_at).toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
-                    <p class="last-message">${convo.last_message.content}</p>
+                    <p class="last-message">${convo.last_message}</p>
                 </div>
-            `;
-            convoItem.addEventListener('click', () => loadConversation(convo.id, otherUser));
-            conversationsList.appendChild(convoItem);
-        });
-    };
-
-    const loadConversation = async (conversationId, otherUser) => {
-        currentConversationId = conversationId;
-
-        // Highlight active conversation
-        document.querySelectorAll('.conversation-item').forEach(item => {
-            item.classList.remove('active');
-            if (item.dataset.conversationId === conversationId) {
-                item.classList.add('active');
-            }
-        });
-
-        // Update chat header
-        chatHeader.textContent = otherUser.name;
-        chatAvatar.src = otherUser.avatar_url || 'assets/images/placeholders/avatar.png';
-
-        try {
-            const response = await getMessages(conversationId);
-            renderMessages(response.data);
-        } catch (error) {
-            showToast('Erro ao carregar mensagens.', 'error');
-        }
+            </div>
+        `).join('');
+        conversationsList.innerHTML = conversationsHTML;
     };
 
     const renderMessages = (messages) => {
-        chatMessages.innerHTML = '';
-        messages.forEach(message => {
-            appendMessage(message);
-        });
-        chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
+        if (!chatMessages) return;
+        const messagesHTML = messages.map(msg => `
+            <div class="message-bubble ${msg.from_user_id === user.id ? 'outgoing' : 'incoming'}">
+                <p>${msg.body}</p>
+                <span class="message-timestamp">${new Date(msg.created_at).toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' })}</span>
+            </div>
+        `).join('');
+        chatMessages.innerHTML = messagesHTML;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     };
 
-    const appendMessage = (message) => {
-        const messageBubble = document.createElement('div');
-        const isOutgoing = message.sender_id === currentUser.id;
-        messageBubble.className = `message-bubble ${isOutgoing ? 'outgoing' : 'incoming'}`;
-        messageBubble.innerHTML = `
-            <p>${message.content}</p>
-            <span class="message-timestamp">${new Date(message.created_at).toLocaleTimeString('pt-AO', { hour: '2-digit', minute: '2-digit' })}</span>
-        `;
-        chatMessages.appendChild(messageBubble);
-    };
-
-    const handleSendMessage = async () => {
-        const content = messageInput.value.trim();
-        if (!content || !currentConversationId) return;
-
-        try {
-            const response = await sendMessage(currentConversationId, content);
-            appendMessage(response.data);
-            messageInput.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        } catch (error) {
-            showToast('Erro ao enviar mensagem.', 'error');
-        }
-    };
-
-    const init = async () => {
-        if (!currentUser) {
-            window.location.href = '/auth/login.html';
-            return;
-        }
-
+    const loadConversations = async () => {
         try {
             const response = await getConversations();
-            renderConversations(response.data);
-
-            // Automatically load the first conversation if it exists
-            if (response.data.length > 0) {
-                 const firstConvo = response.data[0];
-                 const otherUser = firstConvo.participants.find(p => p.id !== currentUser.id);
-                 if(otherUser) {
-                    loadConversation(firstConvo.id, otherUser);
-                 }
-            } else {
-                 document.querySelector('.chat-area').innerHTML = '<div class="empty-chat"><i class="fas fa-comments"></i><p>Selecione uma conversa para começar a falar.</p></div>';
-            }
+            conversations = response.data;
+            renderConversations();
         } catch (error) {
-            showToast('Erro ao carregar conversas.', 'error');
-            conversationsList.innerHTML = '<p class="empty-list error">Não foi possível carregar as suas conversas.</p>';
+            showToast('Erro ao carregar as suas conversas.', 'error');
         }
     };
 
-    sendMessageBtn.addEventListener('click', handleSendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            handleSendMessage();
+    const setActiveConversation = async (conversationId) => {
+        activeConversation = conversations.find(c => c.id === conversationId);
+        if (activeConversation) {
+            chatHeader.textContent = activeConversation.name;
+            chatAvatar.src = activeConversation.avatar_url || 'assets/images/placeholders/avatar.png';
+            renderConversations(); // Re-render to show active state
+            try {
+                const response = await getMessagesWithUser(conversationId);
+                renderMessages(response.data);
+            } catch (error) {
+                showToast('Erro ao carregar as mensagens.', 'error');
+            }
+        }
+    };
+
+    sendMessageBtn.addEventListener('click', async () => {
+        const message = messageInput.value;
+        if (message && activeConversation) {
+            try {
+                await createMessage({
+                    receiver_id: activeConversation.id,
+                    message: message
+                });
+                messageInput.value = '';
+                setActiveConversation(activeConversation.id); // Reload messages
+            } catch (error) {
+                showToast('Erro ao enviar a sua mensagem.', 'error');
+            }
         }
     });
 
-    init();
+    conversationsList.addEventListener('click', (e) => {
+        const conversationItem = e.target.closest('.conversation-item');
+        if (conversationItem) {
+            const conversationId = conversationItem.dataset.conversationId;
+            setActiveConversation(conversationId);
+        }
+    });
+
+    loadConversations();
 });

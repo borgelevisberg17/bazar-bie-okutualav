@@ -40,10 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
         products.forEach(product => {
             const postCard = document.createElement("article");
             postCard.className = "product-post-card";
-            const imageUrl = product.images && product.images.length > 0 ? product.images[0].image_url : 'assets/images/placeholders/product.png';
+            const imageUrl = product.images && product.images.length > 0 ? product.images[0].image_url : '../images/placeholders/product.png';
             const priceFormatted = new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA' }).format(product.price);
 
-            const images = product.images && product.images.length > 0 ? product.images : [{ image_url: 'assets/images/placeholders/product.png' }];
+            const images = product.images && product.images.length > 0 ? product.images : [{ image_url: '../images/placeholders/product.png' }];
             const imageSlides = images.map(image => `
                 <div class="carousel-slide">
                     <a href="product.html?id=${product.id}">

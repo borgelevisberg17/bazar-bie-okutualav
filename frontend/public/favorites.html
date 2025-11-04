@@ -1,65 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-AO">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus Favoritos - Bazar Bié Okutuala</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/design-system.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/components/header.css">
-    <link rel="stylesheet" href="assets/css/components/footer.css">
-    <link rel="stylesheet" href="assets/css/components/cards.css">
-    <link rel="stylesheet" href="assets/css/favorites.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-</head>
-<body>
-    <header id="header-placeholder"></header>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Meus Favoritos - Bazar Bié Okutuala</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        />
+        <link rel="stylesheet" href="assets/fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="assets/css/design-system.css" />
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <link rel="stylesheet" href="assets/css/responsive.css" />
+        <link rel="stylesheet" href="assets/css/components/header.css" />
+        <link rel="stylesheet" href="assets/css/components/footer.css" />
+        <link rel="stylesheet" href="assets/css/components/cards.css" />
+        <link rel="stylesheet" href="assets/css/favorites.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+        />
+    </head>
+    <body>
+        <header id="header-placeholder"></header>
 
-    <main class="container main-content">
-        <section class="favorites-container">
-            <h1>Meus Produtos Favoritos</h1>
-            <p>Os produtos que você mais gostou, todos num só lugar.</p>
+        <main class="container main-content">
+            <section class="favorites-container">
+                <h1>Meus Produtos Favoritos</h1>
+                <p>Os produtos que você mais gostou, todos num só lugar.</p>
 
-            <div class="favorites-grid" id="favorites-grid">
-                <!-- Product Card Placeholder -->
-                <div class="product-card">
-                    <a href="product.html?id=1" class="product-image-link">
-                        <img src="assets/images/placeholders/product.png" alt="Nome do Produto" class="product-image">
-                    </a>
-                    <div class="product-info">
-                        <a href="product.html?id=1">
-                            <h3 class="product-title">Nome do Produto Incrível</h3>
+                <div class="favorites-grid" id="favorites-grid">
+                    <!-- Product Card Placeholder -->
+                    <div class="product-card">
+                        <a href="product.html?id=1" class="product-image-link">
+                            <img
+                                src="assets/images/placeholders/product.png"
+                                alt="Nome do Produto"
+                                class="product-image"
+                            />
                         </a>
-                        <p class="product-price">AOA 35,000</p>
+                        <div class="product-info">
+                            <a href="product.html?id=1">
+                                <h3 class="product-title">
+                                    Nome do Produto Incrível
+                                </h3>
+                            </a>
+                            <p class="product-price">AOA 35,000</p>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">
+                                Ver Detalhes
+                            </button>
+                            <button
+                                class="icon-btn btn-remove-favorite"
+                                data-product-id="1"
+                                aria-label="Remover dos Favoritos"
+                            >
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="product-actions">
-                        <button class="btn btn-primary">Ver Detalhes</button>
-                        <button class="icon-btn btn-remove-favorite" data-product-id="1" aria-label="Remover dos Favoritos">
-                            <i class="fas fa-heart"></i>
-                        </button>
-                    </div>
+                    <!-- More favorite products will be dynamically inserted here -->
                 </div>
-                <!-- More favorite products will be dynamically inserted here -->
-            </div>
 
-            <div id="no-favorites-message" class="empty-state" style="display: none;">
-                <i class="fas fa-heart-broken"></i>
-                <h2>Ainda não tem favoritos.</h2>
-                <p>Explore o bazar e adicione produtos que gostar para vê-los aqui.</p>
-                <a href="/explore.html" class="btn btn-primary">Explorar Agora</a>
-            </div>
-        </section>
-    </main>
+                <div
+                    id="no-favorites-message"
+                    class="empty-state"
+                    style="display: none"
+                >
+                    <i class="fas fa-heart-broken"></i>
+                    <h2>Ainda não tem favoritos.</h2>
+                    <p>
+                        Explore o bazar e adicione produtos que gostar para
+                        vê-los aqui.
+                    </p>
+                    <a href="/explore.html" class="btn btn-primary"
+                        >Explorar Agora</a
+                    >
+                </div>
+            </section>
+        </main>
 
-    <footer id="footer-placeholder"></footer>
+        <footer id="footer-placeholder"></footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="assets/js/geral.js"></script>
-    <script type="module" src="assets/js/services/api.js"></script>
-    <script src="assets/js/notifications.js"></script>
-    <script type="module" src="assets/js/favorites.js"></script>
-    <script src="assets/js/theme.js"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script type="module" src="assets/js/geral.js">
+                </script>
+       <script type="module" src="assets/js/services/api.js">
+        </script>
+        <script type="module" src="assets/js/notifications.js"></script>
+        <script type="module" src="assets/js/favorites.js"></script>
+        <script type="module" src="assets/js/theme.js"></script>
+    </body>
 </html>

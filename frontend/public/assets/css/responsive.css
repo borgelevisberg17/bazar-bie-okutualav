@@ -10,7 +10,10 @@
     margin-left: auto;
     margin-right: auto;
 }
-
+/* Adjust main content padding for fixed header */
+.main-content {
+    padding-top: 3rem;
+}
 /* Utility classes for visibility */
 .hide-on-mobile {
     display: none !important;
@@ -57,11 +60,6 @@
     }
     .show-on-mobile {
         display: none !important;
-    }
-
-    /* Adjust main content padding for fixed header */
-    .main-content {
-        padding-top: calc(var(--header-height) + var(--spacing-lg));
     }
 }
 

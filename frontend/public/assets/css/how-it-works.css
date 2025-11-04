@@ -1,46 +1,42 @@
 /* How It Works Page Specific Styles */
-body {
-    background-color: var(--background-color);
-}
-.how-it-works-content, .faq-section {
-    padding: 4rem 1rem;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.main-title {
-    font-size: 2.5rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--text-color);
+.main-content {
+    padding: 1rem;
     text-align: center;
-    margin-bottom: 0.5rem;
+}
+.main-title {
+    font-size: 2.75rem;
+    color: var(--color-gray-800);
 }
 
 .subtitle {
     font-size: 1.125rem;
-    color: var(--text-light-color);
-    text-align: center;
-    margin-bottom: 3rem;
+    color: var(--color-gray-600);
     max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0.5rem auto 0;
 }
 
 /* Steps Grid */
 .steps-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    background-color: var(--color-white);
+    padding: 2rem;
 }
-
+@media (max-width: 992px) {
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+}
 .step-card {
     background-color: var(--surface-color);
     border-radius: var(--border-radius-lg);
     padding: 2rem;
     text-align: center;
     border: 1px solid var(--border-color);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .step-card:hover {
@@ -121,7 +117,9 @@ body {
 .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+    transition:
+        max-height 0.4s ease-in-out,
+        padding 0.4s ease-in-out;
 }
 
 .faq-answer p {

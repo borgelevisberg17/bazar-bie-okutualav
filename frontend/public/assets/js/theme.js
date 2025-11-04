@@ -1,54 +1,61 @@
-import { getSession } from './auth.js';
+import { getSession, logout } from './auth.js';
 
 function updateUserUI() {
     const session = getSession();
-    const userProfileElements = document.querySelectorAll('.user-profile');
-    const sellButton = document.querySelector('.menu-cta-button');
-    const cartBadge = document.querySelector('.cart-badge');
+    const isLoggedIn = !!session;
 
-    if (session && session.user) {
-        const { user } = session;
-        userProfileElements.forEach(element => {
-            element.innerHTML = `
-                <i class="fa-regular fa-user"></i>
-                <div class="action-text">
-                    <span>Olá, ${user.name.split(' ')[0]}!</span>
-                    <strong><a href="/profile.html" style="color: inherit; text-decoration: none;">Minha Conta</a></strong>
-                </div>
-            `;
+    // Desktop Header
+    const authUserView = document.getElementById('auth-user-view');
+    const guestUserView = document.getElementById('guest-user-view');
+    const profileAvatar = document.getElementById('profile-avatar');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Mobile Sidebar
+    const authSidebarLinks = document.getElementById('auth-sidebar-links');
+    const guestSidebarLinks = document.getElementById('guest-sidebar-links');
+    const logoutBtnMobile = document.getElementById('logout-btn-mobile');
+
+    // Bottom Nav
+    const authRequiredLinks = document.querySelectorAll('.auth-required');
+
+    if (isLoggedIn) {
+        if (authUserView) authUserView.style.display = 'flex';
+        if (guestUserView) guestUserView.style.display = 'none';
+        if (authSidebarLinks) authSidebarLinks.style.display = 'block';
+        if (guestSidebarLinks) guestSidebarLinks.style.display = 'none';
+
+        if (profileAvatar) {
+            profileAvatar.src = session.user.avatar_url || '/assets/images/placeholders/avatar.png';
+        }
+
+        authRequiredLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (!isLoggedIn) {
+                    e.preventDefault();
+                    window.location.href = '/auth/login.html';
+                }
+            });
         });
-
-        if (sellButton) {
-            sellButton.textContent = 'Minha Loja';
-            sellButton.href = '/seller.html';
-        }
-
-        if (cartBadge) {
-            // TODO: Fetch the actual cart count from the API
-            let cartCount = 0; // Simulated cart count
-            cartBadge.textContent = cartCount;
-            cartBadge.style.display = cartCount > 0 ? 'block' : 'none';
-        }
 
     } else {
-        userProfileElements.forEach(element => {
-            element.innerHTML = `
-                <i class="fa-regular fa-user"></i>
-                <div class="action-text">
-                    <span>Olá, faça seu login</span>
-                    <strong><a href="/auth/login.html" style="color: inherit; text-decoration: none;">Minha conta</a></strong>
-                </div>
-            `;
+        if (authUserView) authUserView.style.display = 'none';
+        if (guestUserView) guestUserView.style.display = 'flex';
+        if (authSidebarLinks) authSidebarLinks.style.display = 'none';
+        if (guestSidebarLinks) guestSidebarLinks.style.display = 'block';
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
         });
+    }
 
-        if (sellButton) {
-            sellButton.textContent = 'Vender Agora';
-            sellButton.href = '/auth/login.html';
-        }
-
-        if (cartBadge) {
-            cartBadge.style.display = 'none';
-        }
+    if (logoutBtnMobile) {
+        logoutBtnMobile.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
     }
 }
 

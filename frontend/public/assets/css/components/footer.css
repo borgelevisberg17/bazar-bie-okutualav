@@ -1,11 +1,10 @@
 /* ==========================================================================
-   Footer Component Styles - Mobile First
+   Footer Component Styles - Mobile First & Enhanced
    ========================================================================== */
 .main-footer {
-    background-color: var(--surface-color);
-    color: var(--text-light-color);
-    padding: var(--spacing-xxl) 0;
-    border-top: 1px solid var(--border-color);
+    background-color: var(--color-gray-800);
+    color: var(--color-gray-400);
+    padding: var(--spacing-xxl) var(--spacing-md);
 }
 
 .footer-grid {
@@ -14,19 +13,28 @@
     gap: var(--spacing-xl);
 }
 
-.footer-column {
+.footer-column .logo a {
+    font-size: 1.8rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+    text-decoration: none;
+    margin-bottom: var(--spacing-md);
+    display: inline-block;
+}
+
+.footer-column .footer-tagline {
+    font-size: 0.95rem;
+    line-height: 1.6;
     margin-bottom: var(--spacing-lg);
 }
 
 .footer-heading {
     font-size: 1.1rem;
     font-weight: var(--font-weight-semibold);
-    color: var(--text-color);
-    margin-bottom: var(--spacing-md);
-}
-
-.footer-column p {
-    line-height: 1.7;
+    color: var(--color-white);
+    margin-bottom: var(--spacing-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .footer-links {
@@ -39,28 +47,47 @@
 }
 
 .footer-links a {
-    color: var(--text-light-color);
-    transition: color 0.2s ease;
+    color: var(--color-gray-400);
+    transition: color 0.2s ease, padding-left 0.2s ease;
 }
 .footer-links a:hover {
-    color: var(--primary-color);
+    color: var(--color-primary);
+    padding-left: 5px;
 }
 
 .newsletter-form {
     margin-top: var(--spacing-md);
+    display: flex;
 }
 
 .newsletter-input {
-    width: 100%;
-    padding: var(--spacing-md);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    margin-bottom: var(--spacing-sm);
+    flex-grow: 1;
+    border: none;
+    padding: 0.75rem;
+    border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+    background-color: var(--color-gray-700);
+    color: var(--color-white);
+}
+.newsletter-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-primary);
+}
+.newsletter-btn {
+    padding: 0.75rem 1rem;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.newsletter-btn:hover {
+    background-color: var(--color-primary-dark);
 }
 
 /* Footer Bottom Section */
 .footer-bottom {
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--color-gray-700);
     margin-top: var(--spacing-xl);
     padding-top: var(--spacing-xl);
     display: flex;
@@ -70,14 +97,19 @@
     text-align: center;
 }
 
+.social-icons {
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
 .social-icons a {
-    color: var(--text-light-color);
-    font-size: 1.25rem;
-    margin-left: var(--spacing-lg);
-    transition: color 0.2s ease;
+    color: var(--color-gray-400);
+    font-size: 1.3rem;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 .social-icons a:hover {
-    color: var(--primary-color);
+    color: var(--color-primary);
+    transform: translateY(-2px);
 }
 
 /* ==========================================================================
@@ -85,7 +117,6 @@
    ========================================================================== */
 @media (min-width: 768px) {
     .footer-grid {
-        /* Create a 2x2 grid on tablets */
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -95,9 +126,9 @@
     }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1024px) {
     .footer-grid {
-        /* Create a 4-column grid on desktops */
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: 2fr 1fr 1fr 1.5fr;
+        gap: var(--spacing-xxl);
     }
 }

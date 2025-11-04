@@ -1,67 +1,88 @@
 /* ==========================================================================
-   Responsive Design - Mobile First
+   Responsive Design - Mobile First & Enhanced
    ========================================================================== */
 
-/* Base styles for mobile devices */
+/* Base container for mobile */
 .container {
+    width: 100%;
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
+    margin-left: auto;
+    margin-right: auto;
 }
 
+/* Utility classes for visibility */
 .hide-on-mobile {
-    display: none;
+    display: none !important;
 }
 .show-on-mobile {
-    display: block; /* Or flex, grid, etc. */
+    display: block !important;
 }
-
 
 /* ==========================================================================
    Media Queries for Larger Screens
    ========================================================================== */
 
-/* Medium devices (tablets, landscape phones), 576px and up */
+/* Small devices (landscape phones), 576px and up */
 @media (min-width: 576px) {
     .container {
         max-width: 540px;
-        margin-left: auto;
-        margin-right: auto;
     }
 }
 
-/* Large devices (tablets, small desktops), 768px and up */
+/* Medium devices (tablets), 768px and up */
 @media (min-width: 768px) {
     .container {
         max-width: 720px;
     }
 
-    .hide-on-mobile {
-        display: block; /* Or flex, grid, etc. */
+    .hide-on-desktop {
+        display: none !important;
     }
-    .show-on-mobile {
-        display: none;
+    .show-on-desktop {
+        display: block !important;
     }
 
+    /* Adjust display for flex items specifically */
+    .show-on-desktop-flex {
+        display: flex !important;
+    }
+
+    .hide-on-mobile {
+        display: block !important;
+    }
+    /* Adjust display for flex items specifically */
+    .hide-on-mobile-flex {
+        display: flex !important;
+    }
+    .show-on-mobile {
+        display: none !important;
+    }
+
+    /* Adjust main content padding for fixed header */
     .main-content {
         padding-top: calc(var(--header-height) + var(--spacing-lg));
     }
 }
 
-/* Extra-large devices (desktops), 992px and up */
+/* Large devices (desktops), 992px and up */
 @media (min-width: 992px) {
     .container {
         max-width: 960px;
     }
+    :root {
+        --font-size-base: 1.05rem; /* Slightly larger base font */
+    }
 }
 
-/* Extra-extra-large devices (large desktops), 1200px and up */
+/* Extra-large devices (large desktops), 1200px and up */
 @media (min-width: 1200px) {
     .container {
         max-width: 1140px;
     }
 }
 
-/* Maximum width devices (extra large desktops), 1400px and up */
+/* Extra-extra-large devices (larger desktops), 1400px and up */
 @media (min-width: 1400px) {
     .container {
         max-width: 1320px;

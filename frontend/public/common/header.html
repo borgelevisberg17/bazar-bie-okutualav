@@ -6,33 +6,41 @@
             <a href="/">Bazar Bié</a>
         </div>
 
-        <!-- Desktop Search Bar (visible on larger screens) -->
+        <!-- Desktop Search Bar -->
         <div class="header-search hide-on-mobile">
             <i class="fas fa-search search-icon"></i>
             <input type="text" placeholder="Procurar..." class="search-input">
         </div>
 
-        <!-- Header Actions & Profile Dropdown (Desktop) -->
+        <!-- Header Actions (Desktop) -->
         <div class="header-actions hide-on-mobile">
-            <a href="/upload.html" class="icon-btn" aria-label="Upload Product">
-                <i class="fas fa-plus-square"></i>
-            </a>
-            <a href="/messages.html" class="icon-btn" aria-label="Messages">
-                <i class="fas fa-paper-plane"></i>
-            </a>
-            <div class="profile-dropdown">
-                <img src="/assets/images/placeholders/avatar.png" alt="User Avatar" class="profile-avatar" tabindex="0">
-                <div class="dropdown-menu">
-                    <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
-                    <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
-                    <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            <!-- Authenticated User View -->
+            <div id="auth-user-view" class="header-actions" style="display: none;">
+                <a href="/upload.html" class="icon-btn" aria-label="Upload Product">
+                    <i class="fas fa-plus-square"></i>
+                </a>
+                <a href="/messages.html" class="icon-btn" aria-label="Messages">
+                    <i class="fas fa-paper-plane"></i>
+                </a>
+                <div class="profile-dropdown">
+                    <img src="/assets/images/placeholders/avatar.png" alt="User Avatar" id="profile-avatar" class="profile-avatar" tabindex="0">
+                    <div class="dropdown-menu">
+                        <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
+                        <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
+                        <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                    </div>
                 </div>
+            </div>
+            <!-- Guest User View -->
+            <div id="guest-user-view" style="display: none;">
+                <a href="/auth/login.html" class="btn btn-outline">Entrar</a>
+                <a href="/auth/register.html" class="btn btn-primary">Abrir Conta</a>
             </div>
         </div>
 
-        <!-- Mobile Menu Toggle (Hamburger) -->
+        <!-- Mobile Menu Toggle -->
         <div class="mobile-menu-toggle show-on-mobile">
             <button id="hamburger-btn" class="icon-btn" aria-label="Open Menu">
                 <i class="fas fa-bars"></i>
@@ -41,16 +49,24 @@
     </div>
 </header>
 
-<!-- Mobile Sidebar (Initially Hidden) -->
+<!-- Mobile Sidebar -->
 <aside class="mobile-sidebar" id="mobile-sidebar">
     <nav class="sidebar-nav">
-        <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
-        <a href="/upload.html"><i class="fas fa-plus-square"></i> Vender Produto</a>
-        <a href="/messages.html"><i class="fas fa-paper-plane"></i> Mensagens</a>
-        <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
-        <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
-        <div class="dropdown-divider"></div>
-        <a href="#" id="logout-btn-mobile"><i class="fas fa-sign-out-alt"></i> Sair</a>
+        <!-- Authenticated User Links -->
+        <div id="auth-sidebar-links" style="display: none;">
+            <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
+            <a href="/upload.html"><i class="fas fa-plus-square"></i> Vender Produto</a>
+            <a href="/messages.html"><i class="fas fa-paper-plane"></i> Mensagens</a>
+            <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
+            <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" id="logout-btn-mobile"><i class="fas fa-sign-out-alt"></i> Sair</a>
+        </div>
+        <!-- Guest User Links -->
+        <div id="guest-sidebar-links" style="display: none;">
+            <a href="/auth/login.html"><i class="fas fa-sign-in-alt"></i> Entrar</a>
+            <a href="/auth/register.html"><i class="fas fa-user-plus"></i> Abrir Conta</a>
+        </div>
     </nav>
 </aside>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
@@ -59,7 +75,7 @@
 <nav class="bottom-nav show-on-mobile">
     <a href="/" class="nav-icon active" aria-label="Home"><i class="fas fa-home"></i></a>
     <a href="/explore.html" class="nav-icon" aria-label="Explore"><i class="fas fa-search"></i></a>
-    <a href="/upload.html" class="nav-icon upload-center" aria-label="Upload"><i class="fas fa-plus-circle"></i></a>
-    <a href="/messages.html" class="nav-icon" aria-label="Messages"><i class="fas fa-paper-plane"></i></a>
-    <a href="/profile.html" class="nav-icon" aria-label="Profile"><i class="fas fa-user-circle"></i></a>
+    <a href="/upload.html" class="nav-icon upload-center auth-required" aria-label="Upload"><i class="fas fa-plus-circle"></i></a>
+    <a href="/messages.html" class="nav-icon auth-required" aria-label="Messages"><i class="fas fa-paper-plane"></i></a>
+    <a href="/profile.html" class="nav-icon auth-required" aria-label="Profile"><i class="fas fa-user-circle"></i></a>
 </nav>

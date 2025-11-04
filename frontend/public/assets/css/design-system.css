@@ -1,16 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 :root {
-  /* E-commerce Social Color Palette */
-  --color-primary: #d45d00;
-  --color-primary-light: #fdebd0;
-  --color-primary-dark: #b85000;
-  --color-secondary: #174f27;
-  --color-accent: #f5a623;
-  --color-background: #f3f4f6;
+  /* New E-commerce Social Color Palette */
+  --color-primary: #ff6f61; /* Vibrant Coral */
+  --color-primary-light: #ffedea;
+  --color-primary-dark: #e65a50;
+  --color-secondary: #4a4a4a; /* Charcoal */
+  --color-accent: #ffb400; /* Gold */
+  --color-background: #f8f9fa; /* Light Gray */
   --color-surface: #ffffff;
-  --color-text: #1a1a1a;
-  --color-text-light: #6c757d;
+  --color-text: #333333;
+  --color-text-light: #7f8c8d;
   --color-white: #ffffff;
   --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
@@ -22,11 +22,11 @@
   --color-gray-700: #374151;
   --color-gray-800: #1f2937;
   --color-gray-900: #111827;
-  --color-border: #e5e7eb;
-  --color-success: #28a745;
-  --color-danger: #dc3545;
-  --color-info: #17a2b8;
-  --color-warning: #ffc107;
+  --color-border: #e0e0e0;
+  --color-success: #2ecc71; /* Emerald */
+  --color-danger: #e74c3c; /* Alizarin */
+  --color-info: #3498db; /* Peter River */
+  --color-warning: #f1c40f; /* Sunflower */
 
   /* Fonts */
   --font-family-sans-serif: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -66,15 +66,15 @@
 }
 
 body.dark-mode {
-  --color-primary: #e87a3d;
+  --color-primary: #ff8a80;
   --color-primary-light: #4a2b16;
-  --color-primary-dark: #f08e59;
-  --color-secondary: #2ecc71;
-  --color-background: #111827;
-  --color-surface: #1f2937;
-  --color-text: #f3f4f6;
-  --color-text-light: #9ca3af;
-  --color-border: #374151;
+  --color-primary-dark: #ff5252;
+  --color-secondary: #eeeeee;
+  --color-background: #121212;
+  --color-surface: #1e1e1e;
+  --color-text: #e0e0e0;
+  --color-text-light: #bdbdbd;
+  --color-border: #424242;
   --color-gray-50: #1f2937;
   --color-gray-100: #374151;
   --color-gray-200: #4b5563;

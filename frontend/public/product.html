@@ -14,11 +14,10 @@
 
     <!-- Component Stylesheets -->
     <link rel="stylesheet" href="./assets/css/components/header.css">
-    <link rel="stylesheet" href="./assets/css/components/buttons.css">
     <link rel="stylesheet" href="./assets/css/components/footer.css">
 
     <!-- Page-Specific Stylesheet -->
-    <link rel="stylesheet" href="./assets/css/product-details.css">
+    <link rel="stylesheet" href="./assets/css/product-details-new.css">
 
     <!-- Toastify for notifications -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -27,73 +26,8 @@
     <!-- Header Placeholder -->
     <header id="header-placeholder"></header>
 
-    <main class="container main-content">
-        <div class="product-details-layout">
-            <!-- Left Column: Image Gallery -->
-            <section class="product-gallery">
-                <div class="main-image">
-                    <img src="assets/images/placeholders/product-main.png" alt="Produto Principal" id="main-product-image">
-                </div>
-                <div class="thumbnail-gallery" id="thumbnail-gallery">
-                    <!-- Thumbnails will be dynamically inserted here -->
-                </div>
-            </section>
-
-            <!-- Right Column: Product Info -->
-            <section class="product-info">
-                <h1 class="product-title" id="product-name">Nome do Produto</h1>
-                <p class="product-price" id="product-price">Kz 0,00</p>
-
-                <div class="seller-card">
-                    <a href="#" id="seller-link">
-                        <img src="assets/images/placeholders/avatar.png" class="seller-avatar" alt="Vendedor" id="seller-avatar">
-                    </a>
-                    <div class="seller-details">
-                        <a href="#" class="seller-name" id="seller-name">Nome do Vendedor</a>
-                        <span class="seller-rating">
-                            <i class="fas fa-star"></i> 4.8 (120 vendas)
-                        </span>
-                    </div>
-                     <button class="btn btn-outline btn-follow" id="follow-btn">Seguir</button>
-                </div>
-
-                <p class="product-description" id="product-description"></p>
-
-                <div class="product-actions">
-                    <div class="quantity-selector">
-                        <button class="btn-quantity" id="decrease-qty">-</button>
-                        <input type="number" id="quantity" value="1" min="1">
-                        <button class="btn-quantity" id="increase-qty">+</button>
-                    </div>
-                    <button class="btn btn-primary btn-add-to-cart">
-                        <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
-                    </button>
-                </div>
-                <button class="btn btn-secondary btn-block btn-like" id="like-btn">
-                    <i class="far fa-heart"></i> Gostar
-                </button>
-            </section>
-        </div>
-
-        <!-- Additional Info: Description, Reviews -->
-        <div class="product-additional-info">
-            <div class="tabs">
-                <button class="tab-link active" data-tab="description">Descrição Detalhada</button>
-                <button class="tab-link" data-tab="reviews">Avaliações</button>
-            </div>
-            <div id="description" class="tab-content active">
-                <p id="product-long-description"></p>
-            </div>
-            <div id="reviews" class="tab-content">
-                <!-- Reviews will be dynamically loaded here -->
-                <div class="comment-list" id="comments-list"></div>
-                 <form class="comment-form" id="comment-form">
-                    <img src="assets/images/placeholders/avatar.png" class="current-user-avatar" alt="Seu Avatar">
-                    <input type="text" class="comment-input" placeholder="Adicione um comentário..." required>
-                    <button type="submit" class="btn btn-primary">Publicar</button>
-                </form>
-            </div>
-        </div>
+    <main class="container main-content" id="product-details-page">
+        <!-- Product content will be dynamically inserted here -->
     </main>
 
     <!-- Footer Placeholder -->
@@ -105,5 +39,6 @@
     <script type="module" src="assets/js/services/api.js"></script>
     <script src="assets/js/notifications.js"></script>
     <script type="module" src="assets/js/product-details.js"></script>
+    <script src="assets/js/theme.js"></script>
 </body>
 </html>

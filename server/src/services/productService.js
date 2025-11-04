@@ -22,6 +22,13 @@ exports.list = async ({ page, limit, status }) => {
 exports.get = (id) => repo.get(id);
 
 /**
+ * Retrieves detailed information for a single product by its ID.
+ * @param {string} id - The ID of the product to retrieve.
+ * @returns {Promise<Object|null>} A promise that resolves to the detailed product object, or null if not found.
+ */
+exports.getDetails = (id) => repo.getDetails(id);
+
+/**
  * Creates a new product and indexes it in the search service.
  * @param {string} sellerUid - The ID of the seller creating the product.
  * @param {Object} payload - The product data.

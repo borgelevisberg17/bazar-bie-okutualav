@@ -105,6 +105,68 @@ exports.list = async ({ page = 1, limit = 10, mode = "pg", ...filters }) => {
         });
     }
 };
+
+/**
+ * Retrieves detailed information for a single product by its ID.
+ * This includes seller, categories, variants, and all images.
+ * @param {string} id - The ID of the product to retrieve.
+ * @returns {Promise<Object|null>} A promise that resolves to the detailed product object, or null if not found.
+ */
+exports.getDetails = async (id) => {
+    if (mode === "pg") {
+        const query = `
+            SELECT
+                p.*,
+                u.name AS seller_name,
+                u.avatar_url AS seller_avatar_url,
+                u.email AS seller_email,
+                json_agg(DISTINCT pc.*) AS categories,
+                json_agg(DISTINCT pv.*) AS variants,
+                json_agg(DISTINCT pi.image_url) AS all_images
+            FROM products p
+            JOIN users u ON u.id = p.seller_id
+            LEFT JOIN product_categories pc ON pc.product_id = p.id
+            LEFT JOIN product_variants pv ON pv.product_id = p.id
+            LEFT JOIN product_images pi ON pi.product_id = p.id
+            WHERE p.id = $1
+            GROUP BY p.id, u.id;
+        `;
+        return db.oneOrNone(query, [id]);
+    } else {
+        // Supabase implementation for getDetails
+        const { data, error } = await db
+            .from('products')
+            .select(`
+                *,
+                users (name, avatar_url, email),
+                product_categories (*),
+                product_variants (*),
+                product_images (image_url)
+            `)
+            .eq('id', id)
+            .single();
+
+        if (error) {
+            console.error("Supabase error fetching product details:", error);
+            throw error;
+        }
+
+        if (data) {
+            const { users, product_categories, product_variants, product_images, ...productData } = data;
+            return {
+                ...productData,
+                seller_name: users?.name,
+                seller_avatar_url: users?.avatar_url,
+                seller_email: users?.email,
+                categories: product_categories,
+                variants: product_variants,
+                all_images: product_images.map(img => img.image_url)
+            };
+        }
+        return null;
+    }
+};
+
 /**
  * Retrieves a single product by its ID.
  * @param {string} id - The ID of the product to retrieve.

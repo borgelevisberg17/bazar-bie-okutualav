@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="./assets/css/components/header.css" />
         <link rel="stylesheet" href="./assets/css/components/cards.css" />
         <link rel="stylesheet" href="./assets/css/components/footer.css" />
+        <link rel="stylesheet" href="./assets/css/components/quick-view.css" />
 
         <!-- Page-Specific Stylesheet -->
         <link rel="stylesheet" href="./assets/css/main.css" />
@@ -37,6 +38,14 @@
 
         <!-- Footer Placeholder -->
         <footer id="footer-placeholder"></footer>
+
+        <!-- Quick View Modal -->
+        <div class="modal-overlay" id="quick-view-modal">
+            <div class="modal-content">
+                <button class="modal-close-btn" id="modal-close-btn"><i class="fas fa-times"></i></button>
+                <div id="quick-view-content"></div>
+            </div>
+        </div>
 
         <!-- JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

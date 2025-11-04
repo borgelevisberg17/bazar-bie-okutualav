@@ -35,6 +35,29 @@ exports.list = [
 ];
 
 /**
+ * Retrieves detailed information for a single product by its ID.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the product to retrieve.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
+exports.getDetails = [
+    validate(getProductSchema, "params"),
+    async (req, res, next) => {
+        try {
+            const product = await productService.getDetails(req.params.id);
+            if (!product)
+                return res.status(404).json(fail("Produto não encontrado"));
+            res.json(ok(product));
+        } catch (err) {
+            next(err);
+        }
+    }
+];
+
+/**
  * Retrieves a single product by its ID.
  * @param {Object} req - The Express request object.
  * @param {Object} req.params - The route parameters.

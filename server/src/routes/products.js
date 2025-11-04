@@ -72,4 +72,22 @@ router.post(
   productController.create
 );
 
+/**
+ * @swagger
+ * /products/{id}/details:
+ *   get:
+ *     summary: Get detailed product information for quick view.
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Detailed product information.
+ */
+router.get("/:id/details", productController.getDetails);
+
 module.exports = router;

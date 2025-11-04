@@ -1,0 +1,73 @@
+/* ==========================================================================
+   Categories Page Styles
+   ========================================================================== */
+
+.categories-section {
+    padding: var(--spacing-xl) 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.category-card {
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius-xl);
+    text-decoration: none;
+    color: var(--color-text);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--spacing-xl);
+    border: 1px solid var(--color-border);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+}
+
+.category-card-title {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Skeleton loader for categories */
+.skeleton-card {
+    background-color: var(--color-gray-200);
+    border-radius: var(--border-radius-xl);
+    height: 150px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { background-color: var(--color-gray-200); }
+    50% { background-color: var(--color-gray-300); }
+    100% { background-color: var(--color-gray-200); }
+}

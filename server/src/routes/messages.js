@@ -17,9 +17,27 @@ const messagesController = require('../controllers/messagesController');
  *     tags: [Messages]
  *     responses:
  *       200:
+ *         description: A list of conversations.
+ */
+router.get('/conversations', messagesController.getConversations);
+
+/**
+ * @swagger
+ * /messages/{userId}:
+ *   get:
+ *     summary: Get all messages in a conversation.
+ *     tags: [Messages]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
  *         description: A list of messages.
  */
-router.get('/', messagesController.getMessages);
+router.get('/:userId', messagesController.getMessagesWithUser);
 
 /**
  * @swagger

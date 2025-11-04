@@ -37,9 +37,10 @@ exports.list = async ({ page = 1, limit = 10, mode = "pg", ...filters }) => {
         const filterKeys = Object.keys(filters).filter(
             key => filters[key] !== undefined
         );
-        const whereClauses = filterKeys.map(
-            (key, index) => `p.${key} = $${index + 1}`
-        );
+        const whereClauses = filterKeys.map((key, index) => {
+            const dbKey = key === 'sellerId' ? 'seller_id' : key;
+            return `p.${dbKey} = $${index + 1}`;
+        });
         const params = filterKeys.map(key => filters[key]);
 
         let query = `
@@ -312,5 +313,61 @@ exports.remove = async id => {
     } else {
         const { error } = await db.delete("products", { id });
         if (error) throw error;
+    }
+};
+
+/**
+ * Likes a product.
+ * @param {string} productId - The ID of the product to like.
+ * @param {string} userId - The ID of the user liking the product.
+ * @returns {Promise<Object>} A promise that resolves to the updated like count.
+ */
+exports.like = async (productId, userId) => {
+    if (mode === "pg") {
+        return db.tx(async t => {
+            await t.none(
+                "INSERT INTO product_likes (product_id, user_id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+                [productId, userId]
+            );
+            const result = await t.one(
+                "UPDATE products SET likes_count = likes_count + 1 WHERE id = $1 RETURNING likes_count",
+                [productId]
+            );
+            return result;
+        });
+    } else {
+        // Supabase implementation
+        await db.from("product_likes").insert([{ product_id: productId, user_id: userId }]);
+        const { data: product } = await db.from("products").select("likes_count").eq("id", productId).single();
+        const { data: updatedProduct } = await db.from("products").update({ likes_count: product.likes_count + 1 }).eq("id", productId);
+        return updatedProduct;
+    }
+};
+
+/**
+ * Unlikes a product.
+ * @param {string} productId - The ID of the product to unlike.
+ * @param {string} userId - The ID of the user unliking the product.
+ * @returns {Promise<Object>} A promise that resolves to the updated like count.
+ */
+exports.unlike = async (productId, userId) => {
+    if (mode === "pg") {
+        return db.tx(async t => {
+            await t.none("DELETE FROM product_likes WHERE product_id = $1 AND user_id = $2", [
+                productId,
+                userId
+            ]);
+            const result = await t.one(
+                "UPDATE products SET likes_count = likes_count - 1 WHERE id = $1 RETURNING likes_count",
+                [productId]
+            );
+            return result;
+        });
+    } else {
+        // Supabase implementation
+        await db.from("product_likes").delete().match({ product_id: productId, user_id: userId });
+        const { data: product } = await db.from("products").select("likes_count").eq("id", productId).single();
+        const { data: updatedProduct } = await db.from("products").update({ likes_count: product.likes_count - 1 }).eq("id", productId);
+        return updatedProduct;
     }
 };

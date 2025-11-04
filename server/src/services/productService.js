@@ -7,11 +7,12 @@ const search = require("./searchService");
  * @param {number} [options.page=1] - The page number.
  * @param {number} [options.limit=10] - The number of items per page.
  * @param {string} [options.status] - The product status to filter by.
+ * @param {string} [options.sellerId] - The seller ID to filter by.
  * @returns {Promise<Object>} A promise that resolves to an object containing the product data and pagination info.
  */
-exports.list = async ({ page, limit, status }) => {
+exports.list = async ({ page, limit, status, sellerId }) => {
   // if (q) return search.searchProducts(q, { page, limit });
-  return repo.list({ page, limit, status });
+  return repo.list({ page, limit, status, sellerId });
 };
 
 /**
@@ -56,4 +57,24 @@ exports.update = (id, payload) => repo.update(id, payload);
 exports.remove = async (id) => {
   await repo.remove(id);
   await search.removeProduct(id).catch(() => {});
+};
+
+/**
+ * Likes a product.
+ * @param {string} productId - The ID of the product to like.
+ * @param {string} userId - The ID of the user liking the product.
+ * @returns {Promise<Object>} A promise that resolves to the updated like status and count.
+ */
+exports.like = async (productId, userId) => {
+    return repo.like(productId, userId);
+};
+
+/**
+ * Unlikes a product.
+ * @param {string} productId - The ID of the product to unlike.
+ * @param {string} userId - The ID of the user unliking the product.
+ * @returns {Promise<Object>} A promise that resolves to the updated like status and count.
+ */
+exports.unlike = async (productId, userId) => {
+    return repo.unlike(productId, userId);
 };

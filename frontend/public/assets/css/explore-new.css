@@ -1,16 +1,16 @@
 /* ==========================================================================
-   New Explore Page Styles
+   Explore Page - Modern Layout
    ========================================================================== */
 
 .explore-layout {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: var(--spacing-xl);
 }
 
 @media (min-width: 992px) {
     .explore-layout {
-        flex-direction: row;
+        grid-template-columns: 280px 1fr;
         gap: var(--spacing-xxl);
     }
 }
@@ -20,32 +20,31 @@
     background: var(--color-surface);
     padding: var(--spacing-lg);
     border-radius: var(--border-radius-xl);
-    box-shadow: var(--shadow);
-    display: none; /* Hidden on mobile by default */
-}
-.filters-sidebar.open {
-    display: block;
-}
-
-@media (min-width: 992px) {
-    .filters-sidebar {
-        display: block;
-        width: 280px;
-        flex-shrink: 0;
-    }
+    border: 1px solid var(--color-border);
 }
 
 .filter-group {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
 }
 .filter-group h4 {
-    font-weight: var(--font-weight-semibold);
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-bold);
     margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
 }
-#category-filters .checkbox-group {
+
+.filter-option {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.filter-option label {
+    font-size: 1rem;
+    color: var(--color-text);
+    cursor: pointer;
 }
 
 /* Products Section */
@@ -55,22 +54,27 @@
 
 .toolbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: var(--spacing-lg);
-    background: var(--color-surface);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-sm);
 }
 
 .sort-options select {
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius-md);
+    background-color: var(--color-surface);
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-lg);
+    border: 2px solid var(--color-border);
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
 }
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: var(--spacing-lg);
+}
+
+.load-more-container {
+    text-align: center;
+    margin-top: var(--spacing-xl);
 }

@@ -1,227 +1,92 @@
 /* ==========================================================================
-   Seller Hero Section
+   Seller Profile Page - Brand-Focused Layout
    ========================================================================== */
-.seller-hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/placeholders/seller-hero-bg.jpg') no-repeat center center/cover;
-    padding: 6rem 0;
-    text-align: center;
-    color: white;
-}
 
-.hero-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.hero-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-}
-
-.hero-subtitle {
-    font-size: 1.25rem;
-    margin-bottom: 2.5rem;
-    opacity: 0.9;
-}
-
-.hero-cta {
-    padding: 1rem 2.5rem;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    font-weight: 600;
-}
-
-/* ==========================================================================
-   Shared Section Styles
-   ========================================================================== */
-.section-padding {
-    padding: 4rem 0;
-}
-
-.section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--dark-color);
-    margin-bottom: 3rem;
-}
-
-/* ==========================================================================
-   Features Section
-   ========================================================================== */
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-}
-
-.feature-card {
-    background-color: var(--white-color);
-    padding: 2.5rem 2rem;
-    text-align: center;
-    border-radius: var(--border-radius-xl);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
-}
-
-.feature-icon {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: var(--primary-color-light);
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
-}
-
-.feature-icon i {
-    width: 32px;
-    height: 32px;
-}
-
-.feature-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-.feature-description {
-    font-size: 1rem;
-    color: var(--text-light-color);
-    line-height: 1.6;
-}
-
-/* ==========================================================================
-   How It Works Section
-   ========================================================================== */
-.how-it-works {
-    background-color: var(--background-color);
-}
-
-.steps-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
-}
-
-.step {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    text-align: left;
-    max-width: 30%;
-}
-
-.step-number {
-    flex-shrink: 0;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.step-title {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.step-line {
-    flex-grow: 1;
-    height: 2px;
-    background-color: var(--primary-color-light);
-    margin: 25px 2rem 0; /* Align with middle of step-number */
-}
-
-/* ==========================================================================
-   FAQ Section
-   ========================================================================== */
-.faq-container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.faq-item {
-    border-bottom: 1px solid var(--border-color);
-}
-
-.faq-question {
+.profile-banner {
     width: 100%;
+    height: 300px;
+    background-color: var(--color-gray-200);
+}
+
+.profile-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    padding: 1.5rem 0;
-    background: none;
-    border: none;
-    text-align: left;
-    font-size: 1.2rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: var(--dark-color);
+    text-align: center;
+    margin-top: -80px; /* Pulls the header up into the banner */
+    position: relative;
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--color-border);
 }
 
-.faq-question i {
-    transition: transform 0.3s ease;
-}
-
-.faq-answer {
-    max-height: 0;
+.profile-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 5px solid var(--color-surface);
+    box-shadow: var(--shadow-lg);
     overflow: hidden;
-    transition: max-height 0.4s ease-out;
 }
 
-.faq-answer p {
-    padding-bottom: 1.5rem;
-    line-height: 1.7;
-    color: var(--text-light-color);
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.faq-item.active .faq-question i {
-    transform: rotate(180deg);
+.profile-info {
+    margin-top: var(--spacing-lg);
 }
 
-.faq-item.active .faq-answer {
-    max-height: 200px; /* Adjust as needed */
+.seller-name {
+    font-size: 2.5rem;
+    font-weight: var(--font-weight-bold);
 }
 
-/* ==========================================================================
-   Responsive Design
-   ========================================================================== */
+.seller-bio {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: var(--spacing-sm) auto;
+}
 
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    .section-title {
-        font-size: 2rem;
-    }
-    .steps-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-    }
-    .step {
-        max-width: 100%;
-        flex-direction: column;
-        text-align: center;
-    }
-    .step-line {
-        display: none;
-    }
+.seller-stats {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+    font-size: 1.1rem;
+    color: var(--color-text);
+}
+
+.seller-stats span strong {
+    font-weight: var(--font-weight-bold);
+}
+
+.profile-actions {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.seller-products {
+    padding: var(--spacing-xl) 0;
+}
+
+.seller-products h2 {
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--spacing-lg);
 }

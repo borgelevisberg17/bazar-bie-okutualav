@@ -25,9 +25,59 @@ exports.list = [
     validate(listProductsSchema, "query"),
     async (req, res, next) => {
         try {
-            const { page, limit, status } = req.query;
-            const data = await productService.list({ page, limit, status });
+            const { page, limit, status, sellerId } = req.query;
+            const data = await productService.list({ page, limit, status, sellerId });
             res.json(ok(data));
+        } catch (err) {
+            next(err);
+        }
+    }
+];
+
+/**
+ * Likes a product.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the product to like.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
+exports.like = [
+    validate(getProductSchema, "params"),
+    async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const { uid } = req.user;
+            const result = await productService.like(id, uid);
+            res.json(ok(result, "Produto gostado com sucesso!"));
+        } catch (err) {
+            next(err);
+        }
+    }
+];
+
+/**
+ * Unlikes a product.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the product to unlike.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
+exports.unlike = [
+    validate(getProductSchema, "params"),
+    async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const { uid } = req.user;
+            const result = await productService.unlike(id, uid);
+            res.json(ok(result, "Gosto removido com sucesso!"));
         } catch (err) {
             next(err);
         }

@@ -85,3 +85,8 @@ export const getProductReviews = (productId) => api.get(`/products/${productId}/
 export const getSellers = () => api.get("/users?role=seller");
 export const getSellerDetails = (sellerId) => api.get(`/users/${sellerId}`);
 export const getProductsBySeller = (sellerId) => api.get(`/products?sellerId=${sellerId}`);
+export const getWishlist = () => api.get("/wishlist");
+export const removeFromWishlist = (productId) => api.delete(`/wishlist/${productId}`);
+export const getConversations = () => api.get("/messages/conversations");
+export const getMessagesWithUser = (userId) => api.get(`/messages/${userId}`);
+export const createMessage = (message) => api.post("/messages", message);

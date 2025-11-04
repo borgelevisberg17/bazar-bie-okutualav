@@ -1,0 +1,38 @@
+/* Quick View Modal Content */
+.quick-view-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+.quick-view-image-gallery {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+}
+
+.quick-view-main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.quick-view-details h2 {
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+}
+
+.quick-view-price {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.quick-view-description {
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.6;
+}

@@ -52,6 +52,19 @@ async function fetchFromAPI(endpoint, options = {}) {
     }
 }
 
+export const getProductDetails = async (productId) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/products/${productId}/details`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`Failed to fetch product details for product ${productId}:`, error);
+        throw error;
+    }
+};
+
 export const api = {
     get: endpoint => fetchFromAPI(endpoint),
     post: (endpoint, body) => fetchFromAPI(endpoint, { method: "POST", body: JSON.stringify(body) }),

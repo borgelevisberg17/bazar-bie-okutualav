@@ -33,7 +33,7 @@
 
 .filter-title {
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     margin-bottom: 1.5rem;
 }
 
@@ -55,7 +55,7 @@
 
 .filter-link.active {
     color: var(--primary-color);
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
 }
 
 .price-range .price-slider {
@@ -78,7 +78,7 @@
     border: none;
     cursor: pointer;
     font-size: 1rem;
-    color: #f59e0b; /* Amber 500 */
+    color: var(--warning-color);
     margin-bottom: 0.5rem;
 }
 .rating-filter .rating-stars span {
@@ -100,7 +100,7 @@
 
 .listing-title {
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
 }
 
 .sorting-options {
@@ -131,18 +131,18 @@
     border: 1px solid var(--border-color);
     text-decoration: none;
     color: var(--text-color);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     transition: all 0.3s ease;
 }
 
 .page-link:hover {
-    background-color: var(--background-color);
+    background-color: var(--light-color);
     color: var(--primary-color);
 }
 
 .page-link.active {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--white-color);
     border-color: var(--primary-color);
 }
 

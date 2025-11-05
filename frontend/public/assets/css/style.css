@@ -1,3 +1,6 @@
+/* frontend/public/assets/css/style.css */
+@import url('variables.css');
+
 * {
     margin: 0;
     padding: 0;
@@ -9,8 +12,8 @@ html {
 }
 body {
     font-family: var(--font-family-sans-serif);
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: var(--light-color);
+    color: var(--dark-color);
     line-height: 1.6;
     max-width: 1600px; /* Max-width for large desktops */
     margin: 0 auto;
@@ -31,7 +34,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: var(--text-color);
+    color: var(--dark-color);
     font-weight: var(--font-weight-bold);
 }
 
@@ -45,7 +48,7 @@ h2 {
 
 p {
     font-size: 1rem;
-    color: var(--text-light-color);
+    color: var(--secondary-color);
 }
 
 a {
@@ -71,7 +74,7 @@ a:hover {
     border: none;
     border-radius: var(--border-radius);
     font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-bold);
     cursor: pointer;
     text-align: center;
     transition:
@@ -117,7 +120,7 @@ a:hover {
     position: relative;
     display: flex;
     align-items: center;
-    background: var(--surface-color);
+    background: var(--white-color);
     border-radius: var(--border-radius);
     padding: 10px;
     transition: box-shadow 0.3s ease;
@@ -129,7 +132,7 @@ a:hover {
 }
 
 .input-wrapper i {
-    color: var(--text-light-color);
+    color: var(--secondary-color);
     margin-right: 10px;
 }
 
@@ -138,12 +141,12 @@ a:hover {
     background: none;
     flex: 1;
     font-size: var(--font-size-base);
-    color: var(--text-color);
+    color: var(--dark-color);
     outline: none;
 }
 
 .input-wrapper input::placeholder {
-    color: var(--text-light-color);
+    color: var(--secondary-color);
 }
 
 /* Error Message */
@@ -166,7 +169,7 @@ a:hover {
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: 1000;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .toast.show {
@@ -196,7 +199,7 @@ a:hover {
 }
 
 .action-btn:hover {
-    background: var(--surface-color);
+    background: var(--light-color);
 }
 
 /* Logo */

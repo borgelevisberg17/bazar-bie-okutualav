@@ -8,7 +8,7 @@
 
 /* Product Gallery */
 .product-gallery .main-image {
-    background-color: var(--color-gray-100);
+    background-color: var(--light-color);
     border-radius: var(--border-radius-lg);
     overflow: hidden;
     margin-bottom: 1rem;
@@ -38,20 +38,20 @@
 }
 
 .thumbnail-image:hover {
-    border-color: var(--color-primary);
+    border-color: var(--primary-color);
 }
 
 /* Product Info */
 .product-title {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
-    color: var(--color-gray-900);
+    color: var(--dark-color);
 }
 
 .product-price {
     font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-color);
     margin-bottom: 1.5rem;
 }
 
@@ -59,7 +59,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    background-color: var(--color-gray-50);
+    background-color: var(--light-color);
     padding: 1rem;
     border-radius: var(--border-radius-lg);
     margin-bottom: 1.5rem;
@@ -75,17 +75,17 @@
     flex-grow: 1;
 }
 .seller-name {
-    font-weight: 600;
-    color: var(--color-gray-800);
+    font-weight: var(--font-weight-semibold);
+    color: var(--dark-color);
     display: block;
 }
 .seller-rating {
     font-size: 0.875rem;
-    color: var(--color-gray-500);
+    color: var(--text-light-color);
 }
 
 .product-description {
-    color: var(--color-gray-600);
+    color: var(--text-light-color);
     line-height: 1.6;
     margin-bottom: 2rem;
 }
@@ -102,14 +102,14 @@
 .quantity-selector input {
     width: 50px;
     text-align: center;
-    border: 1px solid var(--color-gray-300);
+    border: 1px solid var(--border-color);
     padding: 0.6rem;
 }
 .btn-quantity {
     width: 40px;
     height: 100%;
-    border: 1px solid var(--color-gray-300);
-    background-color: var(--color-gray-100);
+    border: 1px solid var(--border-color);
+    background-color: var(--light-color);
 }
 
 .btn-add-to-cart {
@@ -117,13 +117,13 @@
 }
 
 .btn-like.liked {
-    background-color: var(--color-primary-dark);
-    color: var(--color-white);
+    background-color: var(--primary-color-dark);
+    color: var(--white-color);
 }
 
 /* Additional Info Tabs */
 .tabs {
-    border-bottom: 1px solid var(--color-gray-200);
+    border-bottom: 1px solid var(--border-color);
     margin-bottom: 1.5rem;
 }
 
@@ -132,14 +132,14 @@
     border: none;
     background: none;
     font-size: 1rem;
-    font-weight: 500;
-    color: var(--color-gray-500);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-light-color);
     position: relative;
     cursor: pointer;
 }
 
 .tab-link.active {
-    color: var(--color-primary);
+    color: var(--primary-color);
 }
 
 .tab-link.active::after {
@@ -149,7 +149,7 @@
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: var(--color-primary);
+    background-color: var(--primary-color);
 }
 
 .tab-content {
@@ -173,7 +173,7 @@
     gap: 1rem;
 }
 .comment-content {
-    background-color: var(--color-gray-100);
+    background-color: var(--light-color);
     padding: 1rem;
     border-radius: var(--border-radius-md);
     width: 100%;
@@ -182,7 +182,7 @@
     margin: 0;
 }
 .comment-content small {
-    color: var(--color-gray-500);
+    color: var(--text-light-color);
     font-size: 0.75rem;
 }
 
@@ -200,7 +200,7 @@
     flex-grow: 1;
     padding: 0.75rem;
     border-radius: var(--border-radius-xl);
-    border: 1px solid var(--color-gray-300);
+    border: 1px solid var(--border-color);
 }
 
 @media (max-width: 992px) {

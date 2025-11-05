@@ -42,7 +42,7 @@ test.describe('Visual and Responsiveness Verification', () => {
     });
 
     test('Main Page Responsiveness', async ({ page }) => {
-        await page.goto('/index.html', { waitUntil: 'networkidle' });
+        await page.goto('http://localhost', { waitUntil: 'networkidle' });
 
         // Desktop screenshot
         await page.setViewportSize(desktopViewport);
@@ -76,7 +76,7 @@ test.describe('Visual and Responsiveness Verification', () => {
             });
         });
 
-        await page.goto('/product.html?id=123', { waitUntil: 'networkidle' });
+        await page.goto('http://localhost/product.html?id=123', { waitUntil: 'networkidle' });
 
         // Desktop screenshot
         await page.setViewportSize(desktopViewport);

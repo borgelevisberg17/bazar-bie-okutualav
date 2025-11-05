@@ -1,33 +1,24 @@
+/* frontend/public/assets/css/design-system.css */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
-@import url("components/buttons.css");
 
 :root {
     /* Refined Color Palette */
-    --color-primary: #E53935; /* A deeper, more confident red */
-    --color-primary-light: #FFEBEE;
-    --color-primary-dark: #C62828;
-    --color-secondary: #37474F; /* Slate Gray for sophistication */
-    --color-accent: #FFC107; /* Amber for highlights */
-    --color-background: #F5F5F5; /* Softer than pure white */
-    --color-surface: #FFFFFF;
-    --color-text: #212121; /* Almost black for crisp text */
-    --color-text-light: #757575;
-    --color-white: #ffffff;
-    --color-gray-50: #FAFAFA;
-    --color-gray-100: #F5F5F5;
-    --color-gray-200: #EEEEEE;
-    --color-gray-300: #E0E0E0;
-    --color-gray-400: #BDBDBD;
-    --color-gray-500: #9E9E9E;
-    --color-gray-600: #757575;
-    --color-gray-700: #616161;
-    --color-gray-800: #424242;
-    --color-gray-900: #212121;
-    --color-border: #E0E0E0;
-    --color-success: #4CAF50;
-    --color-danger: #F44336;
-    --color-info: #2196F3;
-    --color-warning: #FF9800;
+    --primary-color: #E53935; /* A deeper, more confident red */
+    --primary-color-light: #FFEBEE;
+    --primary-color-dark: #C62828;
+    --secondary-color: #37474F; /* Slate Gray for sophistication */
+    --accent-color: #FFC107; /* Amber for highlights */
+    --success-color: #4CAF50;
+    --danger-color: #F44336;
+    --info-color: #2196F3;
+    --warning-color: #FF9800;
+    --light-color: #F5F5F5; /* Softer than pure white */
+    --dark-color: #212121; /* Almost black for crisp text */
+    --white-color: #FFFFFF;
+    --black-color: #000;
+    --text-color: #212121;
+    --text-light-color: #757575;
+    --border-color: #E0E0E0;
 
     /* Typography */
     --font-family-sans-serif: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -44,12 +35,12 @@
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 1.5rem;
-    --spacing-xl: 2.5rem; /* Increased for more breathing room */
+    --spacing-xl: 2.5rem;
     --spacing-xxl: 4rem;
 
     /* Sizing */
     --header-height: 70px;
-    --bottom-nav-height: 65px; /* Slightly taller */
+    --bottom-nav-height: 65px;
 
     /* Borders */
     --border-width: 1px;
@@ -68,35 +59,31 @@
 }
 
 body.dark-mode {
-    --color-primary: #EF5350;
-    --color-primary-light: #212121;
-    --color-primary-dark: #D32F2F;
-    --color-secondary: #B0BEC5;
-    --color-background: #121212;
-    --color-surface: #212121;
-    --color-text: #ECEFF1;
-    --color-text-light: #90A4AE;
-    --color-border: #424242;
-    --color-gray-50: #263238;
-    --color-gray-100: #37474F;
-    --color-gray-200: #455A64;
-    --color-gray-800: #E0E0E0;
+    --primary-color: #EF5350;
+    --primary-color-light: #212121;
+    --primary-color-dark: #D32F2F;
+    --secondary-color: #B0BEC5;
+    --background-color: #121212;
+    --surface-color: #212121;
+    --text-color: #ECEFF1;
+    --text-light-color: #90A4AE;
+    --border-color: #424242;
 }
 
 /* Global Button Styles */
 .btn {
     display: inline-block;
-    font-weight: var(--font-weight-semibold); /* Bolder buttons */
-    color: var(--color-white);
+    font-weight: var(--font-weight-semibold);
+    color: var(--white-color);
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
     user-select: none;
     background-color: transparent;
     border: var(--border-width) solid transparent;
-    padding: 0.75rem 1.5rem; /* Increased padding */
+    padding: 0.75rem 1.5rem;
     font-size: var(--font-size-base);
-    border-radius: var(--border-radius-lg); /* Larger radius */
+    border-radius: var(--border-radius-lg);
     transition: all 0.2s ease-in-out;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -108,31 +95,31 @@ body.dark-mode {
 }
 
 .btn-primary {
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .btn-primary:hover {
-    background-color: var(--color-primary-dark);
-    border-color: var(--color-primary-dark);
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
 }
 
 .btn-secondary {
-    background-color: var(--color-secondary);
-    border-color: var(--color-secondary);
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
 }
 .btn-secondary:hover {
-    background-color: var(--color-gray-800);
-    border-color: var(--color-gray-800);
+    background-color: var(--dark-color);
+    border-color: var(--dark-color);
 }
 
 .btn-outline {
-    color: var(--color-primary);
-    border-color: var(--color-primary);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 .btn-outline:hover {
-    color: var(--color-white);
-    background-color: var(--color-primary);
+    color: var(--white-color);
+    background-color: var(--primary-color);
 }
 .btn-block {
     display: block;
@@ -147,7 +134,7 @@ body.dark-mode {
 .icon-btn {
     background: none;
     border: none;
-    color: var(--color-text-light);
+    color: var(--text-light-color);
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.5rem;
@@ -160,8 +147,8 @@ body.dark-mode {
     transition: all 0.2s ease;
 }
 .icon-btn:hover {
-    background-color: var(--color-gray-200);
-    color: var(--color-text);
+    background-color: var(--border-color);
+    color: var(--text-color);
 }
 
 /* Global Form Input Styles */
@@ -173,12 +160,12 @@ textarea,
 select {
     display: block;
     width: 100%;
-    padding: 0.85rem 1.1rem; /* Better padding */
+    padding: 0.85rem 1.1rem;
     font-size: 1rem;
     font-family: var(--font-family-sans-serif);
-    color: var(--color-text);
-    background-color: var(--color-surface);
-    border: 2px solid var(--color-border); /* Slightly thicker border */
+    color: var(--text-color);
+    background-color: var(--white-color);
+    border: 2px solid var(--border-color);
     border-radius: var(--border-radius-lg);
     transition:
         border-color 0.2s,
@@ -189,6 +176,6 @@ input:focus,
 textarea:focus,
 select:focus {
     outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px var(--color-primary-light);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--primary-color-light);
 }

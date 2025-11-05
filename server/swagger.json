@@ -1,0 +1,1555 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Bazar Bié Okutuala API",
+    "version": "1.0.0",
+    "description": "API for the Bazar Bié Okutuala e-commerce platform."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/api"
+    }
+  ],
+  "paths": {
+    "/auth": {
+      "get": {
+        "summary": "Check the status of the auth route.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "The auth route is working."
+          }
+        }
+      }
+    },
+    "/auth/setup-2fa": {
+      "post": {
+        "summary": "Set up Two-Factor Authentication.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "2FA setup successful."
+          }
+        }
+      }
+    },
+    "/auth/verify-2fa": {
+      "post": {
+        "summary": "Verify a 2FA token.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "2FA verification successful."
+          }
+        }
+      }
+    },
+    "/auth/disable-2fa": {
+      "post": {
+        "summary": "Disable Two-Factor Authentication.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "2FA disabled successfully."
+          }
+        }
+      }
+    },
+    "/auth/exchange": {
+      "post": {
+        "summary": "Exchange a Firebase ID token for internal tokens.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idToken": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token exchange successful."
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Refresh an access token.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token refresh successful."
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register a new user.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully."
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Log in a user.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful."
+          }
+        }
+      }
+    },
+    "/carts": {
+      "get": {
+        "summary": "Check the status of the carts route.",
+        "tags": [
+          "Carts"
+        ],
+        "responses": {
+          "200": {
+            "description": "The carts route is working."
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "summary": "Get a list of all categories.",
+        "tags": [
+          "Categories"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of categories."
+          }
+        }
+      }
+    },
+    "/messages": {
+      "get": {
+        "summary": "Get all messages.",
+        "tags": [
+          "Messages"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of conversations."
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new message.",
+        "tags": [
+          "Messages"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sender_id": {
+                    "type": "string"
+                  },
+                  "receiver_id": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created message."
+          }
+        }
+      }
+    },
+    "/messages/{userId}": {
+      "get": {
+        "summary": "Get all messages in a conversation.",
+        "tags": [
+          "Messages"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of messages."
+          }
+        }
+      }
+    },
+    "/orders/me": {
+      "get": {
+        "summary": "Get all orders for the authenticated user.",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the user's orders."
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "summary": "Create a new order.",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "products": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  "total": {
+                    "type": "number"
+                  },
+                  "shipping_address": {
+                    "type": "object"
+                  },
+                  "payments": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created order."
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "summary": "Get an order by ID.",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested order."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an order (admin only).",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated order."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an order (admin only).",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The order was deleted."
+          }
+        }
+      }
+    },
+    "/orders/all": {
+      "get": {
+        "summary": "Get all orders (admin only).",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of all orders."
+          }
+        }
+      }
+    },
+    "/payments": {
+      "post": {
+        "summary": "Create a new payment.",
+        "tags": [
+          "Payments"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orderId": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "number"
+                  },
+                  "userEmail": {
+                    "type": "string"
+                  },
+                  "method": {
+                    "type": "string"
+                  },
+                  "receiptFileBase64": {
+                    "type": "string"
+                  },
+                  "receiptFileType": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created payment."
+          }
+        }
+      }
+    },
+    "/payments/me": {
+      "get": {
+        "summary": "Get all payments for the authenticated user.",
+        "tags": [
+          "Payments"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the user's payments."
+          }
+        }
+      }
+    },
+    "/payments/all": {
+      "get": {
+        "summary": "Get all payments (admin only).",
+        "tags": [
+          "Payments"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of all payments."
+          }
+        }
+      }
+    },
+    "/payments/pending": {
+      "get": {
+        "summary": "Get all pending payments (admin only).",
+        "tags": [
+          "Payments"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of all pending payments."
+          }
+        }
+      }
+    },
+    "/payments/approve": {
+      "post": {
+        "summary": "Approve a payment (admin only).",
+        "tags": [
+          "Payments"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The payment was approved."
+          }
+        }
+      }
+    },
+    "/payments/reject": {
+      "post": {
+        "summary": "Reject a payment (admin only).",
+        "tags": [
+          "Payments"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentId": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The payment was rejected."
+          }
+        }
+      }
+    },
+    "/payments/update-status": {
+      "post": {
+        "summary": "Update the status of a payment.",
+        "tags": [
+          "Payments"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentId": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The payment status was updated."
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "Get a list of all products.",
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of products."
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new product.",
+        "tags": [
+          "Products"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created product."
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Get a product by ID.",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested product."
+          }
+        }
+      }
+    },
+    "/products/{id}/details": {
+      "get": {
+        "summary": "Get detailed product information for quick view.",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed product information."
+          }
+        }
+      }
+    },
+    "/products/{id}/like": {
+      "post": {
+        "summary": "Like a product.",
+        "tags": [
+          "Products"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product liked successfully."
+          }
+        }
+      }
+    },
+    "/products/{id}/unlike": {
+      "post": {
+        "summary": "Unlike a product.",
+        "tags": [
+          "Products"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product unliked successfully."
+          }
+        }
+      }
+    },
+    "/reviews/product/{productId}": {
+      "get": {
+        "summary": "Get all reviews for a product.",
+        "tags": [
+          "Reviews"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of reviews for the specified product."
+          }
+        }
+      }
+    },
+    "/reviews/product/{productId}/average": {
+      "get": {
+        "summary": "Get the average rating for a product.",
+        "tags": [
+          "Reviews"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The average rating for the specified product."
+          }
+        }
+      }
+    },
+    "/reviews": {
+      "post": {
+        "summary": "Create a new review.",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "string"
+                  },
+                  "rating": {
+                    "type": "number"
+                  },
+                  "comment": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created review."
+          }
+        }
+      }
+    },
+    "/reviews/{id}": {
+      "put": {
+        "summary": "Update a review.",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rating": {
+                    "type": "number"
+                  },
+                  "comment": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated review."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a review.",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The review was deleted."
+          }
+        }
+      }
+    },
+    "/seller-applications": {
+      "post": {
+        "summary": "Create a new seller application.",
+        "tags": [
+          "Seller Applications"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentInfo": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created seller application."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all pending seller applications (admin only).",
+        "tags": [
+          "Seller Applications"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of pending seller applications."
+          }
+        }
+      }
+    },
+    "/seller-applications/{id}": {
+      "put": {
+        "summary": "Update a seller application (admin only).",
+        "tags": [
+          "Seller Applications"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated seller application."
+          }
+        }
+      }
+    },
+    "/stores": {
+      "post": {
+        "summary": "Create a new store.",
+        "tags": [
+          "Stores"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created store."
+          }
+        }
+      }
+    },
+    "/stores/me": {
+      "get": {
+        "summary": "Get the store of the authenticated user.",
+        "tags": [
+          "Stores"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user's store."
+          }
+        }
+      }
+    },
+    "/stores/{slug}": {
+      "get": {
+        "summary": "Get a store by slug.",
+        "tags": [
+          "Stores"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested store."
+          }
+        }
+      }
+    },
+    "/stores/{slug}/products": {
+      "get": {
+        "summary": "Get all products in a store.",
+        "tags": [
+          "Stores"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of products in the specified store."
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "get": {
+        "summary": "Check the status of the transactions route.",
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "The transactions route is working."
+          }
+        }
+      }
+    },
+    "/uploads": {
+      "post": {
+        "summary": "Upload a file.",
+        "tags": [
+          "Uploads"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "avatar",
+                      "product",
+                      "storeDoc"
+                    ]
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The uploaded file URL."
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "Get the profile of the authenticated user.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user's profile."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update the profile of the authenticated user.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "avatar_url": {
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated user profile."
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get a list of all users (admin only).",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of users."
+          }
+        }
+      }
+    },
+    "/users/sellers": {
+      "get": {
+        "summary": "Get a list of all sellers.",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of sellers."
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "summary": "Update a user (admin only).",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated user."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user (admin only).",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The user was deleted."
+          }
+        }
+      }
+    },
+    "/wishlist": {
+      "get": {
+        "summary": "Get the user's wishlist.",
+        "tags": [
+          "Wishlist"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user's wishlist."
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a product to the user's wishlist.",
+        "tags": [
+          "Wishlist"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created wishlist item."
+          }
+        }
+      }
+    },
+    "/wishlist/{productId}": {
+      "delete": {
+        "summary": "Remove a product from the user's wishlist.",
+        "tags": [
+          "Wishlist"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The wishlist item was deleted."
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication routes"
+    },
+    {
+      "name": "Carts",
+      "description": "Cart management routes"
+    },
+    {
+      "name": "Categories",
+      "description": "Category management routes"
+    },
+    {
+      "name": "Messages",
+      "description": "Message management routes"
+    },
+    {
+      "name": "Orders",
+      "description": "Order management routes"
+    },
+    {
+      "name": "Payments",
+      "description": "Payment management routes"
+    },
+    {
+      "name": "Products",
+      "description": "Product management routes"
+    },
+    {
+      "name": "Reviews",
+      "description": "Review management routes"
+    },
+    {
+      "name": "Seller Applications",
+      "description": "Seller application management routes"
+    },
+    {
+      "name": "Stores",
+      "description": "Store management routes"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transaction management routes"
+    },
+    {
+      "name": "Uploads",
+      "description": "File upload routes"
+    },
+    {
+      "name": "Users",
+      "description": "User management routes"
+    },
+    {
+      "name": "Wishlist",
+      "description": "Wishlist management routes"
+    }
+  ]
+}

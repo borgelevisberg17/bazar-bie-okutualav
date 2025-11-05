@@ -10,7 +10,8 @@
     "manual:migration": "node scripts/manual_migration.js postgresql://bazar:bazarpass@localhost:5432/bazar",
     "setup:sb": "node migraSb.js",
     "setup:meili": "node scripts/setupMeili.js",
-    "worker:indexer": "node src/workers/indexerWorker.js"
+    "worker:indexer": "node src/workers/indexerWorker.js",
+    "swagger": "node -e 'const fs = require(\"fs\"); const swaggerSpec = require(\"./src/config/swaggerConfig.js\"); fs.writeFileSync(\"./swagger.json\", JSON.stringify(swaggerSpec, null, 2));'"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",

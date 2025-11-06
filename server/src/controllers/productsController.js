@@ -35,6 +35,34 @@ exports.list = [
 ];
 
 /**
+ * Adds a comment to a product.
+ * @param {Object} req - The Express request object.
+ * @param {Object} req.params - The route parameters.
+ * @param {string} req.params.id - The ID of the product to comment on.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.comment - The comment text.
+ * @param {Object} req.user - The authenticated user object.
+ * @param {string} req.user.uid - The user's ID.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The Express next middleware function.
+ * @returns {Promise<void>}
+ */
+exports.addComment = [
+    validate(getProductSchema, "params"),
+    async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const { uid } = req.user;
+            const { comment } = req.body;
+            const result = await productService.addComment(id, uid, comment);
+            res.status(201).json(ok(result, "Comentário adicionado com sucesso!"));
+        } catch (err) {
+            next(err);
+        }
+    }
+];
+
+/**
  * Likes a product.
  * @param {Object} req - The Express request object.
  * @param {Object} req.params - The route parameters.

@@ -78,3 +78,4 @@ export const getMessagesWithUser = (userId) => api.get(`/messages/${userId}`);
 export const createMessage = (message) => api.post("/messages", message);
 export const likeProduct = (productId) => api.post(`/products/${productId}/like`);
 export const unlikeProduct = (productId) => api.post(`/products/${productId}/unlike`);
+export const addComment = (productId, comment) => api.post(`/products/${productId}/comments`, { comment });

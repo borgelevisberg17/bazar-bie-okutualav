@@ -74,6 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </aside>
             </div>
+
+            <!-- Comments Section -->
+            <section id="comments-section" class="comments-section">
+                <h2>Comentários</h2>
+                <div class="comment-form-container">
+                    <textarea id="comment-input" placeholder="Adicione um comentário..."></textarea>
+                    <button id="submit-comment-btn" class="btn btn-primary">Publicar</button>
+                </div>
+                <div id="comments-list" class="comments-list">
+                    <!-- Comments will be rendered here -->
+                </div>
+            </section>
         `;
         pageContent.innerHTML = productHTML;
         addEventListeners(product);
@@ -90,6 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Like button
         const likeBtn = document.getElementById('like-btn');
         likeBtn.addEventListener('click', () => handleLikeToggle(product.id, likeBtn));
+
+        // Comment form
+        const commentInput = document.getElementById('comment-input');
+        const submitCommentBtn = document.getElementById('submit-comment-btn');
+        submitCommentBtn.addEventListener('click', () => handleAddComment(product.id, commentInput));
     };
 
     const handleLikeToggle = async (productId, likeBtn) => {
@@ -125,6 +142,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const handleAddComment = async (productId, commentInput) => {
+        if (!currentUser) {
+            showToast('Precisa de iniciar sessão para comentar.', 'info');
+            return;
+        }
+        const commentText = commentInput.value.trim();
+        if (!commentText) {
+            showToast('O comentário não pode estar vazio.', 'error');
+            return;
+        }
+
+        try {
+            const response = await addComment(productId, commentText);
+            const newComment = response.data;
+
+            // Create and append the new comment element
+            const commentElement = document.createElement('div');
+            commentElement.className = 'comment-item';
+            commentElement.innerHTML = `
+                <img src="${currentUser.avatar_url || 'assets/images/placeholders/avatar.png'}" alt="${currentUser.name}" class="comment-avatar">
+                <div class="comment-content">
+                    <span class="comment-author">${currentUser.name}</span>
+                    <p class="comment-text">${newComment.comment}</p>
+                </div>
+            `;
+            const commentsList = document.getElementById('comments-list');
+            commentsList.prepend(commentElement);
+
+            // Clear the input and show a success message
+            commentInput.value = '';
+            showToast('Comentário adicionado com sucesso!', 'success');
+
+            // Update the comments count
+            const commentBtn = document.getElementById('comment-btn');
+            const commentCountSpan = commentBtn.querySelector('span');
+            const currentCount = parseInt(commentCountSpan.textContent.split(' ')[0]);
+            commentCountSpan.textContent = `${currentCount + 1} Comentários`;
+
+        } catch (error) {
+            showToast('Ocorreu um erro ao adicionar o comentário.', 'error');
+        }
+    };
 
     const init = async () => {
         try {

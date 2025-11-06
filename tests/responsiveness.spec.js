@@ -5,7 +5,8 @@ const mobileViewport = { width: 375, height: 667 };
 
 test.describe('Visual and Responsiveness Verification', () => {
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ page, context }) => {
+        await context.setExtraHTTPHeaders({ 'Host': 'bazar.local' });
         // Create a mock for the product posts API endpoint
         await page.route('**/api/products**', route => {
             route.fulfill({
@@ -42,7 +43,7 @@ test.describe('Visual and Responsiveness Verification', () => {
     });
 
     test('Main Page Responsiveness', async ({ page }) => {
-        await page.goto('http://localhost', { waitUntil: 'networkidle' });
+        await page.goto('/', { waitUntil: 'networkidle' });
 
         // Desktop screenshot
         await page.setViewportSize(desktopViewport);
@@ -76,7 +77,7 @@ test.describe('Visual and Responsiveness Verification', () => {
             });
         });
 
-        await page.goto('http://localhost/product.html?id=123', { waitUntil: 'networkidle' });
+        await page.goto('/product.html?id=123', { waitUntil: 'networkidle' });
 
         // Desktop screenshot
         await page.setViewportSize(desktopViewport);

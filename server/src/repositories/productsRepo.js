@@ -345,6 +345,36 @@ exports.like = async (productId, userId) => {
 };
 
 /**
+ * Adds a comment to a product.
+ * @param {string} productId - The ID of the product to comment on.
+ * @param {string} userId - The ID of the user adding the comment.
+ * @param {string} comment - The comment text.
+ * @returns {Promise<Object>} A promise that resolves to the newly created comment object.
+ */
+exports.addComment = async (productId, userId, comment) => {
+    if (mode === "pg") {
+        return db.tx(async t => {
+            const newComment = await t.one(
+                "INSERT INTO product_comments (product_id, user_id, comment) VALUES ($1, $2, $3) RETURNING *",
+                [productId, userId, comment]
+            );
+            await t.none(
+                "UPDATE products SET comments_count = comments_count + 1 WHERE id = $1",
+                [productId]
+            );
+            return newComment;
+        });
+    } else {
+        // Supabase implementation
+        const { data: newComment, error } = await db.from("product_comments").insert([{ product_id: productId, user_id: userId, comment: comment }]);
+        if (error) throw error;
+        const { data: product } = await db.from("products").select("comments_count").eq("id", productId).single();
+        await db.from("products").update({ comments_count: product.comments_count + 1 }).eq("id", productId);
+        return newComment;
+    }
+};
+
+/**
  * Unlikes a product.
  * @param {string} productId - The ID of the product to unlike.
  * @param {string} userId - The ID of the user unliking the product.

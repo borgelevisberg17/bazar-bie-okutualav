@@ -78,3 +78,14 @@ exports.like = async (productId, userId) => {
 exports.unlike = async (productId, userId) => {
     return repo.unlike(productId, userId);
 };
+
+/**
+ * Adds a comment to a product.
+ * @param {string} productId - The ID of the product to comment on.
+ * @param {string} userId - The ID of the user adding the comment.
+ * @param {string} comment - The comment text.
+ * @returns {Promise<Object>} A promise that resolves to the newly created comment object.
+ */
+exports.addComment = async (productId, userId, comment) => {
+    return repo.addComment(productId, userId, comment);
+};

@@ -130,4 +130,33 @@ router.post("/:id/like", authFirebase, productController.like);
  */
 router.post("/:id/unlike", authFirebase, productController.unlike);
 
+/**
+ * @swagger
+ * /products/{id}/comments:
+ *   post:
+ *     summary: Add a comment to a product.
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               comment:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Comment added successfully.
+ */
+router.post("/:id/comments", authFirebase, productController.addComment);
+
 module.exports = router;

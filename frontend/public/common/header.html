@@ -3,47 +3,78 @@
     <div class="container header-container">
         <!-- Logo -->
         <div class="logo">
-            <a href="/">Bazar Bié</a>
+            <a href="/"
+                ><img src="../assets/images/bazar-logo.png" /><span
+                    >Bié okutuala</span
+                ></a
+            >
         </div>
 
         <!-- Desktop Search Bar -->
         <div class="header-search hide-on-mobile">
             <i class="fas fa-search search-icon"></i>
-            <input type="text" placeholder="Procurar..." class="search-input">
+            <input type="text" placeholder="Procurar..." class="search-input" />
         </div>
 
         <!-- Header Actions (Desktop) -->
         <div class="header-actions hide-on-mobile">
             <!-- Authenticated User View -->
-            <div id="auth-user-view" class="header-actions" style="display: none;">
-                <a href="/upload.html" class="icon-btn" aria-label="Upload Product">
+            <div
+                id="auth-user-view"
+                class="header-actions"
+                style="display: none"
+            >
+                <a
+                    href="/upload.html"
+                    class="icon-btn"
+                    aria-label="Upload Product"
+                >
                     <i class="fas fa-plus-square"></i>
                 </a>
                 <a href="/messages.html" class="icon-btn" aria-label="Messages">
                     <i class="fas fa-paper-plane"></i>
                 </a>
                 <div class="profile-dropdown">
-                    <img src="/assets/images/placeholders/avatar.png" alt="User Avatar" id="profile-avatar" class="profile-avatar" tabindex="0">
+                    <img
+                        src="/assets/images/placeholders/avatar.png"
+                        alt="User Avatar"
+                        id="profile-avatar"
+                        class="profile-avatar"
+                        tabindex="0"
+                    />
                     <div class="dropdown-menu">
-                        <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
-                        <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
-                        <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
+                        <a href="/profile.html"
+                            ><i class="fas fa-user-circle"></i> Meu Perfil</a
+                        >
+                        <a href="/favorites.html"
+                            ><i class="fas fa-heart"></i> Favoritos</a
+                        >
+                        <a href="/settings.html"
+                            ><i class="fas fa-cog"></i> Configurações</a
+                        >
                         <div class="dropdown-divider"></div>
-                        <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                        <a href="#" id="logout-btn"
+                            ><i class="fas fa-sign-out-alt"></i> Sair</a
+                        >
                     </div>
                 </div>
             </div>
             <!-- Guest User View -->
-            <div id="guest-user-view" style="display: none;">
+            <div id="guest-user-view" style="display: none">
                 <a href="/auth/login.html" class="btn btn-outline">Entrar</a>
-                <a href="/auth/register.html" class="btn btn-primary">Abrir Conta</a>
+                <a href="/auth/register.html" class="btn btn-primary"
+                    >Abrir Conta</a
+                >
             </div>
         </div>
 
         <!-- Mobile Menu Toggle -->
         <div class="mobile-menu-toggle show-on-mobile">
+            <button class="icon-btn" aria-label="favorite icon">
+                <i class="far fa-heart"></i>
+            </button>
             <button id="hamburger-btn" class="icon-btn" aria-label="Open Menu">
-                <i class="fas fa-bars"></i>
+                <i class="fa fa-bars"></i>
             </button>
         </div>
     </div>
@@ -53,38 +84,63 @@
 <aside class="mobile-sidebar" id="mobile-sidebar">
     <nav class="sidebar-nav">
         <!-- Authenticated User Links -->
-        <div id="auth-sidebar-links" style="display: none;">
-            <a href="/profile.html"><i class="fas fa-user-circle"></i> Meu Perfil</a>
-            <a href="/upload.html"><i class="fas fa-plus-square"></i> Vender Produto</a>
-            <a href="/messages.html"><i class="fas fa-paper-plane"></i> Mensagens</a>
+        <div id="auth-sidebar-links" style="display: none">
+            <a href="/profile.html"
+                ><i class="fas fa-user-circle"></i> Meu Perfil</a
+            >
+            <a href="/upload.html"
+                ><i class="fas fa-plus-square"></i> Vender Produto</a
+            >
+            <a href="/messages.html"
+                ><i class="fas fa-paper-plane"></i> Mensagens</a
+            >
             <a href="/favorites.html"><i class="fas fa-heart"></i> Favoritos</a>
-            <a href="/settings.html"><i class="fas fa-cog"></i> Configurações</a>
+            <a href="/settings.html"
+                ><i class="fas fa-cog"></i> Configurações</a
+            >
             <div class="dropdown-divider"></div>
-            <a href="#" id="logout-btn-mobile"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            <a href="#" id="logout-btn-mobile"
+                ><i class="fas fa-sign-out-alt"></i> Sair</a
+            >
         </div>
         <!-- Guest User Links -->
-        <div id="guest-sidebar-links" style="display: none;">
-            <a href="/auth/login.html"><i class="fas fa-sign-in-alt"></i> Entrar</a>
-            <a href="/auth/register.html"><i class="fas fa-user-plus"></i> Abrir Conta</a>
+        <div id="guest-sidebar-links" style="display: flex">
+            <a href="/auth/login.html"
+                ><i class="fas fa-sign-in-alt"></i> Entrar</a
+            >
+            <a href="/auth/register.html"
+                ><i class="fas fa-user-plus"></i> Abrir Conta</a
+            >
         </div>
     </nav>
 </aside>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <!-- Mobile Bottom Navigation -->
-<nav class="bottom-nav show-on-mobile">
+<nav class="bottom-nav show-on-mobile" id="bottomNav">
     <a href="/" class="nav-item" aria-label="Home">
-        <i class="fas fa-home"></i>
+        <i class="fa fa-home"></i>
         <span class="nav-text">Início</span>
     </a>
     <a href="/explore.html" class="nav-item" aria-label="Explore">
         <i class="fas fa-search"></i>
         <span class="nav-text">Explorar</span>
     </a>
-    <a href="/upload.html" class="nav-item upload-center auth-required" aria-label="Upload">
-        <i class="fas fa-plus-circle"></i>
+    <a
+        href="/upload.html"
+        class="nav-item upload-center auth-required"
+        aria-label="Upload"
+    >
+        <i class="fas fa-plus-circle">
+          
+        </i>
+         <span class="nav-text">Publicar</span>
     </a>
-    <a href="/messages.html" class="nav-item auth-required" aria-label="Messages">
+    <a
+        href="/messages.html"
+        class="nav-item auth-required"
+        aria-label="Messages"
+    >
         <i class="fas fa-paper-plane"></i>
         <span class="nav-text">Mensagens</span>
     </a>

@@ -3,25 +3,53 @@
 
 :root {
     /* Refined Color Palette */
-    --primary-color: #E53935; /* A deeper, more confident red */
-    --primary-color-light: #FFEBEE;
-    --primary-color-dark: #C62828;
-    --secondary-color: #37474F; /* Slate Gray for sophistication */
-    --accent-color: #FFC107; /* Amber for highlights */
-    --success-color: #4CAF50;
-    --danger-color: #F44336;
-    --info-color: #2196F3;
-    --warning-color: #FF9800;
-    --light-color: #F5F5F5; /* Softer than pure white */
+    --primary-color: #e8662c; /* A deeper, more confident red */
+    --primary-color-light: #ffebee;
+    --primary-color-dark: #e8662c;
+    --secondary-color: #37474f; /* Slate Gray for sophistication */
+    --accent-color: #ffc107; /* Amber for highlights */
+    --success-color: #4caf50;
+    --danger-color: #f44336;
+    --badge: #f05151;
+    --info-color: #2196f3;
+    --warning-color: #ff9800;
+    --light-color: #ffffff; /* Softer than pure white */
     --dark-color: #212121; /* Almost black for crisp text */
-    --white-color: #FFFFFF;
-    --black-color: #000;
+    --white-color: #ffffff;
+    --black-color: #181615;
     --text-color: #212121;
     --text-light-color: #757575;
-    --border-color: #E0E0E0;
-
+    --border-color: #e0e0e0;
+    --muted: #6b7280;
+    --radius: 16px;
+    --transition: 0.3s ease;
+    /* Modern gradients */
+    --gradient-primary: linear-gradient(
+        135deg,
+        hsl(15 75% 55%),
+        hsl(25 95% 53%)
+    );
+    --gradient-secondary: linear-gradient(
+        135deg,
+        hsl(25 95% 53%),
+        hsl(30 100% 60%)
+    );
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%), hsl(25 95% 98%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(30 10% 98%));
+    --gradient-overlay: linear-gradient(
+        180deg,
+        transparent,
+        hsl(0 0% 0% / 0.7)
+    );
+    --gradient-shine: linear-gradient(
+        110deg,
+        transparent 30%,
+        hsl(0 0% 100% / 0.3) 50%,
+        transparent 70%
+    );
     /* Typography */
-    --font-family-sans-serif: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-family-sans-serif: "Poppins", -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-size-base: 1rem;
     --font-weight-light: 300;
     --font-weight-normal: 400;
@@ -40,10 +68,9 @@
 
     /* Sizing */
     --header-height: 70px;
-    --bottom-nav-height: 65px;
 
     /* Borders */
-    --border-width: 1px;
+    --border-width: 0.8px;
     --border-radius-sm: 0.25rem;
     --border-radius-md: 0.5rem;
     --border-radius-lg: 0.75rem;
@@ -51,22 +78,31 @@
     --border-radius-2xl: 1.5rem;
     --border-radius-full: 9999px;
 
-    /* Shadows */
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-    --shadow: 0 4px 6px rgba(0,0,0,0.1);
-    --shadow-md: 0 8px 10px rgba(0,0,0,0.1);
-    --shadow-lg: 0 15px 25px rgba(0,0,0,0.1);
+    /* Modern shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(15 75% 55% / 0.1),
+        0 2px 4px -2px hsl(15 75% 55% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(15 75% 55% / 0.15),
+        0 4px 6px -4px hsl(15 75% 55% / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(15 75% 55% / 0.2),
+        0 8px 10px -6px hsl(15 75% 55% / 0.1);
+    --shadow-glow: 0 0 20px hsl(15 75% 55% / 0.3);
+    --shadow-elegant: 0 8px 30px hsl(15 75% 55% / 0.12);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 body.dark-mode {
-    --primary-color: #EF5350;
+    --primary-color: #ef5350;
     --primary-color-light: #212121;
-    --primary-color-dark: #D32F2F;
-    --secondary-color: #B0BEC5;
+    --primary-color-dark: #d32f2f;
+    --secondary-color: #b0bec5;
     --background-color: #121212;
     --surface-color: #212121;
-    --text-color: #ECEFF1;
-    --text-light-color: #90A4AE;
+    --text-color: #eceff1;
+    --text-light-color: #7d7671;
     --border-color: #424242;
 }
 
@@ -134,8 +170,8 @@ body.dark-mode {
 .icon-btn {
     background: none;
     border: none;
-    color: var(--text-light-color);
-    font-size: 1.5rem;
+    color: var(--black-color);
+    font-size: 16px;
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 50%;
@@ -149,6 +185,12 @@ body.dark-mode {
 .icon-btn:hover {
     background-color: var(--border-color);
     color: var(--text-color);
+}
+a,
+Button,
+Button:focus {
+    outline: none;
+    border: none;
 }
 
 /* Global Form Input Styles */

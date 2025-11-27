@@ -57,21 +57,27 @@
     background-color: var(--primary-color);
 }
 
-
 /* Icon Button - For header and actions */
 .icon-btn {
     background-color: transparent;
     border: none;
     color: var(--text-light-color);
-    font-size: 1.5rem;
+    font-size: 0.7rem;
     cursor: pointer;
     padding: var(--spacing-sm);
     border-radius: var(--border-radius-full);
     line-height: 1;
-    transition: background-color 0.2s, color 0.2s;
+    transition:
+        background-color 0.2s,
+        color 0.2s;
 }
 
 .icon-btn:hover {
     color: var(--text-color);
     background-color: var(--surface-color);
+}
+Button,
+Button:focus {
+    outline: none;
+    border: none;
 }

@@ -6,7 +6,7 @@
 .main-header {
     background-color: var(--light-color);
     border-bottom: var(--border-width) solid var(--border-color);
-    padding: 0 var(--spacing-md);
+    padding: 0 5px;
     position: fixed;
     top: 0;
     width: 100%;
@@ -23,92 +23,100 @@
     align-items: center;
     height: 100%;
 }
-
 .logo a {
-    font-size: 1.6rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+}
+.logo img {
+    height: 35px;
+    width: 35px;
+    border-radius: 100%;
+    will-change: filter;
+    transition: filter 300ms;
+}
+
+.logo a span {
+    font-size: 1.1rem;
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
     text-decoration: none;
 }
-
-/* Mobile Bottom Navigation */
+.logo a:hover {
+    color: var(--color-primary);
+}
+/* Mobile Bottom Navigation */ /* Bottom Navigation Premium - Bié Okutuala */
 .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
-    right: 0;
-    background-color: var(--light-color);
-    border-top: var(--border-width) solid var(--border-color);
+    width: 100%;
+    background: rgba(243, 244, 246, 0.7); /* var(--background) translucido */
+    backdrop-filter: blur(14px);
+    padding: 0.8rem 1rem;
     display: flex;
-    flex-wrap: nowrap;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center; /* Align items vertically */
-    padding: var(--spacing-xs) 0;
-    z-index: 1000;
-    height: var(--bottom-nav-height);
+    align-items: center;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 18px 18px 0 0;
+
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 999;
 }
 
-.nav-item {
-    /* Changed from .nav-icon */
-    color: var(--color-text-light);
-    text-align: center;
-    flex-grow: 1;
-    padding: var(--spacing-sm) 0;
-    transition:
-        color 0.2s ease,
-        transform 0.2s ease;
-    display: flex;
+/* Cada botão */
+.bottom-nav .nav-item {
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 4px; /* Space between icon and text */
+    padding: 7px 4px;
+    border-radius: 14px;
     text-decoration: none;
+    color: var(--black-color);
+    transition: all 0.28s ease;
 }
 
-.nav-item i {
-    font-size: 1.5rem; /* Slightly larger icons */
-    transition: transform 0.2s ease;
+/* Ícones */
+.bottom-nav .nav-item i {
+    font-size: 22px;
+    margin-bottom: 2px;
+    transition: 0.3s ease;
 }
 
-.nav-item .nav-text {
-    font-size: 0.75rem; /* Small text */
-    font-weight: var(--font-weight-medium);
+/* Texto */
+.bottom-nav .nav-item span {
+    font-size: 12.5px;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
-.nav-item.active {
-    color: var(--color-primary);
-    transform: translateY(-3px); /* Active item pops up slightly */
+/* Hover bonitinho */
+.bottom-nav .nav-item:hover {
+    background: rgba(212, 93, 0, 0.08); /* leve toque do primary */
 }
 
-.nav-item.active i {
-    transform: scale(1.1);
+.bottom-nav .nav-item:hover i {
+    transform: scale(1.13);
 }
 
-.nav-item.upload-center {
-    color: var(--color-white);
-    background-color: var(--color-primary);
-    border-radius: 50%;
-    width: 60px; /* Larger button */
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-lg);
-    border: 4px solid var(--light-color); /* Creates a nice border effect */
-    transform: translateY(-20px); /* Move it up */
-    transition:
-        transform 0.3s ease,
-        background-color 0.3s ease;
+/* 🔥 Item ativo */
+.bottom-nav .nav-item.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 14px rgba(212, 93, 0, 0.4);
+    transform: translateY(-4px);
 }
 
-.nav-item.upload-center:hover {
-    transform: translateY(-25px);
-    background-color: var(--color-primary-dark);
+.bottom-nav .nav-item.active i {
+    color: white;
+    transform: scale(1.2);
 }
 
-.nav-item.upload-center i {
-    font-size: 2rem;
-    color: var(--color-white);
+.bottom-nav .nav-item.active span {
+    color: white;
 }
 
 /* Mobile Sidebar (Hamburger Menu) */

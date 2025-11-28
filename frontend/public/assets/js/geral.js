@@ -11,40 +11,79 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    const setupDesktopHeader = () => {
+    const updateNav = () => {
         const userSession = JSON.parse(localStorage.getItem("user_session"));
-        const profileAvatar = document.querySelector(".profile-avatar");
-        const logoutBtn = document.getElementById("logout-btn");
+        const authRequiredLinks = document.querySelectorAll(".auth-required");
+        const authSidebarLinks = document.getElementById("auth-sidebar-links");
+        const guestSidebarLinks = document.getElementById("guest-sidebar-links");
+        const authUserView = document.getElementById("auth-user-view");
+        const guestUserView = document.getElementById("guest-user-view");
+        const profileAvatar = document.getElementById("profile-avatar");
 
-        if (userSession && profileAvatar) {
-            profileAvatar.src =
-                userSession.user.avatar_url ||
-                "../images/placeholders/avatar.png";
-        }
+        if (userSession) {
+            // Show authenticated user elements
+            if (authUserView) authUserView.style.display = "flex";
+            if (guestUserView) guestUserView.style.display = "none";
+            if (authSidebarLinks) authSidebarLinks.style.display = "block";
+            if (guestSidebarLinks) guestSidebarLinks.style.display = "none";
 
-        if (logoutBtn) {
-            logoutBtn.addEventListener("click", e => {
-                e.preventDefault();
-                localStorage.removeItem("user_session");
-                window.location.href = "/auth/login.html";
+            authRequiredLinks.forEach(link => {
+                link.style.display = "inline-flex"; // Ensure they are visible
+            });
+
+            // Update avatar
+            if (profileAvatar) {
+                profileAvatar.src =
+                    userSession.user.avatar_url ||
+                    "/assets/images/placeholders/avatar.png";
+            }
+        } else {
+            // Show guest user elements
+            if (authUserView) authUserView.style.display = "none";
+            if (guestUserView) guestUserView.style.display = "block";
+            if (authSidebarLinks) authSidebarLinks.style.display = "none";
+            if (guestSidebarLinks) guestSidebarLinks.style.display = "flex";
+
+            // Add click listener to auth-required links for guests
+            authRequiredLinks.forEach(link => {
+                link.addEventListener("click", e => {
+                    e.preventDefault(); // Prevent navigation
+                    window.location.href = "/auth/login.html"; // Redirect to login
+                });
             });
         }
+
+        // Add logout functionality
+        const logout = () => {
+            localStorage.removeItem("user_session");
+            window.location.href = "/auth/login.html";
+        };
+
+        const logoutBtn = document.getElementById("logout-btn");
+        if (logoutBtn) logoutBtn.addEventListener("click", logout);
+
+        const logoutBtnMobile = document.getElementById("logout-btn-mobile");
+        if (logoutBtnMobile) logoutBtnMobile.addEventListener("click", logout);
     };
 
     const setActiveNavIcon = () => {
         const currentPath = window.location.pathname;
-        const navIcons = document.querySelectorAll(".nav-icon");
+        const navItems = document.querySelectorAll(".bottom-nav .nav-item");
 
-        navIcons.forEach(icon => {
-            const iconPath = icon.getAttribute("href");
-            icon.classList.remove("active");
-            if (
-                currentPath === iconPath ||
-                (currentPath === "/" && iconPath === "/")
-            ) {
-                icon.classList.add("active");
+        navItems.forEach(item => {
+            item.classList.remove("active");
+            const itemPath = item.getAttribute("href");
+
+            if (currentPath === itemPath) {
+                item.classList.add("active");
             }
         });
+
+        // Fallback for root path
+        if (currentPath === "/") {
+            const homeItem = document.getElementById("nav-home");
+            if (homeItem) homeItem.classList.add("active");
+        }
     };
 
     const setupFAQToggle = () => {
@@ -75,26 +114,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (headerPlaceholder) {
             await loadComponent("/common/header.html", "header-placeholder");
-            setupDesktopHeader();
+            updateNav(); // Handles auth state for header and sidebar
         }
 
         if (footerPlaceholder) {
             await loadComponent("/common/footer.html", "footer-placeholder");
         }
 
-        // Setup mobile navigation if placeholder exists
-        const bottomNav = document.getElementById("bottomNav");
-        if (bottomNav) {
-            const response = await fetch("/common/header.html");
-            const text = await response.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(text, "text/html");
-            const mobileNavContent = doc.querySelector(".bottom-nav");
-            if (mobileNavContent) {
-                bottomNav.innerHTML = mobileNavContent.innerHTML;
-                setActiveNavIcon();
-            }
-        }
+        // The bottom nav is part of the header component, so it's already loaded.
+        // We just need to ensure the auth state and active icons are updated.
+        setActiveNavIcon();
 
         setupFAQToggle();
         setupMobileMenu();

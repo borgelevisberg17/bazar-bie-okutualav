@@ -117,35 +117,36 @@
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <!-- Mobile Bottom Navigation -->
-<nav class="bottom-nav show-on-mobile" id="bottomNav">
-    <a href="/" class="nav-item" aria-label="Home">
-        <i class="fa fa-home"></i>
-        <span class="nav-text">Início</span>
+<nav class="bottom-nav show-on-mobile">
+    <a href="/" class="nav-item" id="nav-home">
+        <i class="fas fa-home"></i>
+        <span>Início</span>
     </a>
-    <a href="/explore.html" class="nav-item" aria-label="Explore">
+    <a href="/explore.html" class="nav-item" id="nav-explore">
         <i class="fas fa-search"></i>
-        <span class="nav-text">Explorar</span>
+        <span>Explorar</span>
     </a>
     <a
         href="/upload.html"
-        class="nav-item upload-center auth-required"
-        aria-label="Upload"
+        class="nav-item nav-item-main auth-required"
+        id="nav-upload"
     >
-        <i class="fas fa-plus-circle">
-          
-        </i>
-         <span class="nav-text">Publicar</span>
+        <i class="fas fa-plus"></i>
     </a>
     <a
         href="/messages.html"
         class="nav-item auth-required"
-        aria-label="Messages"
+        id="nav-messages"
     >
-        <i class="fas fa-paper-plane"></i>
-        <span class="nav-text">Mensagens</span>
+        <i class="fas fa-comment-dots"></i>
+        <span>Mensagens</span>
     </a>
-    <a href="/profile.html" class="nav-item auth-required" aria-label="Profile">
+    <a
+        href="/profile.html"
+        class="nav-item auth-required"
+        id="nav-profile"
+    >
         <i class="fas fa-user-circle"></i>
-        <span class="nav-text">Perfil</span>
+        <span>Perfil</span>
     </a>
 </nav>

@@ -53,36 +53,38 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(243, 244, 246, 0.7); /* var(--background) translucido */
+    background: rgba(243, 244, 246, 0.6); /* var(--background) translucido */
     backdrop-filter: blur(14px);
-    padding: 0.8rem 1rem;
+    padding: 0.2rem 1rem;
     display: flex;
-    flex-direction: row;
+    flex-wrap: nowrap;
     justify-content: space-between;
-    align-items: center;
-
     border-top: 1px solid rgba(0, 0, 0, 0.12);
     border-radius: 18px 18px 0 0;
-
-    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.15);
     z-index: 999;
 }
 
 /* Cada botão */
 .bottom-nav .nav-item {
-    flex-direction: column;
+    position: relative;
+    display: flex;
     align-items: center;
-    padding: 7px 4px;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 4px;
     border-radius: 14px;
     text-decoration: none;
     color: var(--black-color);
+    overflow: hidden;
     transition: all 0.28s ease;
 }
 
 /* Ícones */
 .bottom-nav .nav-item i {
-    font-size: 22px;
-    margin-bottom: 2px;
+    font-size: 16px;
+    padding: 0.8rem;
+    border-radius: 16px;
+    margin-bottom: 0.7rem;
     transition: 0.3s ease;
 }
 
@@ -95,28 +97,45 @@
 
 /* Hover bonitinho */
 .bottom-nav .nav-item:hover {
-    background: rgba(212, 93, 0, 0.08); /* leve toque do primary */
+    /* leve toque do primary */
+    color: var(--primary-color);
 }
-
+.nav-item:focus {
+    outline: none;
+    border: none;
+}
 .bottom-nav .nav-item:hover i {
+    background: rgba(212, 93, 0, 0.09);
     transform: scale(1.13);
 }
 
-/* 🔥 Item ativo */
+/*Item ativo */
 .bottom-nav .nav-item.active {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 4px 14px rgba(212, 93, 0, 0.4);
-    transform: translateY(-4px);
+    color: var(--primary-color);
 }
 
 .bottom-nav .nav-item.active i {
-    color: white;
+    background: rgba(212, 93, 0, 0.09);
+    color: var(--primary-color);
     transform: scale(1.2);
 }
 
 .bottom-nav .nav-item.active span {
-    color: white;
+    color: var(--primary-color);
+}
+
+.bottom-nav .nav-item.upload-center {
+    color: var(--primary-color);
+}
+
+.bottom-nav .nav-item.upload-center i {
+    background: var(--primary-color);
+    color: var(--light-color);
+    transform: scale(1.2);
+}
+
+.bottom-nav .nav-item.upload-center span {
+    color: var(--primary-color);
 }
 
 /* Mobile Sidebar (Hamburger Menu) */

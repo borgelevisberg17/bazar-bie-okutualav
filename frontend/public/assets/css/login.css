@@ -4,32 +4,38 @@
 
 /* Full-page container for auth forms */
 .auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    height: 100%;
+    text-align: center;
     background-color: var(--background-color);
-    padding: var(--spacing-lg);
+    min-height: 100vh;
 }
 
 /* The card holding the form */
 .auth-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    padding: 10px;
     background-color: var(--surface-color);
-    padding: var(--spacing-xl);
-    border-radius: var(--border-radius-xl);
     border: 1px solid var(--border-color);
     width: 100%;
     max-width: 450px; /* Max width for the card on larger screens */
     box-shadow: var(--shadow-lg);
+    transition: all 0.4s ease;
 }
 
 .auth-title {
     text-align: center;
-    font-size: 2rem;
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-lg);
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
-
+.brand-name {
+    color: var(--primary-color);
+    font-weight: 800;
+}
 /* Form elements */
 .form-group {
     margin-bottom: var(--spacing-lg);
@@ -38,17 +44,17 @@
 .form-label {
     display: block;
     font-weight: var(--font-weight-medium);
+    font-size: 0.9rem;
     margin-bottom: var(--spacing-sm);
 }
 
 .form-control {
     width: 100%;
-    padding: var(--spacing-md);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-size: 1rem;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: var(--transition);
 }
 .form-control:focus {
     outline: none;
@@ -62,22 +68,12 @@
 
 /* Social Login */
 .social-login {
-    margin: var(--spacing-lg) 0;
-    text-align: center;
-    position: relative;
-}
-
-/* Divider with text (e.g., "OR") */
-.social-login::before {
-    content: '';
-    display: block;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     width: 100%;
-    height: 1px;
-    background-color: var(--border-color);
-    position: absolute;
-    left: 0;
-    top: 50%;
-    z-index: 1;
+    position: relative;
 }
 
 .social-login-text {
@@ -89,15 +85,30 @@
 }
 
 .btn-social-google {
-    background-color: #fff;
-    color: #444;
-    border: 1px solid var(--border-color);
-    margin-top: var(--spacing-lg);
+    padding: 16px 24px;
+    border-radius: 15px;
+    border: none;
+    width: 90%;
+    color: var(--light-color);
+    background: var(--primary-color);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 .btn-social-google:hover {
-    background-color: #f8f8f8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
-
+.btn-social-google svg {
+    width: 18px;
+    height: 18px;
+}
 /* Switch between Login/Register */
 .auth-switch {
     text-align: center;

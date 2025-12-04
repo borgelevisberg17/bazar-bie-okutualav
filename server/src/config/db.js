@@ -1,7 +1,4 @@
 // server/src/config/db.js
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
-
 const chalk = require("chalk"); // 🔹 Melhor visual para logs
 let db, mode, pgp;
 

@@ -11,9 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let isLoading = false;
     let hasMore = true;
 
+    const loadingAnimation = document.getElementById('loading-animation');
+
     const loadProducts = async (page) => {
         if (isLoading || !hasMore) return;
         isLoading = true;
+        loadingAnimation.style.display = 'block';
 
         try {
             const productsData = await getProducts(page, productsPerPage);
@@ -36,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             showToast("Erro ao carregar o feed.", "error");
         } finally {
             isLoading = false;
+            loadingAnimation.style.display = 'none';
         }
     };
 

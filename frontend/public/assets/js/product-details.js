@@ -40,13 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
 
                     <div class="product-actions">
-                        <div class="quantity-selector">
-                            <button class="btn-quantity" id="decrease-qty"><i class="fas fa-minus"></i></button>
-                            <span id="quantity-display">1</span>
-                            <button class="btn-quantity" id="increase-qty"><i class="fas fa-plus"></i></button>
-                        </div>
-                        <button class="btn btn-primary btn-add-to-cart" id="add-to-cart-btn">
-                            <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
+                        <button class="btn btn-primary btn-block" id="whatsapp-checkout-btn">
+                            <i class="fab fa-whatsapp"></i> Comprar no WhatsApp
                         </button>
                     </div>
 
@@ -102,6 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Like button
         const likeBtn = document.getElementById('like-btn');
         likeBtn.addEventListener('click', () => handleLikeToggle(product.id, likeBtn));
+
+        // WhatsApp checkout button
+        const whatsappBtn = document.getElementById('whatsapp-checkout-btn');
+        whatsappBtn.addEventListener('click', () => {
+            const message = `Olá, tenho interesse no produto ${product.name}. ${window.location.href}`;
+            const whatsappUrl = `https://wa.me/${product.seller.phone_number}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        });
 
         // Comment form
         const commentInput = document.getElementById('comment-input');

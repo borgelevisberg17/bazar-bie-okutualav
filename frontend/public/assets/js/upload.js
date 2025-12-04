@@ -1,7 +1,11 @@
 import { showToast } from './notifications.js';
 import { uploadProduct, getCategories } from './services/api.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+import { getSubscriptionStatus } from './services/api.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const subscriptionGate = document.getElementById('subscription-gate');
+    const uploadContainer = document.getElementById('upload-container');
     const form = document.getElementById('upload-product-form');
     const imageInput = document.getElementById('product-images');
     const previewContainer = document.getElementById('image-preview-container');
@@ -62,6 +66,23 @@ document.addEventListener('DOMContentLoaded', () => {
             removeImage(index);
         }
     });
+
+    // Check subscription status
+    try {
+        const response = await getSubscriptionStatus();
+        if (response.data.has_subscription) {
+            subscriptionGate.style.display = 'none';
+            uploadContainer.style.display = 'block';
+            populateCategories();
+        } else {
+            subscriptionGate.style.display = 'block';
+            uploadContainer.style.display = 'none';
+        }
+    } catch (error) {
+        subscriptionGate.style.display = 'block';
+        uploadContainer.style.display = 'none';
+        showToast('Erro ao verificar a sua subscrição.', 'error');
+    }
 
     // Handle form submission
     form.addEventListener('submit', async (e) => {

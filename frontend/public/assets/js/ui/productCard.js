@@ -18,7 +18,7 @@ export function renderProductPost(product, socialFeed) {
     const images =
         product.images && product.images.length > 0
             ? product.images
-            : [{ image_url: "assets/images/placeholders/product.png" }];
+            : [{ image_url: "../images/placeholders/product.png" }];
     const imageSlides = images
         .map(
             image => `

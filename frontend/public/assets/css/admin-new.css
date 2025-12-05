@@ -1,0 +1,64 @@
+:root {
+    --primary-color: #6a11cb;
+    --secondary-color: #2575fc;
+    --background-color: #f0f2f5;
+    --card-background-color: #ffffff;
+    --text-color: #333;
+    --sidebar-bg: #1e293b;
+    --sidebar-text: #cbd5e1;
+    --topbar-bg: #ffffff;
+    --border-color: #e5e7eb;
+    --transition-speed: 0.3s;
+}
+
+body.theme-dark {
+    --background-color: #0f172a;
+    --card-background-color: #1e293b;
+    --text-color: #cbd5e1;
+    --sidebar-bg: #0f172a;
+    --topbar-bg: #1e293b;
+    --border-color: #334155;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.btn {
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.card {
+    transition: box-shadow var(--transition-speed);
+}
+
+.card:hover {
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+}
+
+.nav-item {
+    transition: background-color var(--transition-speed);
+}
+
+.modal-content {
+    animation: slide-down 0.5s ease-out;
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

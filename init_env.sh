@@ -2,6 +2,7 @@
 pkill node
 pkill live-server
 cd server
+sleep 5
 node migrate_local.js
 node scripts/seed.js
 nohup npm run dev > /tmp/backend-server.log 2>&1 &

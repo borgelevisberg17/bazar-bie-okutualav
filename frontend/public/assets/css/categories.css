@@ -1,73 +1,36 @@
 /* ==========================================================================
-   Categories Page Styles
+   Category Filters - Modern Design
    ========================================================================== */
 
-.categories-section {
-    padding: var(--spacing-xl) 0;
-}
-
-.section-header {
-    text-align: center;
+#category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
     margin-bottom: var(--spacing-xl);
 }
 
-.section-title {
-    font-size: 2.5rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text);
-    margin-bottom: var(--spacing-sm);
-}
-
-.section-subtitle {
-    font-size: 1.1rem;
-    color: var(--color-text-light);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--spacing-lg);
-}
-
-.category-card {
-    background-color: var(--color-surface);
-    border-radius: var(--border-radius-xl);
-    text-decoration: none;
-    color: var(--color-text);
-    box-shadow: var(--shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
+.category-filter-item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: var(--spacing-xl);
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-lg);
     border: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.category-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
+.category-filter-item:hover,
+.category-filter-item.active {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
     border-color: var(--color-primary);
 }
 
-.category-card-title {
-    font-size: 1.5rem;
-    font-weight: var(--font-weight-semibold);
+.category-filter-item i {
+    font-size: 1.2rem;
 }
 
-/* Skeleton loader for categories */
-.skeleton-card {
-    background-color: var(--color-gray-200);
-    border-radius: var(--border-radius-xl);
-    height: 150px;
-    animation: pulse 1.5s infinite ease-in-out;
-}
-
-@keyframes pulse {
-    0% { background-color: var(--color-gray-200); }
-    50% { background-color: var(--color-gray-300); }
-    100% { background-color: var(--color-gray-200); }
+.category-filter-item span {
+    font-weight: var(--font-weight-medium);
 }

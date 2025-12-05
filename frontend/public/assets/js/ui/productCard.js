@@ -49,8 +49,8 @@ export function renderProductPost(product, socialFeed) {
                 <img src="${
                     product.seller?.avatar_url ||
                     "assets/images/placeholders/avatar.png"
-                }" alt="${product.seller?.name}" class="seller-avatar">
-                <span class="seller-name">${product.seller?.name}</span>
+                }" alt="${product.seller?.name || 'Vendedor não encontrado'}" class="seller-avatar">
+                <span class="seller-name">${product.seller?.name || 'Vendedor não encontrado'}</span>
             </a>
             <button class="post-options-btn"><i class="fas fa-ellipsis-h"></i></button>
         </header>
@@ -111,6 +111,7 @@ export function renderProductPost(product, socialFeed) {
     setupCarousel(postCard);
     setupQuickView(postCard);
     setupLikeButtons(postCard);
+    setupShareButtons(postCard, product);
 }
 
 function setupLikeButtons(postCard) {
@@ -150,6 +151,18 @@ function setupLikeButtons(postCard) {
             } finally {
                 likeBtn.disabled = false;
             }
+        });
+    }
+}
+
+function setupShareButtons(postCard, product) {
+    const shareBtn = postCard.querySelector('[data-action="share"]');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            const productUrl = `${window.location.origin}/product.html?id=${product.id}`;
+            navigator.clipboard.writeText(productUrl)
+                .then(() => showToast('Link do produto copiado!', 'success'))
+                .catch(() => showToast('Erro ao copiar o link.', 'error'));
         });
     }
 }

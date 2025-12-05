@@ -79,3 +79,6 @@ export const createMessage = (message) => api.post("/messages", message);
 export const likeProduct = (productId) => api.post(`/products/${productId}/like`);
 export const unlikeProduct = (productId) => api.post(`/products/${productId}/unlike`);
 export const addComment = (productId, comment) => api.post(`/products/${productId}/comments`, { comment });
+export const login = (email, password) => api.post('/auth/login', { email, password });
+export const register = (name, email, password) => api.post('/auth/register', { name, email, password });
+export const getSubscriptionStatus = () => api.get('/users/me/subscription');

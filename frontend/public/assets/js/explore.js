@@ -4,6 +4,7 @@ import { showToast } from './notifications.js';
 document.addEventListener('DOMContentLoaded', () => {
     const productsGrid = document.getElementById('products-grid-explore');
     const categoryFilters = document.getElementById('category-filters');
+    const loadingAnimation = document.getElementById('loading-animation');
     const priceRange = document.getElementById('price-range');
     const priceValue = document.getElementById('price-value');
 
@@ -48,21 +49,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderCategories = (categories) => {
         if (!categoryFilters) return;
         const categoriesHTML = categories.map(category => `
-            <div class="filter-option">
-                <input type="radio" id="cat-${category.slug}" name="category" value="${category.slug}">
-                <label for="cat-${category.slug}">${category.name}</label>
+            <div class="category-filter-item" data-category="${category.slug}">
+                <i class="${category.icon || 'fas fa-tag'}"></i>
+                <span>${category.name}</span>
             </div>
         `).join('');
         categoryFilters.innerHTML = categoriesHTML;
-    };
 
-    const loadProducts = async () => {
-        try {
-            const response = await getProducts(currentPage, 12, currentCategory);
-            renderProducts(response.data);
-        } catch (error) {
-            showToast('Erro ao carregar os produtos.', 'error');
-        }
+        document.querySelectorAll('.category-filter-item').forEach(item => {
+            item.addEventListener('click', () => {
+                currentCategory = item.dataset.category;
+                currentPage = 1;
+                loadProducts();
+                document.querySelector('.category-filter-item.active')?.classList.remove('active');
+                item.classList.add('active');
+            });
+        });
     };
 
     const loadCategories = async () => {
@@ -74,10 +76,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    let isLoading = false;
+    let hasMore = true;
+
+    const loadProducts = async () => {
+        if (isLoading || !hasMore) return;
+        isLoading = true;
+        loadingAnimation.style.display = 'block';
+
+        try {
+            const response = await getProducts(currentPage, 12, currentCategory);
+            const products = response.data;
+            renderProducts(products);
+
+            if (products.length === 0) {
+                hasMore = false;
+            } else {
+                currentPage++;
+            }
+        } catch (error) {
+            showToast('Erro ao carregar os produtos.', 'error');
+        } finally {
+            isLoading = false;
+            loadingAnimation.style.display = 'none';
+        }
+    };
+
     priceRange.addEventListener('input', () => {
         priceValue.textContent = `Kz ${new Intl.NumberFormat('pt-AO').format(priceRange.value)}`;
     });
 
+    const setupInfiniteScroll = () => {
+        const sentinel = document.createElement('div');
+        sentinel.id = 'sentinel';
+        productsGrid.insertAdjacentElement('afterend', sentinel);
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && hasMore) {
+                loadProducts();
+            }
+        }, { threshold: 0.5 });
+
+        observer.observe(sentinel);
+    };
+
     loadProducts();
     loadCategories();
+    setupInfiniteScroll();
 });

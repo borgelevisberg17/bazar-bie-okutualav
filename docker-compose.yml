@@ -35,7 +35,7 @@ services:
     environment:
       POSTGRESQL_DATABASE: ${POSTGRES_DB:-bazar}
       POSTGRESQL_USER: ${POSTGRES_USER:-bazar}
-      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-bazarpass}
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-securepassword}
     ports:
       - "5432:5432"
     volumes:

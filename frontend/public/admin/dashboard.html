@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Mídia Bazar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="../assets/css/admin-new.css">
+</head>
+<body class="theme-light">
+    <div class="admin-panel">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="logo">
+                    <i class="fa-solid fa-store"></i>
+                    <h1>Mídia Bazar</h1>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-link active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+                <a href="#users" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a>
+                <a href="#products" class="nav-link"><i class="fas fa-box-open"></i> <span>Publicações</span></a>
+                <a href="#statistics" class="nav-link"><i class="fas fa-chart-line"></i> <span>Estatísticas</span></a>
+                <a href="#settings" class="nav-link"><i class="fas fa-cog"></i> <span>Configurações</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                 <a href="#" id="logout-btn" class="nav-link"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
+            </div>
+        </aside>
+        <div class="main-wrapper">
+            <header class="topbar">
+                 <button class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Pesquisar...">
+                </div>
+                <div class="topbar-right">
+                    <div class="theme-switcher">
+                        <input type="checkbox" id="theme-toggle" class="theme-toggle-checkbox">
+                        <label for="theme-toggle" class="theme-toggle-label">
+                            <i class="fas fa-moon"></i>
+                            <i class="fas fa-sun"></i>
+                        </label>
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://i.pravatar.cc/150?img=3" alt="User Avatar" class="avatar">
+                    </div>
+                </div>
+            </header>
+            <main class="main-content">
+                <div id="dashboard" class="content-section active">
+                    <div class="section-header">
+                         <h2>Dashboard</h2>
+                         <p>Visão geral e estatísticas recentes.</p>
+                    </div>
+                    <div class="stats-cards">
+                        <!-- Stat cards will be loaded by JS -->
+                        <div class="stat-card is-loading"></div>
+                        <div class="stat-card is-loading"></div>
+                        <div class="stat-card is-loading"></div>
+                        <div class="stat-card is-loading"></div>
+                    </div>
+                    <div class="charts">
+                        <div class="chart-container card">
+                            <h3>Vendas Mensais</h3>
+                            <canvas id="sales-chart"></canvas>
+                        </div>
+                        <div class="chart-container card">
+                             <h3>Distribuição de Usuários</h3>
+                            <canvas id="users-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div id="users" class="content-section">
+                    <div class="section-header">
+                        <h2>Gerenciar Usuários</h2>
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Usuário</button>
+                    </div>
+                    <div class="table-container card">
+                        <table id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Função</th>
+                                    <th>Registrado em</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- User rows will be loaded by JS -->
+                                <tr><td colspan="6" class="loading-state">Carregando usuários...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="products" class="content-section">
+                    <div class="section-header">
+                        <h2>Gerenciar Publicações</h2>
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Publicação</button>
+                    </div>
+                    <div class="table-container card">
+                        <table id="products-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Vendedor</th>
+                                    <th>Categoria</th>
+                                    <th>Preço</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Product rows will be loaded by JS -->
+                                <tr><td colspan="7" class="loading-state">Carregando publicações...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="statistics" class="content-section">
+                     <div class="section-header">
+                        <h2>Estatísticas Avançadas</h2>
+                        <p>Análise detalhada do desempenho da plataforma.</p>
+                    </div>
+                </div>
+                <div id="settings" class="content-section">
+                     <div class="section-header">
+                        <h2>Configurações</h2>
+                        <p>Gerencie as configurações gerais do painel e da plataforma.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="../assets/js/admin-new.js"></script>
+</body>
+</html>

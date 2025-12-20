@@ -128,7 +128,7 @@ db.runQuery = async (sql, params = []) => {
             log.warn("🔁 Tentando reconectar...");
             const pgp = require("pg-promise")({});
             db = pgp(
-                process.env.DATABASE_URL_Local || process.env.DATABASE_URL
+                process.env.DATABASE_URL_LOCAL || process.env.DATABASE_URL
             );
             return await db.any(sql, params);
         } catch (fallbackErr) {

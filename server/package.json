@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "cross-env DOTENV_CONFIG_PATH=./.env nodemon -r dotenv/config src/index.js",
+    "dev": "cross-env NODE_ENV=development DOTENV_CONFIG_PATH=./.env nodemon -r dotenv/config src/index.js",
     "test": "cross-env NODE_ENV=test DATABASE_URL_LOCAL='postgresql://bazar:bazarpass@localhost:5432/bazar' jest --runInBand --silent",
     "setup:db": "node migrate_local.js postgresql://bazar:bazarpass@localhost:5432/bazar",
     "manual:migration": "node scripts/manual_migration.js postgresql://bazar:bazarpass@localhost:5432/bazar",

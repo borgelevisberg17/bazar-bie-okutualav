@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const session = await login(email, password);
                 setSession(session);
-                window.location.href = '/admin/index.html';
+                window.location.href = '/admin/dashboard.html';
             } catch (error) {
                 console.error('Login failed:', error);
                 // You can add a user-facing error message here

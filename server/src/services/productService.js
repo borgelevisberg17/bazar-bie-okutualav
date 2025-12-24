@@ -1,91 +1,55 @@
 const repo = require("../repositories/productsRepo");
+const cacheService = require("./cacheService");
 const search = require("./searchService");
 
-/**
- * Lists products with pagination and optional search query.
- * @param {Object} options - The options for listing products.
- * @param {number} [options.page=1] - The page number.
- * @param {number} [options.limit=10] - The number of items per page.
- * @param {string} [options.status] - The product status to filter by.
- * @param {string} [options.sellerId] - The seller ID to filter by.
- * @returns {Promise<Object>} A promise that resolves to an object containing the product data and pagination info.
- */
-exports.list = async ({ page, limit, status, sellerId }) => {
-  // if (q) return search.searchProducts(q, { page, limit });
-  return repo.list({ page, limit, status, sellerId });
+const PRODUCTS_CACHE_KEY = (options) =>
+    `products:page:${options.page}:limit:${options.limit}:status:${options.status || ""}:seller:${options.sellerId || ""}`;
+const PRODUCT_DETAILS_CACHE_KEY = (id) => `product:details:${id}`;
+
+exports.list = async (options) => {
+    const cacheKey = PRODUCTS_CACHE_KEY(options);
+    return cacheService.getOrSet(cacheKey, () => repo.list(options));
 };
 
-/**
- * Retrieves a single product by its ID.
- * @param {string} id - The ID of the product to retrieve.
- * @returns {Promise<Object|null>} A promise that resolves to the product object, or null if not found.
- */
 exports.get = (id) => repo.get(id);
 
-/**
- * Retrieves detailed information for a single product by its ID.
- * @param {string} id - The ID of the product to retrieve.
- * @returns {Promise<Object|null>} A promise that resolves to the detailed product object, or null if not found.
- */
-exports.getDetails = (id) => repo.getDetails(id);
+exports.getDetails = (id) => {
+    const cacheKey = PRODUCT_DETAILS_CACHE_KEY(id);
+    return cacheService.getOrSet(cacheKey, () => repo.getDetails(id));
+};
 
-/**
- * Creates a new product and indexes it in the search service.
- * @param {string} sellerUid - The ID of the seller creating the product.
- * @param {Object} payload - The product data.
- * @returns {Promise<Object>} A promise that resolves to the newly created product object.
- */
 exports.create = async (sellerUid, payload) => {
-  const product = await repo.create(sellerUid, payload);
-  search.indexProduct(product).catch(() => {}); // async sem travar
-  return product;
+    const product = await repo.create(sellerUid, payload);
+    cacheService.del(PRODUCTS_CACHE_KEY({ page: 1, limit: 10, status: "approved" }));
+    search.indexProduct(product).catch(() => {});
+    return product;
 };
 
-/**
- * Updates an existing product.
- * @param {string} id - The ID of the product to update.
- * @param {Object} payload - The updated product data.
- * @returns {Promise<Object>} A promise that resolves to the updated product object.
- */
-exports.update = (id, payload) => repo.update(id, payload);
+exports.update = (id, payload) => {
+    cacheService.del(PRODUCT_DETAILS_CACHE_KEY(id));
+    return repo.update(id, payload);
+};
 
-/**
- * Removes a product from the database and the search index.
- * @param {string} id - The ID of the product to remove.
- * @returns {Promise<void>}
- */
 exports.remove = async (id) => {
-  await repo.remove(id);
-  await search.removeProduct(id).catch(() => {});
+    await repo.remove(id);
+    cacheService.del(PRODUCT_DETAILS_CACHE_KEY(id));
+    await search.removeProduct(id).catch(() => {});
 };
 
-/**
- * Likes a product.
- * @param {string} productId - The ID of the product to like.
- * @param {string} userId - The ID of the user liking the product.
- * @returns {Promise<Object>} A promise that resolves to the updated like status and count.
- */
 exports.like = async (productId, userId) => {
-    return repo.like(productId, userId);
+    const result = await repo.like(productId, userId);
+    cacheService.del(PRODUCT_DETAILS_CACHE_KEY(productId));
+    return result;
 };
 
-/**
- * Unlikes a product.
- * @param {string} productId - The ID of the product to unlike.
- * @param {string} userId - The ID of the user unliking the product.
- * @returns {Promise<Object>} A promise that resolves to the updated like status and count.
- */
 exports.unlike = async (productId, userId) => {
-    return repo.unlike(productId, userId);
+    const result = await repo.unlike(productId, userId);
+    cacheService.del(PRODUCT_DETAILS_CACHE_KEY(productId));
+    return result;
 };
 
-/**
- * Adds a comment to a product.
- * @param {string} productId - The ID of the product to comment on.
- * @param {string} userId - The ID of the user adding the comment.
- * @param {string} comment - The comment text.
- * @returns {Promise<Object>} A promise that resolves to the newly created comment object.
- */
 exports.addComment = async (productId, userId, comment) => {
-    return repo.addComment(productId, userId, comment);
+    const result = await repo.addComment(productId, userId, comment);
+    cacheService.del(PRODUCT_DETAILS_CACHE_KEY(productId));
+    return result;
 };

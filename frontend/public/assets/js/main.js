@@ -1,62 +1,59 @@
 // frontend/public/assets/js/main.js
-
-import { showToast } from "./notifications.js";
 import { getProducts } from "./services/api.js";
-import { renderProductPost } from "./ui/productCard.js";
+import { showToast } from "./notifications.js";
+import { ProductCard } from "./ui/components/ProductCard.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-    const socialFeed = document.getElementById("social-feed");
-    let currentPage = 1;
-    const productsPerPage = 10;
-    let isLoading = false;
-    let hasMore = true;
+const { createApp, ref, onMounted } = Vue;
 
-    const loadingAnimation = document.getElementById('loading-animation');
+createApp({
+  components: {
+    ProductCard,
+  },
+  setup() {
+    const products = ref([]);
+    const currentPage = ref(1);
+    const isLoading = ref(false);
+    const hasMore = ref(true);
 
-    const loadProducts = async (page) => {
-        if (isLoading || !hasMore) return;
-        isLoading = true;
-        loadingAnimation.style.display = 'block';
+    const loadProducts = async () => {
+      if (isLoading.value || !hasMore.value) return;
+      isLoading.value = true;
 
-        try {
-            const productsData = await getProducts(page, productsPerPage);
-            const products = productsData?.data || [];
-
-            if (products.length === 0) {
-                hasMore = false;
-                if(page === 1) {
-                    socialFeed.innerHTML = "<p>Nenhum produto encontrado. Comece a seguir vendedores!</p>";
-                }
-            } else {
-                products.forEach(product => renderProductPost(product, socialFeed));
-                currentPage++;
-            }
-            if (products.length < productsPerPage) {
-                hasMore = false;
-            }
-
-        } catch (error) {
-            showToast("Erro ao carregar o feed.", "error");
-        } finally {
-            isLoading = false;
-            loadingAnimation.style.display = 'none';
+      try {
+        const response = await getProducts(currentPage.value, 10);
+        const newProducts = response?.data || [];
+        if (newProducts.length > 0) {
+          products.value = [...products.value, ...newProducts];
+          currentPage.value++;
         }
+        if (newProducts.length < 10) {
+          hasMore.value = false;
+        }
+      } catch (error) {
+        showToast("Erro ao carregar o feed.", "error");
+        hasMore.value = false;
+      } finally {
+        isLoading.value = false;
+      }
     };
 
-    const setupInfiniteScroll = () => {
-        const sentinel = document.getElementById('sentinel') || document.createElement('div');
-        sentinel.id = 'sentinel';
-        socialFeed.insertAdjacentElement('afterend', sentinel);
+    onMounted(() => {
+      loadProducts(); // Load initial products
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasMore.value) {
+            loadProducts();
+          }
+        },
+        { threshold: 0.5 },
+      );
+      observer.observe(document.getElementById("sentinel"));
+    });
 
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && hasMore) {
-                loadProducts(currentPage);
-            }
-        }, { threshold: 0.5 });
-
-        observer.observe(sentinel);
+    return {
+      products,
+      isLoading,
+      hasMore,
     };
-
-    loadProducts(currentPage);
-    setupInfiniteScroll();
-});
+  },
+}).mount("#social-feed-app");

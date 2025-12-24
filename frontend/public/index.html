@@ -40,21 +40,28 @@
         <header id="header-placeholder"></header>
 
         <!-- Main Content -->
-        <main class="container main-content">
+        <main class="container main-content" id="social-feed-app">
             <!-- Social Feed Container -->
-            <section class="social-feed" id="social-feed">
-                <!-- Product posts will be dynamically inserted here -->
+            <section class="social-feed">
+                <product-card v-for="product in products" :key="product.id" :product="product"></product-card>
             </section>
-            <div id="loading-animation" class="loading-animation" style="display: none;">
+
+            <div id="loading-animation" v-if="isLoading" class="loading-animation">
                 <div class="spinner"></div>
             </div>
+
+            <div id="sentinel"></div>
+
+            <p v-if="!hasMore && products.length > 0" class="text-center">Fim do feed.</p>
+            <p v-if="!isLoading && products.length === 0" class="text-center">Nenhum produto encontrado.</p>
+
         </main>
 
         <!-- Footer Placeholder -->
         <footer id="footer-placeholder"></footer>
 
-        <!-- Quick View Modal -->
-        <div class="modal-overlay" id="quick-view-modal">
+        <!-- Quick View Modal (Could be a Vue component in the future) -->
+        <div class="modal-overlay" id="quick-view-modal" style="display: none;">
             <div class="modal-content">
                 <button class="modal-close-btn" id="modal-close-btn">
                     <i class="fas fa-times"></i>
@@ -64,6 +71,7 @@
         </div>
 
         <!-- JavaScript -->
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script type="module" src="assets/js/auth.js"></script>
         <script type="module" src="assets/js/geral.js"></script>

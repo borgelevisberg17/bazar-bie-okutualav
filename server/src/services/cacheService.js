@@ -1,20 +1,49 @@
-const redis = require('../config/redis');
+// server/src/services/cacheService.js
+const redisClient = require("../config/redis.js");
+const chalk = require("chalk");
 
-/**
- * Retrieves a value from the cache.
- * @param {string} k - The cache key.
- * @returns {Promise<any|null>} A promise that resolves to the cached value, or null if not found.
- */
-exports.get = async (k) => {
-  const v = await redis.get(k);
-  return v ? JSON.parse(v) : null;
+const log = {
+    info: (msg) => console.log(chalk.yellowBright(`[CACHE] ${msg}`)),
 };
 
-/**
- * Sets a value in the cache.
- * @param {string} k - The cache key.
- * @param {*} v - The value to cache.
- * @param {number} [ttl=60] - The time-to-live for the cache entry in seconds.
- * @returns {Promise<void>}
- */
-exports.set = (k,v,ttl=60) => redis.set(k, JSON.stringify(v), 'EX', ttl);
+const DEFAULT_EXPIRATION = 3600; // 1 hour in seconds
+
+async function get(key) {
+    const value = await redisClient.get(key);
+    if (value) {
+        log.info(`HIT: ${key}`);
+        return JSON.parse(value);
+    }
+    log.info(`MISS: ${key}`);
+    return null;
+}
+
+async function set(key, value, expiration = DEFAULT_EXPIRATION) {
+    log.info(`SET: ${key}`);
+    await redisClient.setEx(key, expiration, JSON.stringify(value));
+}
+
+async function del(key) {
+    log.info(`DEL: ${key}`);
+    await redisClient.del(key);
+}
+
+async function getOrSet(key, cb, expiration = DEFAULT_EXPIRATION) {
+    const cachedValue = await get(key);
+    if (cachedValue) {
+        return cachedValue;
+    }
+
+    const freshValue = await cb();
+    if (freshValue) {
+        await set(key, freshValue, expiration);
+    }
+    return freshValue;
+}
+
+module.exports = {
+    get,
+    set,
+    del,
+    getOrSet,
+};

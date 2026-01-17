@@ -1,17 +1,29 @@
 const { MeiliSearch } = require("meilisearch");
 
-/**
- * MeiliSearch client instance.
- * @type {import('meilisearch').MeiliSearch}
- */
-const meili = new MeiliSearch({
-  host: process.env.MEILI_HOST || "http://localhost:7700",
-  apiKey: process.env.MEILI_MASTER_KEY || "",
-});
+const host = process.env.MEILI_HOST || "http://localhost:7700";
+const apiKey = process.env.MEILI_MASTER_KEY || "";
 
-// Log simples para debug (apenas em dev)
-if (process.env.NODE_ENV !== "production") {
-  console.log("🔍 MeiliSearch conectado em:", process.env.MEILI_HOST || "http://localhost:7700");
+let meili;
+
+try {
+  meili = new MeiliSearch({ host, apiKey });
+  
+  // Verificação básica de saúde (não bloqueante)
+  if (process.env.NODE_ENV !== "production") {
+    meili.isHealthy().then(h => {
+      if (h) console.log(`🔍 MeiliSearch ativo em: ${host}`);
+    }).catch(() => {
+      console.warn(`⚠️ MeiliSearch não encontrado em: ${host}. Funcionalidades de busca podem falhar.`);
+    });
+  }
+} catch (error) {
+  console.error("❌ Erro ao inicializar MeiliSearch:", error.message);
+  meili = {
+    index: () => ({
+      search: async () => ({ hits: [], message: "Search service unavailable" }),
+      addDocuments: async () => ({ message: "Search service unavailable" })
+    })
+  };
 }
 
 module.exports = meili;

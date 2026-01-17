@@ -12,19 +12,31 @@ const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
 
 const redisClient = createClient({
     url: redisUrl,
+    socket: {
+        reconnectStrategy: (retries) => {
+            if (retries > 5) {
+                log.error("Redis reconnection failed after 5 attempts. Continuing without Redis.");
+                return false; // Para de tentar
+            }
+            return Math.min(retries * 100, 3000);
+        }
+    }
 });
 
-redisClient.on("connect", () => log.info("Connecting to Redis..."));
-redisClient.on("ready", () => log.success("Client connected to Redis and ready to use."));
-redisClient.on("error", (err) => log.error(`Redis Client Error: ${err.message}`));
-redisClient.on("end", () => log.info("Client disconnected from Redis."));
+redisClient.on("error", (err) => {
+    // Apenas loga o erro sem derrubar o processo
+    if (process.env.NODE_ENV !== 'test') {
+        log.error(`Redis Error: ${err.message}`);
+    }
+});
 
-// Connect the client
 (async () => {
     try {
-        await redisClient.connect();
+        if (process.env.NODE_ENV !== 'test') {
+            await redisClient.connect();
+        }
     } catch (err) {
-        log.error(`Failed to connect to Redis: ${err.message}`);
+        log.error(`Could not establish connection to Redis: ${err.message}`);
     }
 })();
 

@@ -19,16 +19,12 @@ const app = express();
 // Segurança & Middleware
 // ======================
 app.use(helmet());
+
+// Configuração dinâmica de CORS
 const whitelist = [
   'https://bie-okutuala.vercel.app',
-  'http://localhost:8080',
-  'http://127.0.0.1:8080',
-  'http://localhost:4000',
-  'http://localhost:3000',
-  'http://127.0.0.1:5500',
-  'http://127.0.0.1:5501',
-  'http://localhost:44057',
-  'http://localhost:5173'
+  'http://localhost:5173',
+  'http://127.0.0.1:5173'
 ];
 
 if (process.env.FRONTEND_URL) {
@@ -37,13 +33,16 @@ if (process.env.FRONTEND_URL) {
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (whitelist.includes(origin) || !origin) {
+    // Permitir requisições sem origin (como apps mobile ou curl) ou se estiver na whitelist
+    if (!origin || whitelist.includes(origin) || process.env.NODE_ENV === 'development') {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
@@ -73,7 +72,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swaggerConfig');
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.get('/', (req, res) => res.json({ status: 'ok', message: 'API running' }));
+app.get('/', (req, res) => res.json({ status: 'ok', message: 'API running', env: process.env.NODE_ENV }));
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: Date.now() }));
 app.use('/api', routes);
 

@@ -1,20 +1,20 @@
-# ===============================
-# Dockerfile - Bié Okutuala Frontend (HTML/CSS/JS)
-# ===============================
+# Estágio de Build
+FROM node:20-alpine as build-stage
 
-FROM nginx:alpine
+WORKDIR /app
 
-# Copia os arquivos do frontend para o diretório padrão do Nginx
-COPY public/ /usr/share/nginx/html/
+COPY package*.json ./
+RUN npm install
 
-# Remove a configuração default do Nginx (opcional)
-RUN rm /etc/nginx/conf.d/default.conf
+COPY . .
+RUN npm run build
 
-# Copia configuração customizada do Nginx (opcional)
-# COPY nginx.conf /etc/nginx/conf.d/
+# Estágio de Produção
+FROM nginx:stable-alpine as production-stage
 
-# Expõe porta padrão do Nginx
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/public /usr/share/nginx/html/public
+
 EXPOSE 80
 
-# Comando padrão para iniciar o Nginx
 CMD ["nginx", "-g", "daemon off;"]

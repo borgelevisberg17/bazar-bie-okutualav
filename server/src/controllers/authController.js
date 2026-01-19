@@ -1,4 +1,3 @@
-const admin = require("../config/firebaseAdmin");
 const {
     generateAccessToken,
     generateRefreshToken,
@@ -19,24 +18,22 @@ const findUser = async (field, value) => {
     if (mode === "pg") {
         return db.oneOrNone(`SELECT * FROM users WHERE ${field}=$1`, [value]);
     } else {
-        const { data, error } = await db.select("users").eq(field, value);
-        if (error) throw error;
-        return data[0] || null;
+        const { data, error } = await db.from("users").select("*").eq(field, value).single();
+        if (error && error.code !== 'PGRST116') throw error;
+        return data || null;
     }
 };
 
 /**
  * Creates a new user in the database.
  * @param {Object} userData - The user data.
- * @param {string} [userData.firebase_uid] - The user's Firebase UID.
  * @param {string} userData.name - The user's name.
  * @param {string} userData.email - The user's email.
  * @param {string} [userData.password_hash] - The user's hashed password.
- * @param {string} [userData.role='custumer'] - The user's role.
+ * @param {string} [userData.role='user'] - The user's role.
  * @returns {Promise<Object>} A promise that resolves to the newly created user object.
  */
 const createUser = async ({
-    firebase_uid,
     name,
     email,
     password_hash,
@@ -44,64 +41,20 @@ const createUser = async ({
 }) => {
     if (mode === "pg") {
         return db.one(
-            "INSERT INTO users (firebase_uid, name, email, password_hash, role) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email, role",
-            [firebase_uid, name, email, password_hash, role]
+            "INSERT INTO users (name, email, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role",
+            [name, email, password_hash, role]
         );
     } else {
-        const { data, error } = await db.insert("users", [
-            { firebase_uid, name, email, password_hash, role }
-        ]);
+        const { data, error } = await db.from("users").insert([
+            { name, email, password_hash, role }
+        ]).select().single();
         if (error) throw error;
-        return data[0];
-    }
-};
-
-/**
- * Exchanges a Firebase ID token for internal access and refresh tokens.
- * If the user doesn't exist, a new user is created.
- * @param {Object} req - The Express request object.
- * @param {Object} req.body - The request body.
- * @param {string} req.body.idToken - The Firebase ID token.
- * @param {Object} res - The Express response object.
- * @param {Function} next - The Express next middleware function.
- * @returns {Promise<void>}
- */
-exports.exchangeToken = async (req, res, next) => {
-    try {
-        const { idToken } = req.body;
-        if (!idToken)
-            return res.status(400).json({ error: "idToken is required" });
-
-        const decoded = await admin.auth().verifyIdToken(idToken);
-
-        let user = await findUser("firebase_uid", decoded.uid);
-
-        if (!user) {
-            user = await createUser({
-                firebase_uid: decoded.uid,
-                name: decoded.name || decoded.email?.split("@")[0],
-                email: decoded.email
-            });
-        }
-
-        const payload = { uid: user.id, email: user.email };
-        const accessToken = generateAccessToken(payload);
-        const refreshToken = generateRefreshToken(payload);
-
-        res.json({ accessToken, refreshToken, uid: user.id, name: user.name });
-    } catch (err) {
-        next(err);
+        return data;
     }
 };
 
 /**
  * Disables Two-Factor Authentication (2FA) for the authenticated user.
- * @param {Object} req - The Express request object.
- * @param {Object} req.user - The authenticated user object.
- * @param {string} req.user.uid - The user's ID.
- * @param {Object} res - The Express response object.
- * @param {Function} next - The Express next middleware function.
- * @returns {Promise<void>}
  */
 exports.disable2FA = async (req, res, next) => {
     try {
@@ -113,7 +66,8 @@ exports.disable2FA = async (req, res, next) => {
             );
         } else {
             const { error } = await db
-                .update("users", {
+                .from("users")
+                .update({
                     two_factor_enabled: false,
                     two_factor_secret: null
                 })
@@ -128,14 +82,6 @@ exports.disable2FA = async (req, res, next) => {
 
 /**
  * Verifies a 2FA token for the authenticated user.
- * @param {Object} req - The Express request object.
- * @param {Object} req.user - The authenticated user object.
- * @param {string} req.user.uid - The user's ID.
- * @param {Object} req.body - The request body.
- * @param {string} req.body.token - The 2FA token.
- * @param {Object} res - The Express response object.
- * @param {Function} next - The Express next middleware function.
- * @returns {Promise<void>}
  */
 exports.verify2FA = async (req, res, next) => {
     try {
@@ -161,7 +107,8 @@ exports.verify2FA = async (req, res, next) => {
                 );
             } else {
                 const { error } = await db
-                    .update("users", { two_factor_enabled: true })
+                    .from("users")
+                    .update({ two_factor_enabled: true })
                     .eq("id", uid);
                 if (error) throw error;
             }
@@ -175,13 +122,7 @@ exports.verify2FA = async (req, res, next) => {
 };
 
 /**
- * Sets up 2FA for the authenticated user, generating a secret and a QR code.
- * @param {Object} req - The Express request object.
- * @param {Object} req.user - The authenticated user object.
- * @param {string} req.user.uid - The user's ID.
- * @param {Object} res - The Express response object.
- * @param {Function} next - The Express next middleware function.
- * @returns {Promise<void>}
+ * Sets up 2FA for the authenticated user.
  */
 exports.setup2FA = async (req, res, next) => {
     try {
@@ -197,7 +138,8 @@ exports.setup2FA = async (req, res, next) => {
             );
         } else {
             const { error } = await db
-                .update("users", { two_factor_secret: secret.base32 })
+                .from("users")
+                .update({ two_factor_secret: secret.base32 })
                 .eq("id", uid);
             if (error) throw error;
         }
@@ -218,14 +160,6 @@ exports.setup2FA = async (req, res, next) => {
 
 /**
  * Registers a new user with email and password.
- * @param {Object} req - The Express request object.
- * @param {Object} req.body - The request body.
- * @param {string} req.body.name - The user's name.
- * @param {string} req.body.email - The user's email.
- * @param {string} req.body.password - The user's password.
- * @param {Object} res - The Express response object.
- * @param {Function} next - The Express next middleware function.
- * @returns {Promise<void>}
  */
 exports.register = async (req, res, next) => {
     try {
@@ -251,7 +185,7 @@ exports.register = async (req, res, next) => {
             name: user.name
         });
     } catch (error) {
-        if (error.code === "23505")
+        if (error.code === "23505" || error.code === "P2002")
             return res
                 .status(409)
                 .json({ error: "User with this email already exists." });
@@ -261,14 +195,6 @@ exports.register = async (req, res, next) => {
 
 /**
  * Logs in a user with email and password.
- * @param {Object} req - The Express request object.
- * @param {Object} req.body - The request body.
- * @param {string} req.body.email - The user's email.
- * @param {string} req.body.password - The user's password.
- * @param {string} [req.body.token] - The 2FA token, if enabled.
- * @param {Object} res - The Express response object.
- * @param {Function} next - The Express next middleware function.
- * @returns {Promise<void>}
  */
 exports.login = async (req, res, next) => {
     try {
@@ -317,12 +243,6 @@ exports.login = async (req, res, next) => {
 
 /**
  * Refreshes an access token using a refresh token.
- * @param {Object} req - The Express request object.
- * @param {Object} req.body - The request body.
- * @param {string} req.body.refreshToken - The refresh token.
- * @param {Object} res - The Express response object.
- * @param {Function} next - The Express next middleware function.
- * @returns {void}
  */
 exports.refreshToken = (req, res, next) => {
     try {

@@ -22,9 +22,9 @@ exports.getProfile = async (req, res, next) => {
         [userId]
       );
     } else {
-      const { data, error } = await db.select('users', 'id, email, name, role, avatar_url, metadata, phone');
-      if (error) throw error;
-      user = data.find(u => u.id === userId);
+      const { data, error } = await db.from('users').select('id, email, name, role, avatar_url, metadata, phone').eq('id', userId).single();
+      if (error && error.code !== 'PGRST116') throw error;
+      user = data;
     }
 
     if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
@@ -159,23 +159,22 @@ exports.updateProfile = async (req, res, next) => {
       );
       res.json(updated);
     } else {
-      const { data: users, error: selErr } = await db.select('users', 'id, name, phone, avatar_url, metadata');
-      if (selErr) throw selErr;
+      const updateData = {};
+      if (name !== undefined) updateData.name = name;
+      if (phone !== undefined) updateData.phone = phone;
+      if (avatar_url !== undefined) updateData.avatar_url = avatar_url;
+      if (metadata !== undefined) updateData.metadata = metadata;
+      updateData.updated_at = new Date().toISOString();
 
-      const user = users.find(u => u.id === userId);
-      if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
+      const { data, error } = await db
+        .from('users')
+        .update(updateData)
+        .eq('id', userId)
+        .select('id, email, name, phone, avatar_url, metadata')
+        .single();
 
-      const updatedData = {
-        name: name ?? user.name,
-        phone: phone ?? user.phone,
-        avatar_url: avatar_url ?? user.avatar_url,
-        metadata: metadata ?? user.metadata,
-        updated_at: new Date().toISOString(),
-      };
-
-      const { data: updated, error: upErr } = await db.update('users', updatedData, { id: userId });
-      if (upErr) throw upErr;
-      res.json(updated[0]);
+      if (error) throw error;
+      res.json(data);
     }
   } catch (err) {
     next(err);
@@ -206,10 +205,12 @@ exports.listUsers = async (req, res, next) => {
       const users = await db.any(query, params);
       return res.json({ data: users });
     } else {
-      const { data: users, error } = await db.select('users', 'id, email, name, role, status, avatar_url, created_at');
+      let query = db.from('users').select('id, email, name, role, status, avatar_url, created_at');
+      if (role) query = query.eq('role', role);
+      
+      const { data: users, error } = await query.order('created_at', { ascending: false });
       if (error) throw error;
-      const filtered = role ? users.filter(u => u.role === role) : users;
-      res.json({ data: filtered });
+      res.json({ data: users });
     }
   } catch (err) {
     next(err);

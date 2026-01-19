@@ -7,9 +7,9 @@ const { paginate } = require("../utils/pagination");
  * @returns {Object} The product object with the `image_url` property added.
  */
 const addImageUrl = product => {
-    if (product && product.images && typeof product.images === "string") {
+    if (product && product.images) {
         try {
-            const images = JSON.parse(product.images);
+            const images = typeof product.images === "string" ? JSON.parse(product.images) : product.images;
             if (Array.isArray(images) && images.length > 0) {
                 product.image_url = images[0].url;
             }
@@ -29,11 +29,10 @@ const addImageUrl = product => {
  * @param {string} [options.status] - The product status to filter by.
  * @returns {Promise<Array<Object>>} A promise that resolves to an array of product objects.
  */
-exports.list = async ({ page = 1, limit = 10, mode = "pg", ...filters }) => {
+exports.list = async ({ page = 1, limit = 10, ...filters }) => {
     const { limit: pageLimit, offset } = paginate(page, limit);
 
     if (mode === "pg") {
-        // 🔹 Montagem dinâmica de filtros
         const filterKeys = Object.keys(filters).filter(
             key => filters[key] !== undefined
         );
@@ -52,12 +51,10 @@ exports.list = async ({ page = 1, limit = 10, mode = "pg", ...filters }) => {
       JOIN users u ON u.id = p.seller_id
     `;
 
-        // 🔹 Adiciona dinamicamente WHERE se houver filtros
         if (whereClauses.length > 0) {
             query += " WHERE " + whereClauses.join(" AND ");
         }
 
-        // 🔹 Adiciona paginação
         query += ` ORDER BY p.created_at DESC LIMIT $${
             params.length + 1
         } OFFSET $${params.length + 2}`;
@@ -65,35 +62,28 @@ exports.list = async ({ page = 1, limit = 10, mode = "pg", ...filters }) => {
 
         return db.any(query, params);
     } else {
-        // 🔹 Supabase (filtros dinâmicos)
         let supabaseQuery = db
             .from("products")
-            .select(
-                `
-        *,
-        users (
-          name,
-          avatar_url
-        )
-      `
-            )
+            .select(`
+                *,
+                users!products_seller_id_fkey (
+                    name,
+                    avatar_url
+                )
+            `)
             .range(offset, offset + pageLimit - 1)
             .order("created_at", { ascending: false });
 
-        // Aplica dinamicamente filtros (status, category, etc)
         for (const [key, value] of Object.entries(filters)) {
-            if (value !== undefined)
-                supabaseQuery = supabaseQuery.eq(key, value);
+            if (value !== undefined) {
+                const dbKey = key === 'sellerId' ? 'seller_id' : key;
+                supabaseQuery = supabaseQuery.eq(dbKey, value);
+            }
         }
 
         const { data, error } = await supabaseQuery;
+        if (error) throw error;
 
-        if (error) {
-            console.error("Supabase error fetching products:", error);
-            throw error;
-        }
-
-        // 🔹 Formata resultado
         return data.map(p => {
             const { users, ...productData } = p;
             const image_url = p.images?.[0]?.url ?? null;
@@ -109,7 +99,6 @@ exports.list = async ({ page = 1, limit = 10, mode = "pg", ...filters }) => {
 
 /**
  * Retrieves detailed information for a single product by its ID.
- * This includes seller, categories, variants, and all images.
  * @param {string} id - The ID of the product to retrieve.
  * @returns {Promise<Object|null>} A promise that resolves to the detailed product object, or null if not found.
  */
@@ -121,12 +110,13 @@ exports.getDetails = async (id) => {
                 u.name AS seller_name,
                 u.avatar_url AS seller_avatar_url,
                 u.email AS seller_email,
-                json_agg(DISTINCT pc.*) AS categories,
-                json_agg(DISTINCT pv.*) AS variants,
-                json_agg(DISTINCT pi.image_url) AS all_images
+                COALESCE(json_agg(DISTINCT pc.*) FILTER (WHERE pc.id IS NOT NULL), '[]') AS categories,
+                COALESCE(json_agg(DISTINCT pv.*) FILTER (WHERE pv.id IS NOT NULL), '[]') AS variants,
+                COALESCE(json_agg(DISTINCT pi.image_url) FILTER (WHERE pi.id IS NOT NULL), '[]') AS all_images
             FROM products p
             JOIN users u ON u.id = p.seller_id
-            LEFT JOIN product_categories pc ON pc.product_id = p.id
+            LEFT JOIN product_categories pc_map ON pc_map.product_id = p.id
+            LEFT JOIN categories pc ON pc.id = pc_map.category_id
             LEFT JOIN product_variants pv ON pv.product_id = p.id
             LEFT JOIN product_images pi ON pi.product_id = p.id
             WHERE p.id = $1
@@ -134,37 +124,31 @@ exports.getDetails = async (id) => {
         `;
         return db.oneOrNone(query, [id]);
     } else {
-        // Supabase implementation for getDetails
         const { data, error } = await db
             .from('products')
             .select(`
                 *,
-                users (name, avatar_url, email),
-                product_categories (*),
+                users!products_seller_id_fkey (name, avatar_url, email),
+                product_categories (categories (*)),
                 product_variants (*),
                 product_images (image_url)
             `)
             .eq('id', id)
             .single();
 
-        if (error) {
-            console.error("Supabase error fetching product details:", error);
-            throw error;
-        }
+        if (error && error.code !== 'PGRST116') throw error;
+        if (!data) return null;
 
-        if (data) {
-            const { users, product_categories, product_variants, product_images, ...productData } = data;
-            return {
-                ...productData,
-                seller_name: users?.name,
-                seller_avatar_url: users?.avatar_url,
-                seller_email: users?.email,
-                categories: product_categories,
-                variants: product_variants,
-                all_images: product_images.map(img => img.image_url)
-            };
-        }
-        return null;
+        const { users, product_categories, product_variants, product_images, ...productData } = data;
+        return {
+            ...productData,
+            seller_name: users?.name,
+            seller_avatar_url: users?.avatar_url,
+            seller_email: users?.email,
+            categories: product_categories?.map(pc => pc.categories) || [],
+            variants: product_variants || [],
+            all_images: product_images?.map(img => img.image_url) || []
+        };
     }
 };
 
@@ -189,31 +173,46 @@ exports.get = async id => {
             [id]
         );
     } else {
-        const { data, error } = await db.select("products"); // Simplificado
-        if (error) throw error;
-        const product = data.find(p => p.id === id);
-        return addImageUrl(product); // Adiciona image_url
+        const { data, error } = await db
+            .from("products")
+            .select(`
+                *,
+                users!products_seller_id_fkey (name, avatar_url, email)
+            `)
+            .eq("id", id)
+            .single();
+            
+        if (error && error.code !== 'PGRST116') throw error;
+        if (!data) return null;
+
+        const { users, ...productData } = data;
+        const product = addImageUrl(productData);
+        return {
+            ...product,
+            seller_name: users?.name,
+            seller_avatar_url: users?.avatar_url,
+            seller_email: users?.email
+        };
     }
 };
 
 /**
  * Creates a new product in the database.
- * @param {string} sellerUid - The Firebase UID of the seller.
+ * @param {string} sellerId - The internal ID of the seller.
  * @param {Object} p - The product data.
  * @returns {Promise<Object>} A promise that resolves to the newly created product object.
  */
-exports.create = async (sellerUid, p) => {
+exports.create = async (sellerId, p) => {
     if (mode === "pg") {
         return db.one(
             `
       INSERT INTO products
         (seller_id, name, description, price, currency, images, stock, tag, status)
-      SELECT id, $2, $3, $4, COALESCE($5,'AOA'), $6, COALESCE($7,0), $8, $9
-      FROM users WHERE firebase_uid=$1
+      VALUES ($1, $2, $3, $4, COALESCE($5,'AOA'), $6, COALESCE($7,0), $8, $9)
       RETURNING *
       `,
             [
-                sellerUid,
+                sellerId,
                 p.name,
                 p.description,
                 p.price,
@@ -221,30 +220,26 @@ exports.create = async (sellerUid, p) => {
                 p.images,
                 p.stock,
                 p.tag,
-                p.status
+                p.status || 'active'
             ]
         );
     } else {
-        // Supabase: pega usuário e insere
-        const { data: users, error: userErr } = await db.select("users");
-        if (userErr) throw userErr;
-        const user = users.find(u => u.firebase_uid === sellerUid);
-        if (!user) throw new Error("Usuário não encontrado");
-
-        const { data, error } = await db.insert("products", [
+        const { data, error } = await db.from("products").insert([
             {
-                seller_id: user.id,
+                seller_id: sellerId,
                 name: p.name,
                 description: p.description,
                 price: p.price,
                 currency: p.currency || "AOA",
-                images: p.images, // Deve ser um JSON
+                images: p.images,
                 stock: p.stock || 0,
-                tag: p.tag
+                tag: p.tag,
+                status: p.status || 'active'
             }
-        ]);
+        ]).select().single();
+        
         if (error) throw error;
-        return data[0];
+        return data;
     }
 };
 
@@ -277,28 +272,31 @@ exports.update = async (id, p) => {
                 p.description,
                 p.price,
                 p.currency,
-                p.images, // Corrigido para images
+                p.images,
                 p.stock,
                 p.tag,
                 p.status
             ]
         );
     } else {
-        const { data, error } = await db.update(
-            "products",
-            {
+        const { data, error } = await db.from("products")
+            .update({
                 name: p.name,
                 description: p.description,
                 price: p.price,
                 currency: p.currency,
-                images: p.images, // Corrigido para images
+                images: p.images,
                 stock: p.stock,
-                tag: p.tag
-            },
-            { id }
-        );
+                tag: p.tag,
+                status: p.status,
+                updated_at: new Date().toISOString()
+            })
+            .eq("id", id)
+            .select()
+            .single();
+            
         if (error) throw error;
-        return data[0];
+        return data;
     }
 };
 
@@ -311,16 +309,13 @@ exports.remove = async id => {
     if (mode === "pg") {
         return db.none("DELETE FROM products WHERE id=$1", [id]);
     } else {
-        const { error } = await db.delete("products", { id });
+        const { error } = await db.from("products").delete().eq("id", id);
         if (error) throw error;
     }
 };
 
 /**
  * Likes a product.
- * @param {string} productId - The ID of the product to like.
- * @param {string} userId - The ID of the user liking the product.
- * @returns {Promise<Object>} A promise that resolves to the updated like count.
  */
 exports.like = async (productId, userId) => {
     if (mode === "pg") {
@@ -329,27 +324,21 @@ exports.like = async (productId, userId) => {
                 "INSERT INTO product_likes (product_id, user_id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
                 [productId, userId]
             );
-            const result = await t.one(
+            return t.one(
                 "UPDATE products SET likes_count = likes_count + 1 WHERE id = $1 RETURNING likes_count",
                 [productId]
             );
-            return result;
         });
     } else {
-        // Supabase implementation
         await db.from("product_likes").insert([{ product_id: productId, user_id: userId }]);
-        const { data: product } = await db.from("products").select("likes_count").eq("id", productId).single();
-        const { data: updatedProduct } = await db.from("products").update({ likes_count: product.likes_count + 1 }).eq("id", productId);
-        return updatedProduct;
+        const { data, error } = await db.rpc('increment_likes', { row_id: productId });
+        if (error) throw error;
+        return data;
     }
 };
 
 /**
  * Adds a comment to a product.
- * @param {string} productId - The ID of the product to comment on.
- * @param {string} userId - The ID of the user adding the comment.
- * @param {string} comment - The comment text.
- * @returns {Promise<Object>} A promise that resolves to the newly created comment object.
  */
 exports.addComment = async (productId, userId, comment) => {
     if (mode === "pg") {
@@ -365,20 +354,15 @@ exports.addComment = async (productId, userId, comment) => {
             return newComment;
         });
     } else {
-        // Supabase implementation
-        const { data: newComment, error } = await db.from("product_comments").insert([{ product_id: productId, user_id: userId, comment: comment }]);
+        const { data: newComment, error } = await db.from("product_comments").insert([{ product_id: productId, user_id: userId, comment: comment }]).select().single();
         if (error) throw error;
-        const { data: product } = await db.from("products").select("comments_count").eq("id", productId).single();
-        await db.from("products").update({ comments_count: product.comments_count + 1 }).eq("id", productId);
+        await db.rpc('increment_comments', { row_id: productId });
         return newComment;
     }
 };
 
 /**
  * Unlikes a product.
- * @param {string} productId - The ID of the product to unlike.
- * @param {string} userId - The ID of the user unliking the product.
- * @returns {Promise<Object>} A promise that resolves to the updated like count.
  */
 exports.unlike = async (productId, userId) => {
     if (mode === "pg") {
@@ -387,17 +371,15 @@ exports.unlike = async (productId, userId) => {
                 productId,
                 userId
             ]);
-            const result = await t.one(
+            return t.one(
                 "UPDATE products SET likes_count = likes_count - 1 WHERE id = $1 RETURNING likes_count",
                 [productId]
             );
-            return result;
         });
     } else {
-        // Supabase implementation
         await db.from("product_likes").delete().match({ product_id: productId, user_id: userId });
-        const { data: product } = await db.from("products").select("likes_count").eq("id", productId).single();
-        const { data: updatedProduct } = await db.from("products").update({ likes_count: product.likes_count - 1 }).eq("id", productId);
-        return updatedProduct;
+        const { data, error } = await db.rpc('decrement_likes', { row_id: productId });
+        if (error) throw error;
+        return data;
     }
 };

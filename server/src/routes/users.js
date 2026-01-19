@@ -1,7 +1,7 @@
 // routes/userRoutes.js
 const { Router } = require('express');
 const userController = require('../controllers/userController');
-const authFirebase = require('../middleware/authFirebase'); // Middleware JWT/Firebase
+const authMiddleware = require('../middleware/authMiddleware'); // Middleware JWT/Firebase
 const authAdmin = require('../middleware/authAdmin');
 
 const router = Router();
@@ -25,7 +25,7 @@ const router = Router();
  *       200:
  *         description: The user's profile.
  */
-router.get('/me', authFirebase, userController.getProfile);
+router.get('/me', authMiddleware, userController.getProfile);
 
 /**
  * @swagger
@@ -54,7 +54,7 @@ router.get('/me', authFirebase, userController.getProfile);
  *       200:
  *         description: The updated user profile.
  */
-router.put('/me', authFirebase, userController.updateProfile);
+router.put('/me', authMiddleware, userController.updateProfile);
 
 /**
  * @swagger
@@ -68,7 +68,7 @@ router.put('/me', authFirebase, userController.updateProfile);
  *       200:
  *         description: A list of users.
  */
-router.get('/', authFirebase, authAdmin, userController.listUsers);
+router.get('/', authMiddleware, authAdmin, userController.listUsers);
 
 /**
  * @swagger
@@ -111,7 +111,7 @@ router.get('/sellers', userController.listUsers);
  *       200:
  *         description: The updated user.
  */
-router.put('/:id', authFirebase, authAdmin, userController.updateUser);
+router.put('/:id', authMiddleware, authAdmin, userController.updateUser);
 
 /**
  * @swagger
@@ -131,7 +131,7 @@ router.put('/:id', authFirebase, authAdmin, userController.updateUser);
  *       204:
  *         description: The user was deleted.
  */
-router.delete('/:id', authFirebase, authAdmin, userController.deleteUser);
+router.delete('/:id', authMiddleware, authAdmin, userController.deleteUser);
 
 
 module.exports = router;

@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const { exchangeToken, refreshToken, register, login, setup2FA, verify2FA, disable2FA } = require('../controllers/authController');
 const authMiddleware = require('../middleware/auth');
 const router = Router();
 
@@ -75,24 +74,7 @@ router.post('/disable-2fa', authMiddleware, disable2FA);
 
 /**
  * @swagger
- * /auth/exchange:
- *   post:
- *     summary: Exchange a Firebase ID token for internal tokens.
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               idToken:
- *                 type: string
- *     responses:
- *       200:
- *         description: Token exchange successful.
  */
-router.post('/exchange', exchangeToken);
 
 /**
  * @swagger
